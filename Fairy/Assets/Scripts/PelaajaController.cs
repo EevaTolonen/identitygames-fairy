@@ -5,10 +5,11 @@ using UnityEngine;
 public class PelaajaController : MonoBehaviour
 {
 
+    public float nopeusKerroinIlmassa = 2;
     public float maxSpeed = 10f;
-    private Rigidbody2D pallo;
+    private Rigidbody2D pelaaja;
     private float movement;
-    private float jumpForce = 350f;
+    public float jumpForce = 350f;
 
     public bool grounded = false;
     float groundRadius = 0.2f;
@@ -25,16 +26,19 @@ public class PelaajaController : MonoBehaviour
         //                         centre of the circle, radius of circle, filter to check objects only on spesific layers (kenttalayer, ei pelaajaLayer)
         // Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-        pallo = GetComponent<Rigidbody2D>();
+        pelaaja = GetComponent<Rigidbody2D>();
         movement = Input.GetAxis("Horizontal");
-        pallo.velocity = new Vector2(movement * maxSpeed, pallo.velocity.y);
+        // 
+        if(grounded) pelaaja.velocity = new Vector2(movement * maxSpeed, pelaaja.velocity.y);
+        // pelaajan nopeus puolitetaan, kun ilmassa, ettei tule naurettavia hyppyjä
+        if(!grounded) pelaaja.velocity = new Vector2(movement * maxSpeed / nopeusKerroinIlmassa, pelaaja.velocity.y);
         //pallo.transform.localScale = groundCheck.localScale;
 
         // odotetaan välilyönnin painallusta ja hypätään
-        if(Input.GetKeyDown(KeyCode.W) && grounded) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
+        if (Input.GetKeyDown(KeyCode.W) && grounded) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
         {
             grounded = false;
-            pallo.AddForce(new Vector2(0, jumpForce));
+            pelaaja.AddForce(new Vector2(0, jumpForce));
         }
 
         // seuraavaksi hyppy == ts. vektori ylöspäin (AddForce() hmmm, toisaalta gravity? Jep, AddForce(0, 700)

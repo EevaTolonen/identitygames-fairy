@@ -7,6 +7,7 @@ public class KeijupolyController : MonoBehaviour
 {// miksi float?
     //private float buginKorjausTaikanumero = 0;
 
+    // serializeFieldillä näkyy (ei tallenna RAMiin vaan varsinaiseen muistiin ts. vakiot yms.) inspectorissa vaikkei public
     [SerializeField]
     private LineRenderer lineRenderer;
     [SerializeField]
@@ -16,8 +17,11 @@ public class KeijupolyController : MonoBehaviour
     private List<Vector2> mousePoints;
     private Vector2[] colliderPoints;
 
-    private float polunMaksimi = 100; // lisäämäni muuttuja
+    public PhysicsMaterial2D materiaali;
 
+    //private float polunMaksimi = 100; // lisäämäni muuttuja
+
+    public Material keijupolyMaterial;
 
     void Awake()
     {
@@ -50,7 +54,7 @@ public class KeijupolyController : MonoBehaviour
         {
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-            if (!mousePoints.Contains(mousePosition) && mousePoints.Count < polunMaksimi) // tätä riviä muutettu
+            if (!mousePoints.Contains(mousePosition) /*&& mousePoints.Count < polunMaksimi*/) // tätä riviä muutettu
             {
                 mousePoints.Add(mousePosition);
                 lineRenderer.positionCount = mousePoints.Count;
@@ -90,13 +94,14 @@ public class KeijupolyController : MonoBehaviour
     private void CreateEdgeCollider()
     {
         edgeCollider = new GameObject("collider").AddComponent<EdgeCollider2D>();
+        edgeCollider.sharedMaterial = materiaali;
     }
 
     private void CreateLineRenderer()
     {
         lineRenderer = new GameObject("renderer").AddComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
-        //lineRenderer.material = new Material(Shader.Find("Particles/Standard Surface"));
+        lineRenderer.material = keijupolyMaterial;
         lineRenderer.startColor = Color.black;
         lineRenderer.endColor = Color.black;
         lineRenderer.startWidth = 0.2f;
