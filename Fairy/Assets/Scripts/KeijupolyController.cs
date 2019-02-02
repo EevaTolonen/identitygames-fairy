@@ -4,40 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class KeijupolyController : MonoBehaviour
-{// miksi float?
-    //private float buginKorjausTaikanumero = 0;
-
+{
+    [Header("Script created components")]
     [SerializeField]
     private LineRenderer lineRenderer;
     [SerializeField]
     private EdgeCollider2D edgeCollider;
     [SerializeField]
     private Camera mainCamera;
+    
+    [Header("Edge Collider")]
+    public PhysicsMaterial2D materiaali;
+
+    [Header("Line Renderer")]
+    public Material keijupolyMaterial;
+
     private List<Vector2> mousePoints;
     private Vector2[] colliderPoints;
 
-    private float polunMaksimi = 100; // lisäämäni muuttuja
-
-    public GameObject keijupolyPrefab;
-
-    void Awake()
-    {
-        CreateLineRenderer();
-        CreateEdgeCollider();
-
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
+    void Awake() {
+        SetupLineRenderer();
+        SetupEdgeCollider();
+        SetupCamera();
 
         mousePoints = new List<Vector2>();
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
     }
 
     void Update()
@@ -51,57 +41,50 @@ public class KeijupolyController : MonoBehaviour
         {
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-            if (!mousePoints.Contains(mousePosition) && mousePoints.Count < polunMaksimi) // tätä riviä muutettu
+            if (!mousePoints.Contains(mousePosition))
             {
                 mousePoints.Add(mousePosition);
                 lineRenderer.positionCount = mousePoints.Count;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosition);
             }
-
-            //mousePoints.GetRange(0, 100);
-
-            // float 
-            colliderPoints = mousePoints.ToArray();
-
-             /*for (int i = 0; i < colliderPoints.Length; i++)
-             {
-                 colliderPoints[i].x += buginKorjausTaikanumero;
-             }*/
-             edgeCollider.points = colliderPoints;
+            
+            edgeCollider.points = mousePoints.ToArray();
         }
     }
 
     private void Reset()
     {
-        /* ei ymmärtääkseni tarvita, silloin viiva jää myös olemaan maailmaan ja häviää vasta seuraavan viivan luomiseen
-         if (lineRenderer != null)
-         {
-             lineRenderer.positionCount = 0;
-         }*/
-        if (mousePoints != null)
-        {
-            mousePoints.Clear();
-        }
-        if (edgeCollider != null)
-        {
-            edgeCollider.Reset();
-        }
+        mousePoints.Clear();
+        edgeCollider.Reset();
     }
 
-    private void CreateEdgeCollider()
+    private void SetupEdgeCollider()
     {
-        edgeCollider = new GameObject("collider").AddComponent<EdgeCollider2D>();
+        if (edgeCollider == null) {
+            edgeCollider = new GameObject("collider").AddComponent<EdgeCollider2D>(); 
+        }
+
+        edgeCollider.sharedMaterial = materiaali;
     }
 
-    private void CreateLineRenderer()
+    private void SetupLineRenderer()
     {
-        lineRenderer = new GameObject("renderer").AddComponent<LineRenderer>();
+        if (lineRenderer == null) {
+            lineRenderer = new GameObject("renderer").AddComponent<LineRenderer>(); 
+        }
+
         lineRenderer.positionCount = 0;
-        lineRenderer.material = new Material(Shader.Find("Particles/Standard Surface"));
+        lineRenderer.material = keijupolyMaterial;
         lineRenderer.startColor = Color.black;
         lineRenderer.endColor = Color.black;
         lineRenderer.startWidth = 0.2f;
         lineRenderer.endWidth = 0.2f;
         lineRenderer.useWorldSpace = true;
+    }
+
+    private void SetupCamera() {
+        if (mainCamera == null) {
+            mainCamera = Camera.main;
+        }
     }
 }
