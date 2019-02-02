@@ -18,6 +18,7 @@ public class KeijupolyController : MonoBehaviour
 
     private float polunMaksimi = 100; // lisäämäni muuttuja
 
+    public GameObject keijupolyPrefab;
 
     void Awake()
     {
@@ -96,7 +97,7 @@ public class KeijupolyController : MonoBehaviour
     {
         lineRenderer = new GameObject("renderer").AddComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
-        //lineRenderer.material = new Material(Shader.Find("Particles/Standard Surface"));
+        lineRenderer.material = new Material(Shader.Find("Particles/Standard Surface"));
         lineRenderer.startColor = Color.black;
         lineRenderer.endColor = Color.black;
         lineRenderer.startWidth = 0.2f;
