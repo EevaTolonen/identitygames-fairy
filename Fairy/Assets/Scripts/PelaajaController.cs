@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PelaajaController : MonoBehaviour
 {
+
     public Cinemachine.CinemachineVirtualCamera CameraLeft2Right;
     public Cinemachine.CinemachineVirtualCamera CameraRight2Left;
     public float putoamisNopeus;
@@ -13,7 +14,12 @@ public class PelaajaController : MonoBehaviour
     private Rigidbody2D pelaaja;
     private float movement;
     public float jumpForce = 350f;
+
     private bool facingRight = true;
+    private bool flipSprite;
+    private Animator pelaajaAnimaatio;
+
+    private SpriteRenderer spriteRenderer;
 
     public bool grounded = false;
     float groundRadius = 0.2f;
@@ -23,8 +29,15 @@ public class PelaajaController : MonoBehaviour
     public Transform groundCheck; // t.ex. groundCheck.position, groundCheck.scale etc.
 
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        pelaajaAnimaatio = GetComponent<Animator>();
+    }
+
+
+
+    private void FixedUpdate()
     {
         OllaankoMaassa();
 
@@ -35,6 +48,26 @@ public class PelaajaController : MonoBehaviour
         SaakoHypata();
 
         KameraVasenOikea();
+
+        KaannetaankoPelaaja();
+
+        pelaajaAnimaatio.SetBool("Grounded", grounded);
+        pelaajaAnimaatio.SetFloat("Speed", Mathf.Abs(movement));
+    }
+
+
+    private void KaannetaankoPelaaja()
+    {
+        flipSprite = (spriteRenderer.flipX ? (movement > 0f) : (movement < 0f));
+        if(flipSprite)
+        {
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+        }
+        /*facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;**/
+
     }
 
 
@@ -46,10 +79,11 @@ public class PelaajaController : MonoBehaviour
 
     private void KameraVasenOikea()
     {
-        if (movement * maxSpeed < 0 && facingRight )
+        if (movement * maxSpeed < 0 && facingRight)
         {
             CameraLeft2Right.enabled = false;
             CameraRight2Left.enabled = true;
+            //KaannetaankoPelaaja();
             facingRight = !facingRight;
 
         }
@@ -58,6 +92,7 @@ public class PelaajaController : MonoBehaviour
         {
             CameraRight2Left.enabled = false;
             CameraLeft2Right.enabled = true;
+            //KaannetaankoPelaaja();
             facingRight = !facingRight;
         }
     }

@@ -5433,7 +5433,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -157.18512, y: -115.11, z: -10}
+  m_LocalPosition: {x: -155.10297, y: -115.11, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -11106,7 +11106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728230203}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.424881, y: 0, z: -0}
+  m_LocalPosition: {x: -7.5070343, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children:
   - {fileID: 967438090}
@@ -11414,6 +11414,7 @@ GameObject:
   - component: {fileID: 812394445}
   - component: {fileID: 812394444}
   - component: {fileID: 812394446}
+  - component: {fileID: 812394447}
   m_Layer: 11
   m_Name: PelaajaHahmo
   m_TagString: Untagged
@@ -11474,8 +11475,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 135eeed0bde86984fbdac480e11d47a7, type: 3}
+  m_SortingOrder: -3
+  m_Sprite: {fileID: 21300000, guid: b5538fb8fd5ab1643b3a9400eccf24bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11524,7 +11525,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.9140625, y: 2.203125}
+    oldSize: {x: 4, y: 3.6}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -11550,7 +11551,7 @@ MonoBehaviour:
   putoamisNopeus: 0
   nopeusIlmassaJaettuna: 1.5
   maxSpeed: 7
-  jumpForce: 400
+  jumpForce: 500
   grounded: 0
   whatIsGround:
     serializedVersion: 2
@@ -11572,6 +11573,25 @@ CircleCollider2D:
   m_Offset: {x: -0.09, y: -0.69}
   serializedVersion: 2
   m_Radius: 0.35
+--- !u!95 &812394447
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812394440}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bc45c7fb3449a16479162bca8cfce661, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 1
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &815052864
 GameObject:
   m_ObjectHideFlags: 0
@@ -11698,8 +11718,8 @@ MonoBehaviour:
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
-  m_ScreenX: 0.152
-  m_ScreenY: 0.5
+  m_ScreenX: 0.2917638
+  m_ScreenY: 0.4873618
   m_CameraDistance: 10
   m_DeadZoneWidth: 0.25
   m_DeadZoneHeight: 0.19
@@ -16855,11 +16875,11 @@ MonoBehaviour:
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
-  m_ScreenX: 0.848
-  m_ScreenY: 0.5
+  m_ScreenX: 0.9060708
+  m_ScreenY: 0.4810426
   m_CameraDistance: 10
   m_DeadZoneWidth: 0.25
-  m_DeadZoneHeight: 0.19
+  m_DeadZoneHeight: 0.1836809
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
   m_SoftZoneWidth: 0.38
@@ -18162,7 +18182,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1588881687}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.424881, y: 0, z: -0}
+  m_LocalPosition: {x: 7.5070343, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children:
   - {fileID: 832585969}
