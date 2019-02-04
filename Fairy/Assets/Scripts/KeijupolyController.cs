@@ -13,19 +13,23 @@ public class KeijupolyController : MonoBehaviour
     [SerializeField]
     private Camera mainCamera;
     
-    [Header("Edge Collider")]
+    [Header("Physics")]
     public PhysicsMaterial2D materiaali;
 
-    [Header("Line Renderer")]
-    public Material keijupolyMaterial;
+    [Header("Appearance")]
+    public Material lineMaterial;
+    public AnimationCurve widthCurve = AnimationCurve.Linear(0, .2f, 1, .2f);
 
     private List<Vector2> mousePoints;
     private Vector2[] colliderPoints;
+    private GameObject mouseDrawObject;
 
     void Awake() {
         SetupLineRenderer();
         SetupEdgeCollider();
         SetupCamera();
+
+        mouseDrawObject = GameObject.Find("DrawEffect");
 
         mousePoints = new List<Vector2>();
     }
@@ -34,11 +38,13 @@ public class KeijupolyController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
+            mouseDrawObject.active = false;
             Reset();
         }
 
         if (Input.GetMouseButton(0))
         {
+            mouseDrawObject.active = true;
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
             if (!mousePoints.Contains(mousePosition))
@@ -46,6 +52,7 @@ public class KeijupolyController : MonoBehaviour
                 mousePoints.Add(mousePosition);
                 lineRenderer.positionCount = mousePoints.Count;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosition);
+                mouseDrawObject.transform.position = mousePosition;
             }
             
             edgeCollider.points = mousePoints.ToArray();
@@ -61,7 +68,8 @@ public class KeijupolyController : MonoBehaviour
     private void SetupEdgeCollider()
     {
         if (edgeCollider == null) {
-            edgeCollider = new GameObject("collider").AddComponent<EdgeCollider2D>(); 
+            edgeCollider = new GameObject("collider").AddComponent<EdgeCollider2D>();
+            edgeCollider.transform.SetParent(gameObject.transform); 
         }
 
         edgeCollider.sharedMaterial = materiaali;
@@ -71,15 +79,14 @@ public class KeijupolyController : MonoBehaviour
     {
         if (lineRenderer == null) {
             lineRenderer = new GameObject("renderer").AddComponent<LineRenderer>(); 
+            lineRenderer.transform.SetParent(gameObject.transform);
         }
 
         lineRenderer.positionCount = 0;
-        lineRenderer.material = keijupolyMaterial;
-        lineRenderer.startColor = Color.black;
-        lineRenderer.endColor = Color.black;
-        lineRenderer.startWidth = 0.2f;
-        lineRenderer.endWidth = 0.2f;
+        lineRenderer.material = lineMaterial;
+        lineRenderer.widthCurve = widthCurve;
         lineRenderer.useWorldSpace = true;
+        
     }
 
     private void SetupCamera() {
