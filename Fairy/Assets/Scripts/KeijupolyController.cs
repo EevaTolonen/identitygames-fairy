@@ -29,8 +29,10 @@ public class KeijupolyController : MonoBehaviour
         SetupEdgeCollider();
         SetupCamera();
 
+        //Set reference for mouseDrawObject which is used to hold particle system
         mouseDrawObject = GameObject.Find("DrawEffect");
 
+        //Inits list for captured mouse positions, used by collider and renderer
         mousePoints = new List<Vector2>();
     }
 
@@ -38,13 +40,17 @@ public class KeijupolyController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            mouseDrawObject.active = false;
+            //Makes particle system thats following mouse hidden
+            mouseDrawObject.SetActive(false);
+
             Reset();
         }
 
         if (Input.GetMouseButton(0))
         {
-            mouseDrawObject.active = true;
+            //Makes particle system thats following mouse visible
+            mouseDrawObject.SetActive(true);
+
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
             if (!mousePoints.Contains(mousePosition))
@@ -65,6 +71,9 @@ public class KeijupolyController : MonoBehaviour
         edgeCollider.Reset();
     }
 
+    /// <summary>
+    /// Initializes edge collider and loads default configs
+    /// </summary>
     private void SetupEdgeCollider()
     {
         if (edgeCollider == null) {
@@ -75,6 +84,9 @@ public class KeijupolyController : MonoBehaviour
         edgeCollider.sharedMaterial = materiaali;
     }
 
+    /// <summary>
+    /// Initializes line renderer and loads default configs
+    /// </summary>
     private void SetupLineRenderer()
     {
         if (lineRenderer == null) {
@@ -86,12 +98,37 @@ public class KeijupolyController : MonoBehaviour
         lineRenderer.material = lineMaterial;
         lineRenderer.widthCurve = widthCurve;
         lineRenderer.useWorldSpace = true;
-        
     }
 
+    /// <summary>
+    /// Initializes camera used by line renderer
+    /// </summary>
     private void SetupCamera() {
         if (mainCamera == null) {
             mainCamera = Camera.main;
         }
     }
+    
+    /// <summary>
+    /// Returns total distance of points in Vector2 array
+    /// (V1 -> V2) + (V2 -> V3) + ... + (Vn-1) -> (Vn)
+    /// </summary>
+    private float GetDistanceBetweenFromArray(Vector2[] arr) 
+    {
+        float totalDistance = 0;
+
+        for(int i = 1; i < arr.Length; i++) {
+            totalDistance += GetDistanceBetween(arr[i - 1], arr[i]);
+        }
+
+        return totalDistance;
+    }
+
+    /// <summary>
+    /// Returns distance between two points in 2d space
+    /// </summary>
+    private float GetDistanceBetween(Vector2 p1, Vector2 p2) {
+        return Mathf.Sqrt(Mathf.Pow(p2.x - p1.x, 2) + Mathf.Pow(p2.y - p1.y, 2));
+    }
+
 }
