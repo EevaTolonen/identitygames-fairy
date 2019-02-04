@@ -15,6 +15,7 @@ public class KeijupolyController : MonoBehaviour
     
     [Header("Physics")]
     public PhysicsMaterial2D materiaali;
+    public float maxLength = 2;
 
     [Header("Appearance")]
     public Material lineMaterial;
@@ -23,6 +24,7 @@ public class KeijupolyController : MonoBehaviour
     private List<Vector2> mousePoints;
     private Vector2[] colliderPoints;
     private GameObject mouseDrawObject;
+    private float lineLength = 0;
 
     void Awake() {
         SetupLineRenderer();
@@ -53,14 +55,15 @@ public class KeijupolyController : MonoBehaviour
 
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-            if (!mousePoints.Contains(mousePosition))
+            if (!mousePoints.Contains(mousePosition) && lineLength < maxLength)
             {
                 mousePoints.Add(mousePosition);
                 lineRenderer.positionCount = mousePoints.Count;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosition);
                 mouseDrawObject.transform.position = mousePosition;
             }
-            
+
+            lineLength = GetDistanceBetweenFromArray(mousePoints.ToArray());
             edgeCollider.points = mousePoints.ToArray();
         }
     }
