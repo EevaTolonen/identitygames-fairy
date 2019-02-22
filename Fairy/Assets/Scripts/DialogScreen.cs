@@ -14,6 +14,12 @@ public class DialogScreen
     //text shown
     private string text;
 
+    public string Text {
+        get {
+            return text;
+        }
+    }
+
     //identifier
     private int id;
 
@@ -40,4 +46,5 @@ public class DialogScreen
         this.text = "";
         responses = null;
     }
+    
 }
