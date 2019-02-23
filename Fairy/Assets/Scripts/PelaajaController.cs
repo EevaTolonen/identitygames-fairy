@@ -28,18 +28,21 @@ public class PelaajaController : MonoBehaviour
     // Every object in a Scene has a Transform. It's used to store and manipulate the position, rotation and scale of the object.
     public Transform groundCheck; // t.ex. groundCheck.position, groundCheck.scale etc.
 
+    private EdgeCollider2D edge;
+
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         pelaajaAnimaatio = GetComponent<Animator>();
+        edge = GetComponent<EdgeCollider2D>();
     }
 
 
 
-    private void FixedUpdate()
+    private void Update()
     {
-        OllaankoMaassa();
+        //OllaankoMaassa();
 
         HaePelaajaJaAxis();
 
@@ -110,10 +113,10 @@ public class PelaajaController : MonoBehaviour
     // eli overläppääkö pallon alaosaan liitetty gameObject groundCheck maaksi määritellyn alueen kanssa 
     // parametrit: centre of the circle, radius of circle, filter to check objects only on spesific layers (kenttalayer, ei pelaajaLayer)
     // Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-    private void OllaankoMaassa()
+    /*private void OllaankoMaassa()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-    }
+    }*/
 
 
 
@@ -138,5 +141,12 @@ public class PelaajaController : MonoBehaviour
             grounded = false;
             pelaaja.AddForce(new Vector2(0, jumpForce));
         }
+    }
+
+
+    // kun pelaaja osuu maahan, voi taas hypätä, eli grounded=true
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        grounded = true;
     }
 }
