@@ -126,7 +126,7 @@ public class PelaajaController : MonoBehaviour
         // pelaajan nopeutta hidastetaan, kun ilmassa, ettei tule naurettavia hyppyjä
         if (!grounded && pelaaja.velocity.y <= 0)
         {   // pelaaja putoaa alas hieman nopeammin kuin hyppäsi, jotta ei tule outoa "leijumisefektiä" alas pudotessa
-            pelaaja.AddForce(new Vector2(0, putoamisNopeus));
+            pelaaja.AddForce(new Vector2(0, putoamisNopeus) * Time.deltaTime);
         }
         else pelaaja.velocity = new Vector2(movement * maxSpeed / nopeusIlmassaJaettuna, pelaaja.velocity.y);
     }
