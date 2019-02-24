@@ -12,8 +12,10 @@ public class PelaajaController : MonoBehaviour
     public float nopeusIlmassaJaettuna = 1.5F;
     public float maxSpeed = 10f;
     private Rigidbody2D pelaaja;
-    private float movement;
-    public float jumpForce = 350f;
+    private Rigidbody kokeilu;
+    private float movementX;
+    private float movementY;
+    public float jumpHeight = 10f;
 
     private bool facingRight = true;
     private bool flipSprite;
@@ -22,31 +24,31 @@ public class PelaajaController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     public bool grounded = false;
-    float groundRadius = 0.2f;
+    public float groundRadius = 0.2f;
     // tarkistaa, onko pallon alaosaan liitetty gameObject groundCheck maassa vai ei
     public LayerMask whatIsGround;
     // Every object in a Scene has a Transform. It's used to store and manipulate the position, rotation and scale of the object.
     public Transform groundCheck; // t.ex. groundCheck.position, groundCheck.scale etc.
+    
 
-    private EdgeCollider2D edge;
 
-
-    private void Awake()
+    private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         pelaajaAnimaatio = GetComponent<Animator>();
-        edge = GetComponent<EdgeCollider2D>();
+        pelaaja = GetComponent<Rigidbody2D>();
+        kokeilu = new Rigidbody();
     }
 
 
 
-    private void Update()
+    void Update()
     {
-        //OllaankoMaassa();
+        OllaankoMaassa();
 
-        HaePelaajaJaAxis();
+        HaePelaajaAxis();
 
-        MitenSaaLiikkua();
+        //MitenSaaLiikkua();
 
         SaakoHypata();
 
@@ -55,13 +57,22 @@ public class PelaajaController : MonoBehaviour
         KaannetaankoPelaaja();
 
         pelaajaAnimaatio.SetBool("Grounded", grounded);
-        pelaajaAnimaatio.SetFloat("Speed", Mathf.Abs(movement));
+        pelaajaAnimaatio.SetFloat("Speed", Mathf.Abs(movementX));
+    }
+
+
+    // This function is called by Unity before every “physic update”. Indeed, physic updates and classic updates are not synced. 
+    // To achieve a convincing physic simulation, we need to calculate it smoothly. Unity decided to pull apart the physic update 
+    //from the classic update. This way if the frame rate is too low or too fast, it won’t impact the simulation.
+    private void FixedUpdate()
+    {
+        pelaaja.MovePosition(pelaaja.position + new Vector2 (movementX, 0) * maxSpeed * Time.fixedDeltaTime);
     }
 
 
     private void KaannetaankoPelaaja()
     {
-        flipSprite = (spriteRenderer.flipX ? (movement > 0f) : (movement < 0f));
+        flipSprite = (spriteRenderer.flipX ? (movementX > 0f) : (movementX < 0f));
         if(flipSprite)
         {
             spriteRenderer.flipX = !spriteRenderer.flipX;
@@ -82,7 +93,7 @@ public class PelaajaController : MonoBehaviour
 
     private void KameraVasenOikea()
     {
-        if (movement * maxSpeed < 0 && facingRight)
+        if (movementX * maxSpeed < 0 && facingRight)
         {
             CameraLeft2Right.enabled = false;
             CameraRight2Left.enabled = true;
@@ -91,7 +102,7 @@ public class PelaajaController : MonoBehaviour
 
         }
         // if (pelaaja.velocity.x > 0 && CameraLeft2Right.enabled == true
-        if (movement * maxSpeed > 0 && !facingRight)
+        if (movementX * maxSpeed > 0 && !facingRight)
         {
             CameraRight2Left.enabled = false;
             CameraLeft2Right.enabled = true;
@@ -102,10 +113,10 @@ public class PelaajaController : MonoBehaviour
 
 
 
-    private void HaePelaajaJaAxis()
+    private void HaePelaajaAxis()
     {
-        pelaaja = GetComponent<Rigidbody2D>();
-        movement = Input.GetAxis("Horizontal");
+        movementX = Input.GetAxis("Horizontal");
+        movementY = Input.GetAxis("Vertical");
     }
 
 
@@ -113,40 +124,42 @@ public class PelaajaController : MonoBehaviour
     // eli overläppääkö pallon alaosaan liitetty gameObject groundCheck maaksi määritellyn alueen kanssa 
     // parametrit: centre of the circle, radius of circle, filter to check objects only on spesific layers (kenttalayer, ei pelaajaLayer)
     // Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-    /*private void OllaankoMaassa()
+    private void OllaankoMaassa()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-    }*/
+    }
 
 
 
-    void MitenSaaLiikkua()
+    /*void MitenSaaLiikkua()
     {
-        if (grounded) pelaaja.velocity = new Vector2(movement * maxSpeed, pelaaja.velocity.y);
+        if (grounded) pelaaja.velocity = new Vector2(movementX * maxSpeed, pelaaja.velocity.y);
         // pelaajan nopeutta hidastetaan, kun ilmassa, ettei tule naurettavia hyppyjä
         if (!grounded && pelaaja.velocity.y <= 0)
         {   // pelaaja putoaa alas hieman nopeammin kuin hyppäsi, jotta ei tule outoa "leijumisefektiä" alas pudotessa
             pelaaja.AddForce(new Vector2(0, putoamisNopeus) * Time.deltaTime);
         }
-        else pelaaja.velocity = new Vector2(movement * maxSpeed / nopeusIlmassaJaettuna, pelaaja.velocity.y);
-    }
+        else pelaaja.velocity = new Vector2(movementX * maxSpeed / nopeusIlmassaJaettuna, pelaaja.velocity.y);
+    }*/
 
 
 
     void SaakoHypata()
     {
         // odotetaan välilyönnin painallusta ja hypätään
-        if (Input.GetKeyDown(KeyCode.W) && grounded) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
+        // .AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+        if ((Input.GetKeyDown(KeyCode.W)) && grounded) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
         {
             grounded = false;
-            pelaaja.AddForce(new Vector2(0, jumpForce));
+            Vector2 hyppy = new Vector2(0, jumpHeight);
+            pelaaja.AddForce(hyppy, ForceMode2D.Force);
         }
-    }
 
-
-    // kun pelaaja osuu maahan, voi taas hypätä, eli grounded=true
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        grounded = true;
+        if ((Input.GetKeyDown(KeyCode.Space)) && grounded) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
+        {
+            grounded = false;
+            Vector2 hyppy = new Vector2(0, jumpHeight);
+            pelaaja.AddForce(hyppy, ForceMode2D.Impulse);
+        }
     }
 }
