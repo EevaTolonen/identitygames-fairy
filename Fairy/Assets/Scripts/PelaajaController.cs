@@ -12,7 +12,6 @@ public class PelaajaController : MonoBehaviour
     public float nopeusIlmassaJaettuna = 1.5F;
     public float maxSpeed = 10f;
     private Rigidbody2D pelaaja;
-    private Rigidbody kokeilu;
     private float movementX;
     private float movementY;
     public float jumpHeight = 10f;
@@ -37,7 +36,6 @@ public class PelaajaController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         pelaajaAnimaatio = GetComponent<Animator>();
         pelaaja = GetComponent<Rigidbody2D>();
-        kokeilu = new Rigidbody();
     }
 
 
@@ -48,7 +46,7 @@ public class PelaajaController : MonoBehaviour
 
         HaePelaajaAxis();
 
-        //MitenSaaLiikkua();
+        MitenSaaLiikkua();
 
         SaakoHypata();
 
@@ -66,7 +64,7 @@ public class PelaajaController : MonoBehaviour
     //from the classic update. This way if the frame rate is too low or too fast, it won’t impact the simulation.
     private void FixedUpdate()
     {
-        pelaaja.MovePosition(pelaaja.position + new Vector2 (movementX, 0) * maxSpeed * Time.fixedDeltaTime);
+        //pelaaja.MovePosition(pelaaja.position + new Vector2 (movementX, 0) * maxSpeed * Time.fixedDeltaTime);
     }
 
 
@@ -131,16 +129,16 @@ public class PelaajaController : MonoBehaviour
 
 
 
-    /*void MitenSaaLiikkua()
+    void MitenSaaLiikkua()
     {
         if (grounded) pelaaja.velocity = new Vector2(movementX * maxSpeed, pelaaja.velocity.y);
         // pelaajan nopeutta hidastetaan, kun ilmassa, ettei tule naurettavia hyppyjä
-        if (!grounded && pelaaja.velocity.y <= 0)
+        /*if (!grounded && pelaaja.velocity.y <= 0)
         {   // pelaaja putoaa alas hieman nopeammin kuin hyppäsi, jotta ei tule outoa "leijumisefektiä" alas pudotessa
             pelaaja.AddForce(new Vector2(0, putoamisNopeus) * Time.deltaTime);
         }
-        else pelaaja.velocity = new Vector2(movementX * maxSpeed / nopeusIlmassaJaettuna, pelaaja.velocity.y);
-    }*/
+        else pelaaja.velocity = new Vector2(movementX * maxSpeed / nopeusIlmassaJaettuna, pelaaja.velocity.y);*/
+    }
 
 
 
@@ -148,18 +146,11 @@ public class PelaajaController : MonoBehaviour
     {
         // odotetaan välilyönnin painallusta ja hypätään
         // .AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
-        if ((Input.GetKeyDown(KeyCode.W)) && grounded) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
+        if (((Input.GetKeyDown(KeyCode.W)|| (Input.GetKeyDown(KeyCode.Space))) && grounded == true)) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
         {
             grounded = false;
             Vector2 hyppy = new Vector2(0, jumpHeight);
-            pelaaja.AddForce(hyppy, ForceMode2D.Force);
-        }
-
-        if ((Input.GetKeyDown(KeyCode.Space)) && grounded) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
-        {
-            grounded = false;
-            Vector2 hyppy = new Vector2(0, jumpHeight);
-            pelaaja.AddForce(hyppy, ForceMode2D.Impulse);
+            pelaaja.AddForce(hyppy);
         }
     }
 }
