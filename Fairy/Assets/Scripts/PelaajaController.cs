@@ -6,15 +6,16 @@ using UnityEngine;
 public class PelaajaController : MonoBehaviour
 {
 
-    public Cinemachine.CinemachineVirtualCamera CameraLeft2Right;
-    public Cinemachine.CinemachineVirtualCamera CameraRight2Left;
-    public float putoamisNopeus;
-    public float nopeusIlmassaJaettuna = 1.5F;
-    public float maxSpeed = 10f;
+    //public Cinemachine.CinemachineVirtualCamera CameraLeft2Right;
+    //public Cinemachine.CinemachineVirtualCamera CameraRight2Left;
+    //public float putoamisNopeus;
+    //public float nopeusIlmassaJaettuna = 1.5F;
+    public float maxSpeed;
     private Rigidbody2D pelaaja;
     private float movementX;
     private float movementY;
-    public float jumpHeight = 10f;
+    public float jumpForce;
+    private Vector2 hyppy;
 
     private bool facingRight = true;
     private bool flipSprite;
@@ -28,7 +29,12 @@ public class PelaajaController : MonoBehaviour
     public LayerMask whatIsGround;
     // Every object in a Scene has a Transform. It's used to store and manipulate the position, rotation and scale of the object.
     public Transform groundCheck; // t.ex. groundCheck.position, groundCheck.scale etc.
-    
+
+    // haetaan hyppyanimaatioon liittyvä trigger Jump-muuttuja animator-komponentilta
+    private int jumpHash = Animator.StringToHash("Jump");
+    private int attackHash = Animator.StringToHash("Attack");
+    public int decayRate = 2;
+
 
 
     private void Start()
@@ -36,6 +42,7 @@ public class PelaajaController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         pelaajaAnimaatio = GetComponent<Animator>();
         pelaaja = GetComponent<Rigidbody2D>();
+        hyppy = new Vector2(0, jumpForce);
     }
 
 
@@ -50,12 +57,28 @@ public class PelaajaController : MonoBehaviour
 
         SaakoHypata();
 
-        KameraVasenOikea();
+        Hyokataanko();
+
+        // KameraVasenOikea();
 
         KaannetaankoPelaaja();
 
         pelaajaAnimaatio.SetBool("Grounded", grounded);
-        pelaajaAnimaatio.SetFloat("Speed", Mathf.Abs(movementX));
+        pelaajaAnimaatio.SetFloat("SpeedX", Mathf.Abs(movementX));
+        pelaajaAnimaatio.SetFloat("SpeedY", Mathf.Abs(movementY));
+    }
+
+
+
+    /// <summary>
+    /// If player presses E, attack animation will be triggered
+    /// </summary>
+    private void Hyokataanko()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            pelaajaAnimaatio.SetTrigger(attackHash);
+        }
     }
 
 
@@ -70,8 +93,11 @@ public class PelaajaController : MonoBehaviour
 
     private void KaannetaankoPelaaja()
     {
+        // player can't flip the character while airborne
+        //if (!grounded) return;
+
         flipSprite = (spriteRenderer.flipX ? (movementX > 0f) : (movementX < 0f));
-        if(flipSprite)
+        if (flipSprite)
         {
             spriteRenderer.flipX = !spriteRenderer.flipX;
         }
@@ -89,7 +115,7 @@ public class PelaajaController : MonoBehaviour
     // pelaaja menee vasemmalle/paikallaan ja kamera ko. hetkellä r2l -> pysyy samana
     // pelaaja menee vasemmalle/paikallaan ja kamera l2r -> vaihtuu
 
-    private void KameraVasenOikea()
+    /*private void KameraVasenOikea()
     {
         if (movementX * maxSpeed < 0 && facingRight)
         {
@@ -107,7 +133,7 @@ public class PelaajaController : MonoBehaviour
             //KaannetaankoPelaaja();
             facingRight = !facingRight;
         }
-    }
+    }*/
 
 
 
@@ -136,8 +162,8 @@ public class PelaajaController : MonoBehaviour
         /*if (!grounded && pelaaja.velocity.y <= 0)
         {   // pelaaja putoaa alas hieman nopeammin kuin hyppäsi, jotta ei tule outoa "leijumisefektiä" alas pudotessa
             pelaaja.AddForce(new Vector2(0, putoamisNopeus) * Time.deltaTime);
-        }
-        else pelaaja.velocity = new Vector2(movementX * maxSpeed / nopeusIlmassaJaettuna, pelaaja.velocity.y);*/
+        }*/
+        else pelaaja.velocity = new Vector2(movementX * maxSpeed / 1.5f, pelaaja.velocity.y);
     }
 
 
@@ -146,11 +172,36 @@ public class PelaajaController : MonoBehaviour
     {
         // odotetaan välilyönnin painallusta ja hypätään
         // .AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
-        if (((Input.GetKeyDown(KeyCode.W)|| (Input.GetKeyDown(KeyCode.Space))) && grounded == true)) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
+        if (((Input.GetKeyDown(KeyCode.W) || (Input.GetKeyDown(KeyCode.Space))) && grounded == true)) // tee oma Jump-button, jonka pelaaja voi remapata haluamakseen, tee siis oikeaan peliin paremmin!
         {
-            grounded = false;
-            Vector2 hyppy = new Vector2(0, jumpHeight);
-            pelaaja.AddForce(hyppy);
+            // Jump-triggeri aktivoituu ja siirrytään Jump-stateen
+            pelaajaAnimaatio.SetTrigger(jumpHash);
+            // pelaaja.AddForce(hyppy);
+            // movementX * maxSpeed, pelaaja.velocity.y
+            // pelaaja.velocity = new Vector2(pelaaja.velocity.x, maxSpeed);
+            StartCoroutine(DoJump());
         }
     }
+
+    IEnumerator DoJump()
+    {
+        //the initial jump
+        pelaaja.AddForce(Vector2.up * jumpForce);
+        yield return null;
+        
+
+        //can be any value, maybe this is a start ascending force, up to you
+        float currentForce = jumpForce;
+
+        while (((Input.GetKey(KeyCode.W) || (Input.GetKey(KeyCode.Space))) && currentForce > 0))
+        {
+            pelaaja.AddForce(Vector2.up * currentForce);
+
+            // currentForce is result of linear decay function C = -r*t, where C is original amount, r is decay rate and t is time
+            currentForce -= decayRate * Time.deltaTime;
+            yield return null;
+        }
+    }
+
+
 }
