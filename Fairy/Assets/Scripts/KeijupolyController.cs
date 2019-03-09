@@ -18,6 +18,7 @@ public class KeijupolyController : MonoBehaviour
     public float maxLength = 2;
 
     [Header("Appearance")]
+    public float zPosition = -14;
     public Material lineMaterial;
     public AnimationCurve widthCurve = AnimationCurve.Linear(0, .2f, 1, .2f);
 
@@ -59,7 +60,7 @@ public class KeijupolyController : MonoBehaviour
             {
                 mousePoints.Add(mousePosition);
                 lineRenderer.positionCount = mousePoints.Count;
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosition);
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, new Vector3(mousePosition.x, mousePosition.y, zPosition));
                 mouseDrawObject.transform.position = mousePosition;
             }
 
