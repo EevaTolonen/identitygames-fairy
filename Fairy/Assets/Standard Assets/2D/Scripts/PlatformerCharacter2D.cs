@@ -11,6 +11,25 @@ namespace UnityStandardAssets._2D
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
 
+        [Header("Parallax scroll")]
+        [SerializeField] private bool parallaxActive = false;
+
+        [SerializeField] private GameObject bg1;
+        [Range(0,0.01f)]
+        [SerializeField] private float bg1_speedmodifier;
+
+        [SerializeField] private GameObject bg2;
+        [Range(0, 0.01f)]
+        [SerializeField] private float bg2_speedmodifier;
+
+        [SerializeField] private GameObject bg3;
+        [Range(0, 0.01f)]
+        [SerializeField] private float bg3_speedmodifier;
+
+        [SerializeField] private GameObject bg4;
+        [Range(0, 0.01f)]
+        [SerializeField] private float bg4_speedmodifier;
+
         private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
         const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
         private bool m_Grounded;            // Whether or not the player is grounded.
@@ -73,8 +92,21 @@ namespace UnityStandardAssets._2D
                 // The Speed animator parameter is set to the absolute value of the horizontal input.
                 m_Anim.SetFloat("Speed", Mathf.Abs(move));
 
+                Vector2 moveAmount = new Vector2(move * m_MaxSpeed, m_Rigidbody2D.velocity.y);
+
+
+                //Parallax
+
+                if (parallaxActive)
+                {
+                    bg1.transform.Translate(new Vector3(-moveAmount.x,0,0) * bg1_speedmodifier);
+                    bg2.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg2_speedmodifier);
+                    bg3.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg3_speedmodifier);
+                    bg4.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg4_speedmodifier);
+                }
+
                 // Move the character
-                m_Rigidbody2D.velocity = new Vector2(move * m_MaxSpeed, m_Rigidbody2D.velocity.y);
+                m_Rigidbody2D.velocity = moveAmount;
 
                 // If the input is moving the player right and the player is facing left...
                 if (move > 0 && !m_FacingRight)
