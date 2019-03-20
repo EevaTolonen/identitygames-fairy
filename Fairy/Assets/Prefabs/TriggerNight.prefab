@@ -72,4 +72,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.6
   softness: 0.7
-  camera: {fileID: 0}
+  _camera: {fileID: 0}
+  onTriggerChangeTo: 1

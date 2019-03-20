@@ -4,29 +4,39 @@ using UnityEngine;
 
 public class TriggerPostProcess : MonoBehaviour
 {
+    public enum DayState { Day, Night }
+
     [Range(0,1)]
     public float radius = 0.7f;
     [Range(0, 1)]
     public float softness = 0.7f;
 
-    public Camera camera;
+    public Camera _camera;
+    public DayState onTriggerChangeTo = DayState.Day;
 
     private PostProcess postProcess;
 
     private void Awake()
     {
-        if (camera == null)
-            camera = Camera.main;
+        if (_camera == null)
+            _camera = Camera.main;
 
-        postProcess = camera.GetComponent<PostProcess>();
+        postProcess = _camera.GetComponent<PostProcess>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            postProcess.material.SetFloat("_VRadius", radius);
-            postProcess.material.SetFloat("_VSoft", softness); 
+            switch(onTriggerChangeTo)
+            {
+                case DayState.Day:
+                    postProcess.SetToDay();
+                    break;
+                case DayState.Night:
+                    postProcess.SetToNight();
+                    break;
+            }
         }
     }
 
