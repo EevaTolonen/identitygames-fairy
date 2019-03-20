@@ -11,6 +11,9 @@ namespace UnityStandardAssets._2D
         [SerializeField] private bool m_AirControl = false;                 // Whether or not a player can steer while jumping;
         [SerializeField] private LayerMask m_WhatIsGround;                  // A mask determining what is ground to the character
 
+        [Header("Audio")]
+        [SerializeField] private AudioClip[] footstepClips;
+
         [Header("Parallax scroll")]
         [SerializeField] private bool parallaxActive = false;
 
@@ -38,6 +41,7 @@ namespace UnityStandardAssets._2D
         private Animator m_Anim;            // Reference to the player's animator component.
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+        private AudioSource m_AudioSource;  // Reference to the player's audio source component.
 
         private void Awake()
         {
@@ -46,6 +50,7 @@ namespace UnityStandardAssets._2D
             m_CeilingCheck = transform.Find("CeilingCheck");
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
+            m_AudioSource = GetComponent<AudioSource>();
         }
 
 
@@ -129,6 +134,11 @@ namespace UnityStandardAssets._2D
                 m_Anim.SetBool("Ground", false);
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
             }
+
+            if(move != 0 && m_Grounded && !m_AudioSource.isPlaying)
+            {
+                m_AudioSource.PlayOneShot(GetRandomClip(footstepClips));
+            }
         }
 
 
@@ -143,7 +153,11 @@ namespace UnityStandardAssets._2D
             transform.localScale = theScale;
         }
 
-
+        private AudioClip GetRandomClip(AudioClip[] clips)
+        {
+            int rnd = UnityEngine.Random.Range(0, clips.Length - 1);
+            return clips[rnd];
+        }
 
         public bool GetPlayerFacingRight()
         {
