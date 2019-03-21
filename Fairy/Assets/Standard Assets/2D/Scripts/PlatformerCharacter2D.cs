@@ -159,9 +159,19 @@ namespace UnityStandardAssets._2D
             return clips[rnd];
         }
 
+        
+        //Eeva: Changes I've made to this code begin here, maybe we'll remove them to a separate script
+
         public bool GetPlayerFacingRight()
         {
             return m_FacingRight;
+        }
+
+
+        // finish this so that player loses f. ex. 10 health when attacked by an enemy
+        public void PlayerLosesHP()
+        {
+
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PatrolBehaviour : StateMachineBehaviour
 {
-    private float distance = 10f;
+    /*private float distance = 10f;
     private float speed = 10f;
 
     private bool movingRight = true;
@@ -48,7 +48,7 @@ public class PatrolBehaviour : StateMachineBehaviour
                 movingRight = true;
             }
         }
-    }
+    }*/
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -32,7 +32,7 @@ public class VaihdokkiMovement : MonoBehaviour
 
         float moveSpeed = baseSpeed;
         float distanceToTarget = Vector3.Distance(transform.position, followTarget.transform.position + offset);
-        Debug.Log(distanceToTarget);
+        //Debug.Log(distanceToTarget);
         if (distanceToTarget > maxDistance)
         {
             moveSpeed = baseSpeed * maxDistanceSpeedModifier;
