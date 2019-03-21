@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum DayState { Day, Night }
+
 public class TriggerPostProcess : MonoBehaviour
 {
-    public enum DayState { Day, Night }
-
     [Range(0,1)]
     public float radius = 0.7f;
     [Range(0, 1)]
@@ -15,6 +15,7 @@ public class TriggerPostProcess : MonoBehaviour
     public DayState onTriggerChangeTo = DayState.Day;
 
     private PostProcess postProcess;
+    private SoundController soundController;
 
     private void Awake()
     {
@@ -22,6 +23,8 @@ public class TriggerPostProcess : MonoBehaviour
             _camera = Camera.main;
 
         postProcess = _camera.GetComponent<PostProcess>();
+
+        soundController = GameObject.FindGameObjectWithTag("Sounds").GetComponent<SoundController>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,9 +35,11 @@ public class TriggerPostProcess : MonoBehaviour
             {
                 case DayState.Day:
                     postProcess.SetToDay();
+                    soundController.SetToDay();
                     break;
                 case DayState.Night:
                     postProcess.SetToNight();
+                    soundController.SetToNight();
                     break;
             }
         }
