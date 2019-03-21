@@ -4,7 +4,7 @@ using UnityStandardAssets._2D;
 using UnityEngine;
 
 
-
+[RequireComponent(typeof(SpriteRenderer))]
 public class VaihdokkiMovement : MonoBehaviour
 {
     public GameObject followTarget;
@@ -12,14 +12,17 @@ public class VaihdokkiMovement : MonoBehaviour
     public float baseSpeed = 10f;
     public float maxDistance = 2;
     public float maxDistanceSpeedModifier = 2;
-    public bool facingRight = true;
+
+    private bool facingRight = true;
+    private SpriteRenderer renderer;
 
 
     private void Awake()
     {
-
         if (followTarget == null)
             followTarget = GameObject.FindGameObjectWithTag("Player");
+
+        renderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -27,12 +30,21 @@ public class VaihdokkiMovement : MonoBehaviour
 
         // we see whether player is facing right or not, and position changeling accordingly behind the player
         facingRight = followTarget.GetComponent<PlatformerCharacter2D>().GetPlayerFacingRight();
-        if (!facingRight && offset.x < 0) offset.x *= -1;
-        if (facingRight && offset.x > 0) offset.x *= -1;
+        if (!facingRight && offset.x < 0)
+        {
+            offset.x *= -1;
+            renderer.flipX = true;
+            
+        }
+        if (facingRight && offset.x > 0)
+        {
+            offset.x *= -1;
+            renderer.flipX = false;
+        }
 
         float moveSpeed = baseSpeed;
         float distanceToTarget = Vector3.Distance(transform.position, followTarget.transform.position + offset);
-        //Debug.Log(distanceToTarget);
+        
         if (distanceToTarget > maxDistance)
         {
             moveSpeed = baseSpeed * maxDistanceSpeedModifier;
