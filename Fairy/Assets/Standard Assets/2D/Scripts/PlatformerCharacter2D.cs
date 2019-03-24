@@ -42,6 +42,11 @@ namespace UnityStandardAssets._2D
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
         private AudioSource m_AudioSource;  // Reference to the player's audio source component.
+        
+
+        public float enidHealth = 5;
+        GameObject player;
+
 
         private void Awake()
         {
@@ -51,6 +56,8 @@ namespace UnityStandardAssets._2D
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
             m_AudioSource = GetComponent<AudioSource>();
+
+            player = GameObject.FindGameObjectWithTag("Player");
         }
 
 
@@ -73,7 +80,7 @@ namespace UnityStandardAssets._2D
         }
 
 
-        public void Move(float move, bool crouch, bool jump)
+        public void Move(float move, bool crouch, bool jump, bool attack)
         {
             // If crouching, check to see if the character can stand up
             if (!crouch && m_Anim.GetBool("Crouch"))
@@ -139,6 +146,13 @@ namespace UnityStandardAssets._2D
             {
                 m_AudioSource.PlayOneShot(GetRandomClip(footstepClips));
             }
+
+            // do we need this in order to make the player hit? Or can it be done through EnidAttack?
+            //if the player should attack
+            /*if(attack)
+            {
+                m_Anim.SetTrigger("Attack");
+            }*/
         }
 
 
@@ -168,10 +182,18 @@ namespace UnityStandardAssets._2D
         }
 
 
-        // finish this so that player loses f. ex. 10 health when attacked by an enemy
+        /*finish this so that player loses f. ex. 10 health when attacked by an enemy
         public void PlayerLosesHP()
         {
-
-        }
+            enidHealth -= 1;
+            Debug.Log("Enid menetti hiparin");
+            m_Rigidbody2D.AddForce(new Vector2(-100, 0));
+            if(enidHealth <= 0)
+            {
+                m_Anim.SetTrigger("IsDead");
+                //Destroy(gameObject);
+                Debug.Log("Enid kuoli");
+            }
+        }*/
     }
 }

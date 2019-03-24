@@ -12,7 +12,10 @@ public class KeijupolyController : MonoBehaviour
     private EdgeCollider2D edgeCollider;
     [SerializeField]
     private Camera mainCamera;
-    
+
+    //[SerializeField]
+    //private PlatformEffector2D oneWayEffector;
+
     [Header("Physics")]
     public PhysicsMaterial2D materiaali;
     public float maxLength = 2;
@@ -27,9 +30,13 @@ public class KeijupolyController : MonoBehaviour
     private GameObject mouseDrawObject;
     private float lineLength = 0;
 
-    void Awake() {
+    private GameObject player;
+
+    void Awake()
+    {
         SetupLineRenderer();
         SetupEdgeCollider();
+        //SetUpOneWayEffector();
         SetupCamera();
 
         //Set reference for mouseDrawObject which is used to hold particle system
@@ -37,11 +44,15 @@ public class KeijupolyController : MonoBehaviour
 
         //Inits list for captured mouse positions, used by collider and renderer
         mousePoints = new List<Vector2>();
+
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonUp(0))
+
+        //edgeCollider.usedByEffector = true;
+        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
         {
             //Makes particle system thats following mouse hidden
             mouseDrawObject.SetActive(false);
@@ -49,7 +60,7 @@ public class KeijupolyController : MonoBehaviour
             Reset();
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             //Makes particle system thats following mouse visible
             mouseDrawObject.SetActive(true);
@@ -66,6 +77,7 @@ public class KeijupolyController : MonoBehaviour
 
             lineLength = GetDistanceBetweenFromArray(mousePoints.ToArray());
             edgeCollider.points = mousePoints.ToArray();
+            //oneWayEffector.transform.position = edgeCollider.points[0];
         }
     }
 
@@ -75,14 +87,38 @@ public class KeijupolyController : MonoBehaviour
         edgeCollider.Reset();
     }
 
+
+    /// <summary>
+    /// Try to give our drawn line some platform behaviour: now player should be able to jump through platform and land on it
+    /// </summary>
+    /*private void SetUpOneWayEffector()
+    {
+        if (oneWayEffector == null)
+        {
+            oneWayEffector = new GameObject("oneWayEffector").AddComponent<PlatformEffector2D>();
+            oneWayEffector.transform.SetParent(gameObject.transform);
+            //oneWayEffector.useColliderMask = true;
+
+            /*oneWayEffector.colliderMask = 1;
+            oneWayEffector.colliderMask = 2;
+            oneWayEffector.colliderMask = 3;
+            oneWayEffector.colliderMask = 4;
+
+            oneWayEffector.useOneWay = true;
+            oneWayEffector.surfaceArc = 180;
+            oneWayEffector.sideArc = 0;
+        }
+    }*/
+
     /// <summary>
     /// Initializes edge collider and loads default configs
     /// </summary>
     private void SetupEdgeCollider()
     {
-        if (edgeCollider == null) {
+        if (edgeCollider == null)
+        {
             edgeCollider = new GameObject("collider").AddComponent<EdgeCollider2D>();
-            edgeCollider.transform.SetParent(gameObject.transform); 
+            edgeCollider.transform.SetParent(gameObject.transform);
         }
 
         edgeCollider.sharedMaterial = materiaali;
@@ -93,8 +129,9 @@ public class KeijupolyController : MonoBehaviour
     /// </summary>
     private void SetupLineRenderer()
     {
-        if (lineRenderer == null) {
-            lineRenderer = new GameObject("renderer").AddComponent<LineRenderer>(); 
+        if (lineRenderer == null)
+        {
+            lineRenderer = new GameObject("renderer").AddComponent<LineRenderer>();
             lineRenderer.transform.SetParent(gameObject.transform);
         }
 
@@ -107,21 +144,24 @@ public class KeijupolyController : MonoBehaviour
     /// <summary>
     /// Initializes camera used by line renderer
     /// </summary>
-    private void SetupCamera() {
-        if (mainCamera == null) {
+    private void SetupCamera()
+    {
+        if (mainCamera == null)
+        {
             mainCamera = Camera.main;
         }
     }
-    
+
     /// <summary>
     /// Returns total distance of points in Vector2 array
     /// (V1 -> V2) + (V2 -> V3) + ... + (Vn-1) -> (Vn)
     /// </summary>
-    private float GetDistanceBetweenFromArray(Vector2[] arr) 
+    private float GetDistanceBetweenFromArray(Vector2[] arr)
     {
         float totalDistance = 0;
 
-        for(int i = 1; i < arr.Length; i++) {
+        for (int i = 1; i < arr.Length; i++)
+        {
             totalDistance += GetDistanceBetween(arr[i - 1], arr[i]);
         }
 
@@ -131,8 +171,8 @@ public class KeijupolyController : MonoBehaviour
     /// <summary>
     /// Returns distance between two points in 2d space
     /// </summary>
-    private float GetDistanceBetween(Vector2 p1, Vector2 p2) {
+    private float GetDistanceBetween(Vector2 p1, Vector2 p2)
+    {
         return Mathf.Sqrt(Mathf.Pow(p2.x - p1.x, 2) + Mathf.Pow(p2.y - p1.y, 2));
     }
-
 }
