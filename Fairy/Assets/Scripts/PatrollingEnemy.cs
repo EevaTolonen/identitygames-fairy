@@ -53,6 +53,8 @@ public class PatrollingEnemy : MonoBehaviour
         IsEnemyOnTheEdge();
 
         CanEnemySeePlayer();
+
+        DidPlayerBackStabEnemy();
     }
 
 
@@ -104,7 +106,7 @@ public class PatrollingEnemy : MonoBehaviour
             else
             {
                 animator.SetBool("isPatrolling", false);
-                speed = 20f;
+                speed = 15f;
                 ApproachEnid();
             }
         }
@@ -142,4 +144,9 @@ public class PatrollingEnemy : MonoBehaviour
 
         }
     }*/
+
+    void DidPlayerBackStabEnemy()
+    {
+
+    }
 }
