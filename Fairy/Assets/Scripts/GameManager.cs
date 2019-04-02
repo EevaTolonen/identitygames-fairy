@@ -16,17 +16,17 @@ public class GameManager : MonoBehaviour
         else if (instance != this) Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-        InitGame();
+        //InitGame();
     }
 
 
 
 
-    void InitGame()
+   /* void InitGame()
     {
         throw new NotImplementedException();
         // ensimerkkikoodissa script.setUpscene(level), mutta meillä jotain muuta
-    }
+    }*/
 
     // Update is called once per frame
     void Update()

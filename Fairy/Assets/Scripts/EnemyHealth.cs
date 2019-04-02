@@ -9,7 +9,7 @@ public class EnemyHealth : MonoBehaviour
     PlatformerCharacter2D platformerCharacter2D;
     Platformer2DUserControl platformer2DUserControl;
     PatrollingEnemy patrollingEnemy;
-    
+
     Animator animator;
     GameObject enemy;
     Rigidbody2D enemyBody;
@@ -43,10 +43,18 @@ public class EnemyHealth : MonoBehaviour
         if (knockbackTimer > 0) knockbackTimer += Time.deltaTime;
         if (knockbackTimer > 3)
         {
+            // here we allow the enemy to move after being stunned for 3 seconds
             patrollingEnemy.enabled = true;
             enemyBody.freezeRotation = false;
             enemyBody.constraints = RigidbodyConstraints2D.FreezeRotation;
             knockbackTimer = 0;
+
+            // line checks if player backstabbed the enemy, then enemy switches from patrolling to approaching player
+            if (patrollingEnemy.GetComponent<Animator>().GetBool("isPatrolling") == true)
+            {
+                patrollingEnemy.ApproachEnid();
+            }
+
         }
     }
 
@@ -67,9 +75,8 @@ public class EnemyHealth : MonoBehaviour
         enemyBody.freezeRotation = true;
 
         // enemy is knocked back from the player damage. and can't move for 3 seconds (time set in the knockbacktimer)
-        enemyBody.AddForce(new Vector2(200, 200), ForceMode2D.Impulse);
+        enemyBody.AddForce(new Vector2(800, 800), ForceMode2D.Impulse);
         knockbackTimer += Time.deltaTime;
-
         Debug.Log("Enemy took damage, health left " + currentHealth);
         if (currentHealth <= 0)
         {

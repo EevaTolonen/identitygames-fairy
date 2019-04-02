@@ -5,7 +5,7 @@ using UnityStandardAssets._2D;
 
 public class EnemyAttack : MonoBehaviour
 {
-    public float timeBetweenAttacks = 3f;
+    public float timeBetweenAttacks = 3;
     public int attackDamage = 1;
 
     EnidHealth enidHealth;
@@ -19,7 +19,7 @@ public class EnemyAttack : MonoBehaviour
     PatrollingEnemy patrollingEnemy;
 
     bool playerInRange;
-    float timer;
+    float hitTimer;
 
     // Start is called before the first frame update
     void Awake()
@@ -68,9 +68,9 @@ public class EnemyAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        animator.SetFloat("Timer", timer);
-        if (timer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
+        hitTimer += Time.deltaTime;
+        animator.SetFloat("HitTimer", hitTimer);
+        if (hitTimer >= timeBetweenAttacks && playerInRange && enemyHealth.currentHealth > 0)
         {
             Attack();     
         }
@@ -79,6 +79,7 @@ public class EnemyAttack : MonoBehaviour
         {
             animator.SetTrigger("PlayerDead");
             patrollingEnemy.enabled = false;
+           
         }
     }
 
@@ -86,7 +87,7 @@ public class EnemyAttack : MonoBehaviour
 
     void Attack()
     {
-        timer = 0f;
+        hitTimer = 0;
         if (enidHealth.currentHealth > 0)
         {
             animator.SetTrigger("Attack");
