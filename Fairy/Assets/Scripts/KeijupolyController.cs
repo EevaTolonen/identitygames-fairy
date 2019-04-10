@@ -29,13 +29,12 @@ public class KeijupolyController : MonoBehaviour
     private Vector2[] colliderPoints;
     private GameObject mouseDrawObject;
     private float lineLength = 0;
+    private GameObject newLine;
 
     private GameObject player;
 
     void Awake()
     {
-        SetupLineRenderer();
-        SetupEdgeCollider();
         //SetUpOneWayEffector();
         SetupCamera();
 
@@ -60,8 +59,16 @@ public class KeijupolyController : MonoBehaviour
             Reset();
         }
 
+        if(Input.GetMouseButtonDown(0))
+        {
+            newLine = new GameObject("Keijupoly");
+            newLine.AddComponent<KeijupolyLine>();
+            newLine.GetComponent<LineRenderer>().material = lineMaterial;
+        }
+
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
+
             //Makes particle system thats following mouse visible
             mouseDrawObject.SetActive(true);
 
@@ -70,21 +77,23 @@ public class KeijupolyController : MonoBehaviour
             if (!mousePoints.Contains(mousePosition) && lineLength < maxLength)
             {
                 mousePoints.Add(mousePosition);
-                lineRenderer.positionCount = mousePoints.Count;
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1, new Vector3(mousePosition.x, mousePosition.y, zPosition));
                 mouseDrawObject.transform.position = mousePosition;
+
+                LineRenderer newRenderer = newLine.GetComponent<LineRenderer>();
+                newRenderer.positionCount = mousePoints.Count;
+                newRenderer.SetPosition(newRenderer.positionCount - 1, new Vector3(mousePosition.x, mousePosition.y, zPosition));
             }
 
             lineLength = GetDistanceBetweenFromArray(mousePoints.ToArray());
-            edgeCollider.points = mousePoints.ToArray();
             //oneWayEffector.transform.position = edgeCollider.points[0];
+
+            newLine.GetComponent<EdgeCollider2D>().points = mousePoints.ToArray();
         }
     }
 
     private void Reset()
     {
         mousePoints.Clear();
-        edgeCollider.Reset();
     }
 
 
