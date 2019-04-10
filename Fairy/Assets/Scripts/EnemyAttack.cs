@@ -14,8 +14,10 @@ public class EnemyAttack : MonoBehaviour
     PlatformerCharacter2D platformerCharacter2D;
     Platformer2DUserControl platformer2DUserControl;
 
-    Animator animator;
     GameObject player;
+    Rigidbody2D enemy;
+
+    Animator animator;
     PatrollingEnemy patrollingEnemy;
 
     bool playerInRange;
@@ -34,6 +36,9 @@ public class EnemyAttack : MonoBehaviour
         enidHealth = player.GetComponent<EnidHealth>();
 
         patrollingEnemy = GetComponent<PatrollingEnemy>();
+
+        // we need to know which enemy deals damage to player to determine knockback direction 
+        enemy = GetComponent<Rigidbody2D>();
     }
 
 
@@ -91,7 +96,7 @@ public class EnemyAttack : MonoBehaviour
         if (enidHealth.currentHealth > 0)
         {
             animator.SetTrigger("Attack");
-            enidHealth.TakeDamage(attackDamage);
+            enidHealth.TakeDamage(attackDamage, enemy.transform.position);
         }
     }
 }

@@ -14,7 +14,10 @@ public class EnidAttack : MonoBehaviour
     EnemyHealth enemyHealth;
     Animator animator;
 
+    // the current enemy player collides with
     private GameObject enemy;
+
+    public GameObject[] enemies;
 
     bool enemyInRange;
     bool canPlayerAttack;
@@ -22,12 +25,17 @@ public class EnidAttack : MonoBehaviour
 
     float timer;
 
+    ///TO DO: KORJAA SCRIPTI NIIN ETTÄ OTETAAN TALTEEN KAIKKI VIHUT, TUTKITAAN, KEHEN ENID OSUI HYÖKKÄYKSELLÄÄN, JA TEHDÄÄN SIIHEN DAMAGEA (ENIDIIN OSUMINEN BY VIHUT TOIMII HYVIN)
+
 
     // Start is called before the first frame update
     void Awake()
     {
-        enemy = GameObject.FindGameObjectWithTag("Enemy");
-        enemyHealth = enemy.GetComponent<EnemyHealth>();
+        //enemy = GameObject.FindGameObjectWithTag("Enemy");
+
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        enemyHealth = GetComponent<EnemyHealth>();
         enidHealth = GetComponent<EnidHealth>();
 
         platformerCharacter2D = GetComponent<PlatformerCharacter2D>();
@@ -58,37 +66,41 @@ public class EnidAttack : MonoBehaviour
             timer = 0f;
             //canPlayerAttack = false;
         }
-        // TO DO: TÄHÄN JÄÄTIIN, TSEKKAA VIDEO
-        // Kun Enid painaa E:tä ja on tarpeeksi lähelläs vihua:
-        // tekee damagea vihuun
-        // vihun helat vähenee yhdellä, yhteensä kaksi helttiä koska ei jaksa enempää
     }
 
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == enemy)
+        if (other.gameObject.tag == "Enemy")
         {
             enemyInRange = true;
+            // here we take the right enemy to a variable so that we can access it when doing damage
+            enemy = other.gameObject;
         }
     }
 
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject == enemy)
+        if (other.gameObject.tag == "Enemy")
         {
             enemyInRange = false;
         }
     }
 
+
+
     void Attack()
     {
-        if (enemyHealth.currentHealth > 0)
+        if (enemy != null)
         {
-            animator.SetTrigger("Attack");
-            enemyHealth.TakeDamage(attackDamage, Vector3.zero);
+            if (enemy.GetComponent<EnemyHealth>().currentHealth > 0)
+            {
+                animator.SetTrigger("Attack");
+                enemy.GetComponent<EnemyHealth>().TakeDamage(attackDamage, Vector3.zero);
+            }
+            timer = 0f;
         }
-        timer = 0f;
+
     }
 }

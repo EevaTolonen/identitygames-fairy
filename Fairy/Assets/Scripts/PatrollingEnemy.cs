@@ -33,6 +33,7 @@ public class PatrollingEnemy : MonoBehaviour
 
     private RaycastHit2D playerInfoFront;
     private RaycastHit2D groundInfo;
+
     float enemySearchTimer;
 
 

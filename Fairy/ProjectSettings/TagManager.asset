@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Sounds
+  - BGM
+  - Checkpoint
+  - EnvironmentalDanger
+  - StartingPoint
   layers:
   - Default
   - TransparentFX
