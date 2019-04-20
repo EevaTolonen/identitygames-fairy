@@ -5,6 +5,10 @@ using UnityStandardAssets._2D;
 
 public class EnidHealth : MonoBehaviour
 {
+    public delegate void MyDelegate();
+    public event MyDelegate onDeath;
+
+
     EnidHealth enidHealth;
     PlatformerCharacter2D platformerCharacter2D;
     Platformer2DUserControl platformer2DUserControl;
@@ -22,7 +26,7 @@ public class EnidHealth : MonoBehaviour
     int knockbackForce = 40;
 
     // 
-    public static GameObject[] checkpointList;
+   // public static GameObject[] checkpointList;
 
     // Platformer2DUserControl won't work after taking damage for x time 
     float knockbackTimer;
@@ -40,7 +44,7 @@ public class EnidHealth : MonoBehaviour
         currentHealth = startingHealth;
         player = GetComponent<Rigidbody2D>();
 
-        checkpointList = GameObject.FindGameObjectsWithTag("Checkpoint");
+        //checkpointList = GameObject.FindGameObjectsWithTag("Checkpoint");
     }
 
     // Update is called once per frame
@@ -77,23 +81,22 @@ public class EnidHealth : MonoBehaviour
         knockbackTimer += Time.deltaTime;
 
         Debug.Log("Enid took damage, health left " + currentHealth);
-        if (currentHealth <= 0 && !isDead)
+        if (currentHealth <= 0/* && !isDead*/)
         {
             //isDead = true;
             Death();
         }
     }
 
-
+    
 
     void Death()
     {
+        //onDeath.Invoke();
         isDead = true;
         animator.SetTrigger("IsDead");
         platformer2DUserControl.enabled = false;
-
-        // tällä erää ei toimi, korjaa
-        player.transform.position = Checkpoint.GetActiveCheckpoint();
+        
 
         platformer2DUserControl.enabled = true;
 
@@ -113,7 +116,7 @@ public class EnidHealth : MonoBehaviour
         }
     }
 
-
+    /*
 
     /// <summary>
     /// If player hits the spikes, they return to the previous checkpoint
@@ -126,5 +129,5 @@ public class EnidHealth : MonoBehaviour
             currentHealth = startingHealth;
             Death();
         }
-    }
+    }*/
 }

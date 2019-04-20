@@ -7,9 +7,10 @@ TagManager:
   - Enemy
   - Sounds
   - BGM
-  - Checkpoint
   - EnvironmentalDanger
   - StartingPoint
+  - CheckPoint
+  - GameManager
   layers:
   - Default
   - TransparentFX

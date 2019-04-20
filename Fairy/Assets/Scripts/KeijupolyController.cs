@@ -51,7 +51,7 @@ public class KeijupolyController : MonoBehaviour
     {
 
         //edgeCollider.usedByEffector = true;
-        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(0))
         {
             //Makes particle system thats following mouse hidden
             mouseDrawObject.SetActive(false);
@@ -66,7 +66,7 @@ public class KeijupolyController : MonoBehaviour
             newLine.GetComponent<LineRenderer>().material = lineMaterial;
         }
 
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        if (Input.GetMouseButton(0))
         {
 
             //Makes particle system thats following mouse visible
