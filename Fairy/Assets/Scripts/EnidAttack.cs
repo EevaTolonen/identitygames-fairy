@@ -13,19 +13,19 @@ public class EnidAttack : MonoBehaviour
 
     EnemyHealth enemyHealth;
     Animator animator;
+    
+
 
     // the current enemy player collides with
     private GameObject enemy;
-
     public GameObject[] enemies;
+
 
     bool enemyInRange;
     bool canPlayerAttack;
     int attackDamage = 1;
 
     float timer;
-
-    ///TO DO: KORJAA SCRIPTI NIIN ETTÄ OTETAAN TALTEEN KAIKKI VIHUT, TUTKITAAN, KEHEN ENID OSUI HYÖKKÄYKSELLÄÄN, JA TEHDÄÄN SIIHEN DAMAGEA (ENIDIIN OSUMINEN BY VIHUT TOIMII HYVIN)
 
 
     // Start is called before the first frame update
@@ -74,11 +74,11 @@ public class EnidAttack : MonoBehaviour
         if (other.gameObject.tag == "Enemy")
         {
             enemyInRange = true;
-            // here we take the right enemy to a variable so that we can access it when doing damage
+            // here we take the right enemy () to a variable so that we can access it when doing damage
             enemy = other.gameObject;
         }
     }
-
+    
 
     private void OnTriggerExit2D(Collider2D other)
     {

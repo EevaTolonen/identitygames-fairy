@@ -15,12 +15,12 @@ public class PlayerPos : MonoBehaviour
 
 
 
-    private void Update()
+   /* private void Update()
     {
         if (Input.GetKey(KeyCode.Q))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-    }
+    }*/
 }
 // TO DO: VIELÄ PUUTTUU KOHTA, JOSSA ENIDIN KUOLLESSA RELOADATAAN KOKO SCENE UUDESTAAN, JOLLOIN PELAAJA SYNTYY PLAYERPOS:IIN

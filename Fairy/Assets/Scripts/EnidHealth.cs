@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
+using UnityEngine.SceneManagement;
 
 public class EnidHealth : MonoBehaviour
 {
@@ -25,8 +26,8 @@ public class EnidHealth : MonoBehaviour
     Rigidbody2D player;
     int knockbackForce = 40;
 
-    // 
-   // public static GameObject[] checkpointList;
+    BoggartAttack boggartAttack;
+    
 
     // Platformer2DUserControl won't work after taking damage for x time 
     float knockbackTimer;
@@ -44,7 +45,7 @@ public class EnidHealth : MonoBehaviour
         currentHealth = startingHealth;
         player = GetComponent<Rigidbody2D>();
 
-        //checkpointList = GameObject.FindGameObjectsWithTag("Checkpoint");
+        boggartAttack = GetComponent<BoggartAttack>();
     }
 
     // Update is called once per frame
@@ -95,12 +96,13 @@ public class EnidHealth : MonoBehaviour
         //onDeath.Invoke();
         isDead = true;
         animator.SetTrigger("IsDead");
-        platformer2DUserControl.enabled = false;
-        
+        //platformer2DUserControl.enabled = false;
 
-        platformer2DUserControl.enabled = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        Debug.Log("Enid died, health left " + currentHealth);
+        //platformer2DUserControl.enabled = true;
+
+        //Debug.Log("Enid died, health left " + currentHealth);
     }
 
 
@@ -116,7 +118,7 @@ public class EnidHealth : MonoBehaviour
         }
     }
 
-    /*
+    
 
     /// <summary>
     /// If player hits the spikes, they return to the previous checkpoint
@@ -126,8 +128,7 @@ public class EnidHealth : MonoBehaviour
     {
         if (other.gameObject.tag == "EnvironmentalDanger")
         {
-            currentHealth = startingHealth;
             Death();
         }
-    }*/
+    }
 }

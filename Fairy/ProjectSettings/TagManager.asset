@@ -11,6 +11,9 @@ TagManager:
   - StartingPoint
   - CheckPoint
   - GameManager
+  - AttackCollider
+  - Boggart
+  - Projectile
   layers:
   - Default
   - TransparentFX
