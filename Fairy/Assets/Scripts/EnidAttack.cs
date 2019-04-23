@@ -8,10 +8,6 @@ public class EnidAttack : MonoBehaviour
     public float timeBetweenAttacks = 0.5f;
 
     EnidHealth enidHealth;
-    PlatformerCharacter2D platformerCharacter2D;
-    Platformer2DUserControl platformer2DUserControl;
-
-    EnemyHealth enemyHealth;
     Animator animator;
     
 
@@ -34,13 +30,8 @@ public class EnidAttack : MonoBehaviour
         //enemy = GameObject.FindGameObjectWithTag("Enemy");
 
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        enemyHealth = GetComponent<EnemyHealth>();
         enidHealth = GetComponent<EnidHealth>();
-
-        platformerCharacter2D = GetComponent<PlatformerCharacter2D>();
-        platformer2DUserControl = GetComponent<Platformer2DUserControl>();
-
+        
         animator = GetComponent<Animator>();
     }
 

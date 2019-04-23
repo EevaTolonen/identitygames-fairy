@@ -31,7 +31,6 @@ public class KeijupolyController : MonoBehaviour
     private float lineLength = 0;
     private GameObject newLine;
 
-    private GameObject player;
 
     void Awake()
     {
@@ -43,8 +42,6 @@ public class KeijupolyController : MonoBehaviour
 
         //Inits list for captured mouse positions, used by collider and renderer
         mousePoints = new List<Vector2>();
-
-        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()

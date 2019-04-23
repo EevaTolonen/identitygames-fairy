@@ -11,9 +11,6 @@ public class EnemyAttack : MonoBehaviour
     EnidHealth enidHealth;
     EnemyHealth enemyHealth;
 
-    PlatformerCharacter2D platformerCharacter2D;
-    Platformer2DUserControl platformer2DUserControl;
-
     GameObject player;
     Rigidbody2D enemy;
 
@@ -27,11 +24,8 @@ public class EnemyAttack : MonoBehaviour
     void Awake()
     {
         enemyHealth = GetComponent<EnemyHealth>();
-
-        platformerCharacter2D = GetComponent<PlatformerCharacter2D>();
-        platformer2DUserControl = GetComponent<Platformer2DUserControl>();
-
         animator = GetComponent<Animator>();
+
         player = GameObject.FindGameObjectWithTag("Player");
         enidHealth = player.GetComponent<EnidHealth>();
 

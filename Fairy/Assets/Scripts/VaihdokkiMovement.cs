@@ -14,7 +14,7 @@ public class VaihdokkiMovement : MonoBehaviour
     public float maxDistanceSpeedModifier = 2;
 
     private bool facingRight = true;
-    private SpriteRenderer renderer;
+    private SpriteRenderer vaihdokkiRenderer;
 
 
     private void Awake()
@@ -22,7 +22,7 @@ public class VaihdokkiMovement : MonoBehaviour
         if (followTarget == null)
             followTarget = GameObject.FindGameObjectWithTag("Player");
 
-        renderer = GetComponent<SpriteRenderer>();
+        vaihdokkiRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -33,13 +33,13 @@ public class VaihdokkiMovement : MonoBehaviour
         if (!facingRight && offset.x < 0)
         {
             offset.x *= -1;
-            renderer.flipX = true;
+            vaihdokkiRenderer.flipX = true;
             
         }
         if (facingRight && offset.x > 0)
         {
             offset.x *= -1;
-            renderer.flipX = false;
+            vaihdokkiRenderer.flipX = false;
         }
 
         float moveSpeed = baseSpeed;

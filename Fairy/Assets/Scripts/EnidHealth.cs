@@ -6,28 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class EnidHealth : MonoBehaviour
 {
-    public delegate void MyDelegate();
-    public event MyDelegate onDeath;
-
-
-    EnidHealth enidHealth;
-    PlatformerCharacter2D platformerCharacter2D;
     Platformer2DUserControl platformer2DUserControl;
-
-    EnemyHealth enemyHealth;
     Animator animator;
 
     public int startingHealth = 30;
     public int currentHealth;
 
-    bool isDead;
     bool damaged;
 
     Rigidbody2D player;
     int knockbackForce = 40;
-
-    BoggartAttack boggartAttack;
-    
 
     // Platformer2DUserControl won't work after taking damage for x time 
     float knockbackTimer;
@@ -36,16 +24,11 @@ public class EnidHealth : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        enidHealth = GetComponent<EnidHealth>();
-        platformerCharacter2D = GetComponent<PlatformerCharacter2D>();
         platformer2DUserControl = GetComponent<Platformer2DUserControl>();
-        enemyHealth = GetComponent<EnemyHealth>();
 
         animator = GetComponent<Animator>();
         currentHealth = startingHealth;
         player = GetComponent<Rigidbody2D>();
-
-        boggartAttack = GetComponent<BoggartAttack>();
     }
 
     // Update is called once per frame
@@ -89,12 +72,11 @@ public class EnidHealth : MonoBehaviour
         }
     }
 
-    
+
 
     void Death()
     {
         //onDeath.Invoke();
-        isDead = true;
         animator.SetTrigger("IsDead");
         //platformer2DUserControl.enabled = false;
 
@@ -118,7 +100,7 @@ public class EnidHealth : MonoBehaviour
         }
     }
 
-    
+
 
     /// <summary>
     /// If player hits the spikes, they return to the previous checkpoint

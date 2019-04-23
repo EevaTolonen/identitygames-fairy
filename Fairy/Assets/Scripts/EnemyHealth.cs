@@ -5,9 +5,6 @@ using UnityStandardAssets._2D;
 
 public class EnemyHealth : MonoBehaviour
 {
-    EnidHealth enidHealth;
-    PlatformerCharacter2D platformerCharacter2D;
-    Platformer2DUserControl platformer2DUserControl;
     PatrollingEnemy patrollingEnemy;
 
     Animator animator;
@@ -19,7 +16,6 @@ public class EnemyHealth : MonoBehaviour
 
     bool damaged;
     bool isDead;
-    bool isStunned = false;
 
     float knockbackTimer;
     float flashTimes = 5;
@@ -27,9 +23,6 @@ public class EnemyHealth : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        enidHealth = GetComponent<EnidHealth>();
-        platformerCharacter2D = GetComponent<PlatformerCharacter2D>();
-        platformer2DUserControl = GetComponent<Platformer2DUserControl>();
         patrollingEnemy = GetComponent<PatrollingEnemy>();
 
         currentHealth = startingHealth;
@@ -94,7 +87,7 @@ public class EnemyHealth : MonoBehaviour
 
         // disables the enemyPatrol script and freezes rotation in order to give the enemy a "stun time"
         patrollingEnemy.enabled = false;
-        
+
         enemyBody.freezeRotation = true;
         // enemy is knocked back from the player damage. and can't move for 3 seconds (time set in the knockbacktimer)
         enemyBody.AddForce(new Vector2(800, 800), ForceMode2D.Force);

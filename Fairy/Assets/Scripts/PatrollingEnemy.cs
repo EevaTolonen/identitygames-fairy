@@ -23,10 +23,6 @@ public class PatrollingEnemy : MonoBehaviour
     public Transform DetectPlayer;
     private Animator animator;
 
-    private int patrolHash = Animator.StringToHash("Patrol");
-    private int followHash = Animator.StringToHash("Follow");
-    private int attackHash = Animator.StringToHash("Attack");
-
     //public PlatformerCharacter2D player;
     private GameObject player;
     private Rigidbody2D enemy;
@@ -54,7 +50,7 @@ public class PatrollingEnemy : MonoBehaviour
     void Update()
     {
         //if (enemySearchTimer > 0) enemySearchTimer += Time.deltaTime;
-        //if (Vector3.Distance(enemy.position, player.transform.position) > playerDistance) isFollowing = false;
+        //if (Vector3.Distance(enemy.position, player.transform.position) > playerDistance) isAttacking = false;
 
         EnemyMoves();
 
@@ -102,7 +98,7 @@ public class PatrollingEnemy : MonoBehaviour
                 animator.SetBool("isPatrolling", true);
                 /*if (enemySearchTimer >= 5)
                 {
-                    isFollowing = false;
+                    isAttacking = false;
                     enemySearchTimer = 0;
                     enemy.constraints = RigidbodyConstraints2D.None;
                     enemy.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -159,7 +155,7 @@ public class PatrollingEnemy : MonoBehaviour
                 animator.SetBool("isPatrolling", true);
                 /*if (enemySearchTimer >= 5)
                 {
-                    isFollowing = false;
+                    isAttacking = false;
                     enemySearchTimer = 0;
                     enemy.constraints = RigidbodyConstraints2D.None;
                     enemy.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -205,7 +201,7 @@ public class PatrollingEnemy : MonoBehaviour
         /*float enemyPlayerDistance = Vector3.Distance(transform.position, player.transform.position);
         if (enemyPlayerDistance < 20f)
         {   // we check if enemy is behind Enid and facing left OR if enemy is in front of Enid and facing right, then enemy keeps patrolling since it can't see Enid
-            if (((transform.position.x < player.transform.position.x) && !movingRight) || ((transform.position.x > player.transform.position.x) && movingRight))
+            if (((transform.position.x < player.transform.position.x) && !movingLeft) || ((transform.position.x > player.transform.position.x) && movingLeft))
             {
                 animator.SetBool("isPatrolling", true);
             }
@@ -233,11 +229,14 @@ public class PatrollingEnemy : MonoBehaviour
         {
             animator.SetBool("isPatrolling", true);
         }
-        else
+        if (playerInfoFront.collider == true)
         {
-            animator.SetBool("isPatrolling", false);
-            isFollowing = true;
-            ApproachEnid();
+            if (playerInfoFront.collider.tag == "Player")
+            {
+                animator.SetBool("isPatrolling", false);
+                isFollowing = true;
+                ApproachEnid();
+            }
         }
     }
 
@@ -251,7 +250,7 @@ public class PatrollingEnemy : MonoBehaviour
 
 
         // we check if enemy is behind Enid and facing left OR if enemy is in front of Enid and facing right, then we flip the enemy so it's always looking at right direction
-        if (((transform.position.x < player.transform.position.x) /*&& !movingRight) || ((transform.position.x > player.transform.position.x) && movingRight*/))
+        if (((transform.position.x < player.transform.position.x) /*&& !movingLeft) || ((transform.position.x > player.transform.position.x) && movingLeft*/))
         {
             // tsekataan riittääkö laittaa vain kääntymään, jos ei, koitetaan päivittää samalla muutkin arvot
             transform.eulerAngles = new Vector3(0, 0, 0);
@@ -261,38 +260,38 @@ public class PatrollingEnemy : MonoBehaviour
             transform.eulerAngles = new Vector3(0, -180, 0);
         }
 
-        /*if (movingRight) turn left
+        /*if (movingLeft) turn left
         {
             transform.eulerAngles = new Vector3(0, -180, 0);
-            movingRight = false;
+            movingLeft = false;
             enemyDirection = Vector2.left;
         }
         else turn right
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
-            movingRight = true;
+            movingLeft = true;
             enemyDirection = Vector2.right;
         }*/
 
         // no point with these, we have to check enemy turning otherwise
-        /*if (movingRight)
+        /*if (movingLeft)
         {
             transform.eulerAngles = new Vector3(0, -180, 0);
-            movingRight = false;
+            movingLeft = false;
             enemyDirection = Vector2.left;
         }
         else
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
-            movingRight = true;
+            movingLeft = true;
             enemyDirection = Vector2.right;
         }*/
     }
 
     void FollowPlayer()
     {
-        // joko tämä rivi toimii tai sitten tämä if (groundInfo.collider == false && isFollowing)
-        // ts. enemy doesn't follow player if isFollowing == false or enemy is following but is on edge
+        // joko tämä rivi toimii tai sitten tämä if (groundInfo.collider == false && isAttacking)
+        // ts. enemy doesn't follow player if isAttacking == false or enemy is following but is on edge
         if (!isFollowing || (groundInfo.collider == false && isFollowing)) return;
         ApproachEnid();
     }
