@@ -39,6 +39,9 @@ public class KeijupolyLine : MonoBehaviour
         //lineRenderer.material = lineMaterial;
         //lineRenderer.widthCurve = widthCurve;
         lineRenderer.useWorldSpace = true;
+        lineRenderer.numCapVertices = 100;
+        lineRenderer.numCornerVertices = 100;
+        lineRenderer.sortingOrder = 10;
     }
 
     private void Update()
