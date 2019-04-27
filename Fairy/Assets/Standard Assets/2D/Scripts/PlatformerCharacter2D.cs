@@ -15,7 +15,7 @@ namespace UnityStandardAssets._2D
 
         [Header("Audio")]
         [SerializeField] private AudioClip[] footstepClips;
-        [SerializeField] private float maxSoundPlaytime;
+        [SerializeField] private float maxSoundPlaytime = .5f;
 
         [Header("Parallax scroll")]
         [SerializeField] private bool parallaxActive = false;
