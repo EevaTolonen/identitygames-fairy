@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityStandardAssets._2D
@@ -13,6 +15,7 @@ namespace UnityStandardAssets._2D
 
         [Header("Audio")]
         [SerializeField] private AudioClip[] footstepClips;
+        [SerializeField] private float maxSoundPlaytime;
 
         [Header("Parallax scroll")]
         [SerializeField] private bool parallaxActive = false;
@@ -77,6 +80,7 @@ namespace UnityStandardAssets._2D
 
             // Set the vertical animation
             m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
+            
         }
 
 
@@ -116,7 +120,7 @@ namespace UnityStandardAssets._2D
                     bg3.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg3_speedmodifier);
                     bg4.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg4_speedmodifier);
                 }
-
+                
                 // Move the character
                 m_Rigidbody2D.velocity = moveAmount;
 
@@ -144,7 +148,7 @@ namespace UnityStandardAssets._2D
 
             if(move != 0 && m_Grounded && !m_AudioSource.isPlaying)
             {
-                m_AudioSource.PlayOneShot(GetRandomClip(footstepClips));
+                StartCoroutine(PlaySound());
             }
 
             // do we need this in order to make the player hit? Or can it be done through EnidAttack?
@@ -155,6 +159,13 @@ namespace UnityStandardAssets._2D
             }*/
         }
 
+        private IEnumerator PlaySound()
+        {
+            m_AudioSource.PlayOneShot(GetRandomClip(footstepClips));
+
+            yield return new WaitForSeconds(maxSoundPlaytime);
+            m_AudioSource.Stop();
+        }
 
         private void Flip()
         {
