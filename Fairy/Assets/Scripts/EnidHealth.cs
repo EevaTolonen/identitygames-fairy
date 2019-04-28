@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 using UnityEngine.SceneManagement;
+using System;
 
 public class EnidHealth : MonoBehaviour
 {
@@ -56,8 +57,10 @@ public class EnidHealth : MonoBehaviour
 
         if (knockbackTimer > 0) knockbackTimer = 0;
         currentHealth -= amount;
+
         platformer2DUserControl.enabled = false;
         // we check if enemy is on the left or right side of player, to determine knockback direction
+
         if (enemyPos.x >= player.transform.position.x)
         {
             player.AddForce(new Vector2(-knockbackForce, knockbackForce), ForceMode2D.Impulse);
@@ -67,6 +70,20 @@ public class EnidHealth : MonoBehaviour
         knockbackTimer += Time.deltaTime;
 
         Debug.Log("Enid took damage, health left " + currentHealth);
+        if (currentHealth <= 0/* && !isDead*/)
+        {
+            //isDead = true;
+            Death();
+        }
+    }
+
+
+
+    private void TakeDamageFromObject()
+    {
+        damaged = true;
+        currentHealth--;
+
         if (currentHealth <= 0/* && !isDead*/)
         {
             //isDead = true;
@@ -116,5 +133,7 @@ public class EnidHealth : MonoBehaviour
         {
             Death();
         }
+        if (other.gameObject.tag == "Projectile")
+            TakeDamageFromObject();
     }
 }

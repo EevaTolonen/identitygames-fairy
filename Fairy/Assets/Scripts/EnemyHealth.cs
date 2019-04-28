@@ -45,8 +45,8 @@ public class EnemyHealth : MonoBehaviour
             patrollingEnemy.enabled = true;
 
 
-            enemyBody.freezeRotation = false;
-            enemyBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            //enemyBody.freezeRotation = false;
+            //enemyBody.constraints = RigidbodyConstraints2D.FreezeRotation;
             knockbackTimer = 0;
 
             // line checks if player backstabbed the enemy, then enemy switches from patrolling to approaching player
@@ -88,7 +88,9 @@ public class EnemyHealth : MonoBehaviour
         // disables the enemyPatrol script and freezes rotation in order to give the enemy a "stun time"
         patrollingEnemy.enabled = false;
 
-        enemyBody.freezeRotation = true;
+        //enemyBody.freezeRotation = true;
+        enemyBody.velocity = Vector3.zero;
+        enemyBody.angularVelocity = 0;
         // enemy is knocked back from the player damage. and can't move for 3 seconds (time set in the knockbacktimer)
         enemyBody.AddForce(new Vector2(800, 800), ForceMode2D.Force);
         knockbackTimer += Time.deltaTime;
