@@ -8,7 +8,6 @@ public class SpikeController : MonoBehaviour
 {
     public float riseAmount = 11f;
     public float moveSpeed = 20f;
-
     
     public enum State { Neutral, Up, Down }
     public State moveStatus = State.Neutral;
@@ -17,6 +16,7 @@ public class SpikeController : MonoBehaviour
     private void Awake()
     {
         startPosition = gameObject.transform.position;
+
     }
 
     public void Activate()

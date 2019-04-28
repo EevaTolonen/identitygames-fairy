@@ -24,6 +24,8 @@ public class KeijupolyController : MonoBehaviour
     public float zPosition = -14;
     public Material lineMaterial;
     public AnimationCurve widthCurve = AnimationCurve.Linear(0, .2f, 1, .2f);
+    public GameObject particleSystem;
+    public float particlesOffset = 0;
 
     private List<Vector2> mousePoints;
     private Vector2[] colliderPoints;
@@ -79,6 +81,10 @@ public class KeijupolyController : MonoBehaviour
                 LineRenderer newRenderer = newLine.GetComponent<LineRenderer>();
                 newRenderer.positionCount = mousePoints.Count;
                 newRenderer.SetPosition(newRenderer.positionCount - 1, new Vector3(mousePosition.x, mousePosition.y, zPosition));
+
+                GameObject lineParticles = Instantiate(particleSystem);
+                lineParticles.transform.position = new Vector2(mousePosition.x, mousePosition.y - particlesOffset);
+                lineParticles.transform.SetParent(newLine.transform);
             }
 
             lineLength = GetDistanceBetweenFromArray(mousePoints.ToArray());
