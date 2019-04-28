@@ -31,10 +31,9 @@ public class PatrollingEnemy : MonoBehaviour
     private RaycastHit2D groundInfo;
 
     float enemySearchTimer;
+    public CircleCollider2D enemyCollider;
 
-
-    //PlatformerCharacter2D platformerCharacter2D;
-    //Platformer2DUserControl platformer2DUserControl;
+    private GameObject keijupoly;
 
     private void Start()
     {
@@ -42,10 +41,11 @@ public class PatrollingEnemy : MonoBehaviour
         enemy = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
 
-
-        //platformerCharacter2D = player.GetComponent<PlatformerCharacter2D>();
-        //platformer2DUserControl = player.GetComponent<Platformer2DUserControl>();
+        //Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), player.GetComponent<Collider2D>());
     }
+
+
+
     // Enemies move, we check if enemy is on the edge of the platform
     void Update()
     {
@@ -175,6 +175,12 @@ public class PatrollingEnemy : MonoBehaviour
         // handles basic enemy turning
         if (wallInfo.collider == true)
         {
+            if (wallInfo.collider.gameObject.name == "Keijupoly")
+            {
+                Physics2D.IgnoreCollision(wallInfo.collider.gameObject.GetComponent<Collider2D>(), enemyCollider);
+                return;
+            }
+
             if (movingRight)
             {
                 transform.eulerAngles = new Vector3(0, -180, 0);
@@ -288,6 +294,8 @@ public class PatrollingEnemy : MonoBehaviour
         }*/
     }
 
+
+
     void FollowPlayer()
     {
         // joko tämä rivi toimii tai sitten tämä if (groundInfo.collider == false && isAttacking)
@@ -298,16 +306,11 @@ public class PatrollingEnemy : MonoBehaviour
 
 
 
-    /*void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionStay2D(Collision2D other)
     {
-        //Debug.Log("vihu hyökkää!!!");
-        // tÄHÄN KOHTAAN HAETAAN ENIDIN KOODISTA HIPARIEN VÄHENNYS
-        if (other.tag == "Player")
-            other.GetComponent<PlatformerCharacter2D>().PlayerLosesHP();
-        if (platformerCharacter2D.enidHealth <= 0)
+        if (other.gameObject.name == "Keijupoly")
         {
-            platformer2DUserControl.enabled = false;
-
+            Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(), enemyCollider);
         }
-    }*/
+    }
 }
