@@ -15,6 +15,7 @@ namespace UnityStandardAssets._2D
 
         [Header("Audio")]
         [SerializeField] private AudioClip[] footstepClips;
+        [SerializeField] private bool limitSoundPlaytime = false;
         [SerializeField] private float maxSoundPlaytime = .5f;
 
         [Header("Parallax scroll")]
@@ -162,9 +163,11 @@ namespace UnityStandardAssets._2D
         private IEnumerator PlaySound()
         {
             m_AudioSource.PlayOneShot(GetRandomClip(footstepClips));
-
-            yield return new WaitForSeconds(maxSoundPlaytime);
-            m_AudioSource.Stop();
+            if(limitSoundPlaytime)
+            {
+                yield return new WaitForSeconds(maxSoundPlaytime);
+                m_AudioSource.Stop();
+            }
         }
 
         private void Flip()

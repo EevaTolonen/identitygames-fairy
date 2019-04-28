@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 using UnityEngine.SceneManagement;
+using System;
 
 public class EnidHealth : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class EnidHealth : MonoBehaviour
     bool damaged;
     public Material flashMaterial;
     public Material mattaMaterial;
+    
+    [Header("Sounds:")]
+    public AudioClip[] hurt;
+
+
+    AudioSource audioSource;
 
     Rigidbody2D player;
     int knockbackForce = 40;
@@ -26,6 +33,7 @@ public class EnidHealth : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         platformer2DUserControl = GetComponent<Platformer2DUserControl>();
 
         animator = GetComponent<Animator>();
@@ -55,6 +63,7 @@ public class EnidHealth : MonoBehaviour
         damaged = true;
 
         if (knockbackTimer > 0) knockbackTimer = 0;
+        audioSource.PlayOneShot(GetRandomClip(hurt));
         currentHealth -= amount;
         platformer2DUserControl.enabled = false;
         // we check if enemy is on the left or right side of player, to determine knockback direction
@@ -73,9 +82,7 @@ public class EnidHealth : MonoBehaviour
             Death();
         }
     }
-
-
-
+    
     void Death()
     {
         //onDeath.Invoke();
@@ -116,5 +123,11 @@ public class EnidHealth : MonoBehaviour
         {
             Death();
         }
+    }
+
+    private AudioClip GetRandomClip(AudioClip[] clips)
+    {
+        int rnd = UnityEngine.Random.Range(0, clips.Length - 1);
+        return clips[rnd];
     }
 }

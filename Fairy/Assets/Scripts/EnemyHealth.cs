@@ -13,7 +13,7 @@ public class EnemyHealth : MonoBehaviour
 
     public int startingHealth = 3;
     public int currentHealth;
-
+    
     bool damaged;
     bool isDead;
 
