@@ -62,8 +62,11 @@ public class EnidHealth : MonoBehaviour
     {
         damaged = true;
 
-        if (knockbackTimer > 0) knockbackTimer = 0;
-        audioSource.PlayOneShot(GetRandomClip(hurt));
+        if (knockbackTimer > 0)
+        {
+            knockbackTimer = 0;
+        }
+
         currentHealth -= amount;
 
         platformer2DUserControl.enabled = false;
@@ -116,6 +119,8 @@ public class EnidHealth : MonoBehaviour
 
     public IEnumerator SwitchToDamageShader()
     {
+        audioSource.PlayOneShot(GetRandomClip(hurt));
+
         player.GetComponent<Renderer>().material = flashMaterial;
         for (int i = 0; i < flashTimes; i++)
         {
@@ -140,7 +145,9 @@ public class EnidHealth : MonoBehaviour
             Death();
         }
         if (other.gameObject.tag == "Projectile")
+        {
             TakeDamageFromObject();
+        }
     }
 
     private AudioClip GetRandomClip(AudioClip[] clips)
