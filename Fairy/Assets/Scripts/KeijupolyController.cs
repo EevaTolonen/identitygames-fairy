@@ -63,6 +63,8 @@ public class KeijupolyController : MonoBehaviour
             newLine = new GameObject("Keijupoly");
             newLine.AddComponent<KeijupolyLine>();
             newLine.GetComponent<LineRenderer>().material = lineMaterial;
+
+            newLine.layer = 8;
         }
 
         if (Input.GetMouseButton(0))

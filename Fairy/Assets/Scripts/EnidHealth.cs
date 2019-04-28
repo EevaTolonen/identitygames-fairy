@@ -13,6 +13,8 @@ public class EnidHealth : MonoBehaviour
     public int currentHealth;
 
     bool damaged;
+    public Material flashMaterial;
+    public Material mattaMaterial;
 
     Rigidbody2D player;
     int knockbackForce = 40;
@@ -91,6 +93,7 @@ public class EnidHealth : MonoBehaviour
 
     public IEnumerator SwitchToDamageShader()
     {
+        player.GetComponent<Renderer>().material = flashMaterial;
         for (int i = 0; i < flashTimes; i++)
         {
             GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
@@ -98,6 +101,7 @@ public class EnidHealth : MonoBehaviour
             GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0);
             yield return new WaitForSeconds(0.1f);
         }
+        player.GetComponent<Renderer>().material = mattaMaterial;
     }
 
 

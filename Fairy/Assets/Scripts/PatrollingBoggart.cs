@@ -51,9 +51,9 @@ public class PatrollingBoggart : MonoBehaviour
 
         CanEnemySeePlayer();
 
-        CanEnemyAttack();
-
         IsAttackingEnemyFacingPlayer();
+
+        CanEnemyAttack();
 
         DidEnemyLostPlayer();
     }
@@ -77,7 +77,7 @@ public class PatrollingBoggart : MonoBehaviour
     /// </summary>
     void IsEnemyOnTheEdge()
     {
-        if (isAttacking) return;
+        //if (isAttacking) return;
         // detectGround is flipped -180 degrees in x-axis, so vector2.down still makes sense to a boggart which is upside down on the ceiling
         groundInfo = Physics2D.Raycast(DetectGround.position, Vector2.down, distance);
 
@@ -111,6 +111,12 @@ public class PatrollingBoggart : MonoBehaviour
         // handles basic enemy turning
         if (wallInfo.collider == true)
         {
+            if (wallInfo.collider.gameObject.name == "Keijupoly")
+            {
+                Physics2D.IgnoreCollision(wallInfo.collider.gameObject.GetComponent<Collider2D>(), GetComponent<CircleCollider2D>());
+                return;
+            }
+
             if (movingLeft)
             {
                 transform.eulerAngles = new Vector3(0, -180, 0);
@@ -144,6 +150,7 @@ public class PatrollingBoggart : MonoBehaviour
             if (playerInfoFront.collider.tag == "Player")
             {
                 isAttacking = true;
+                
             }
         }
         else
@@ -161,6 +168,7 @@ public class PatrollingBoggart : MonoBehaviour
     {
         if (isAttacking)
         {
+            IsAttackingEnemyFacingPlayer();
             attack.BoggartAttackThrow();
         }
     }
@@ -191,6 +199,15 @@ public class PatrollingBoggart : MonoBehaviour
     {
         if (Vector3.Distance(enemy.position, player.transform.position) > playerDistance * 2) isAttacking = false;
     }
-    // TOINEN VAIHTOEHTO ALHAALLA VIHUN AMPUMISEN LOPETTAMISEEN, TUTKI KUMPI TOIMII PAREMMIN
-    //
+
+
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.name == "Keijupoly")
+        {
+            Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(), GetComponent<CircleCollider2D>());
+        }
+    }
+
 }
