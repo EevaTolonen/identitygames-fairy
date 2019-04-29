@@ -17,6 +17,7 @@ namespace UnityStandardAssets._2D
         [SerializeField] private AudioClip[] footstepClips;
         [SerializeField] private bool limitSoundPlaytime = false;
         [SerializeField] private float maxSoundPlaytime = .5f;
+        [SerializeField] private int[] randomWeights; 
 
         [Header("Parallax scroll")]
         [SerializeField] private bool parallaxActive = false;
@@ -183,11 +184,36 @@ namespace UnityStandardAssets._2D
 
         private AudioClip GetRandomClip(AudioClip[] clips)
         {
-            int rnd = UnityEngine.Random.Range(0, clips.Length - 1);
-            return clips[rnd];
+            if(randomWeights == null)
+            {
+                return clips[0];
+            }
+
+            int randSum = GetSum(randomWeights);
+            int rnd = UnityEngine.Random.Range(0, randSum);
+
+            for (int i = 0; i < clips.Length; i++)
+            {
+                if(rnd <= randSum)
+                {
+                    return clips[i];
+                }
+            } 
+
+            return clips[0];
         }
 
-        
+        private int GetSum(int[] arr)
+        {
+            int sum = 0;
+
+            for(int i = 0; i < arr.Length; i++)
+            {
+                sum += arr[i];
+            }
+            return sum;
+        }
+
         //Eeva: Changes I've made to this code begin here, maybe we'll remove them to a separate script
 
         public bool GetPlayerFacingRight()
