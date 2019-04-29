@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 455814153}
   - component: {fileID: 455814152}
   m_Layer: 0
-  m_Name: Vihu 1
+  m_Name: Vihu
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4dff899a80ed0e14fa5a6579733531d7, type: 2}
+  - {fileID: 2100000, guid: d6ffaa7779e9574419effe05c51e924b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -265,6 +265,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 3
   currentHealth: 0
+  mattaMaterial: {fileID: 2100000, guid: d6ffaa7779e9574419effe05c51e924b, type: 2}
+  flashMaterial: {fileID: 2100000, guid: 4dff899a80ed0e14fa5a6579733531d7, type: 2}
 --- !u!1 &1714802730
 GameObject:
   m_ObjectHideFlags: 0
