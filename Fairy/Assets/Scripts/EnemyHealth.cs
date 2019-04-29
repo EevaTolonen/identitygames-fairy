@@ -20,9 +20,6 @@ public class EnemyHealth : MonoBehaviour
     float knockbackTimer;
     float flashTimes = 5;
 
-    public Material flashMaterial;
-    public Material mattaMaterial;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -118,7 +115,6 @@ public class EnemyHealth : MonoBehaviour
 
     public IEnumerator SwitchToDamageShader()
     {
-        enemyBody.GetComponent<Renderer>().material = flashMaterial;
         for (int i = 0; i < flashTimes; i++)
         {
             GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
@@ -126,6 +122,5 @@ public class EnemyHealth : MonoBehaviour
             GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0);
             yield return new WaitForSeconds(0.1f);
         }
-        enemyBody.GetComponent<Renderer>().material = mattaMaterial;
     }
 }
