@@ -75,7 +75,7 @@ public class KeijupolyController : MonoBehaviour
 
             Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-            if (!mousePoints.Contains(mousePosition) && lineLength < maxLength)
+            if (!mousePoints.Contains(mousePosition) && lineLength < maxLength && CheckNoLineSmoke(mousePosition))
             {
                 mousePoints.Add(mousePosition);
                 mouseDrawObject.transform.position = mousePosition;
@@ -94,6 +94,21 @@ public class KeijupolyController : MonoBehaviour
 
             newLine.GetComponent<EdgeCollider2D>().points = mousePoints.ToArray();
         }
+    }
+
+    private bool CheckNoLineSmoke(Vector2 mousePosition)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(mousePosition, 0.1f);
+
+        for(int i = 0; i < colliders.Length; i++)
+        {
+            if(colliders[i].gameObject.tag == "NoLine")
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void Reset()
