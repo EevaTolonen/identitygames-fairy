@@ -9,28 +9,45 @@ public class KeijupolyLine : MonoBehaviour
     private Vector2[] colliderPoints;
     private LineRenderer lineRenderer;
 
-    public List<Vector2> MousePoints {
-        get {
+    private GameObject player;
+    private EdgeCollider2D edgeCol;
+    private Transform groundCol;
+
+
+    public List<Vector2> MousePoints
+    {
+        get
+        {
             return mousePoints;
         }
 
-        set {
+        set
+        {
             mousePoints = value;
         }
     }
 
-    public Vector2[] ColliderPoints {
-        get {
+
+
+    public Vector2[] ColliderPoints
+    {
+        get
+        {
             return colliderPoints;
         }
 
-        set {
+        set
+        {
             colliderPoints = value;
         }
     }
 
+
+
     private float timer = 0f;
-    private float timeToLive = 3f;
+    private float timeToLive = 20f;
+
+
 
     private void Awake()
     {
@@ -42,13 +59,19 @@ public class KeijupolyLine : MonoBehaviour
         lineRenderer.numCapVertices = 100;
         lineRenderer.numCornerVertices = 100;
         lineRenderer.sortingOrder = 10;
+
+        player = GameObject.FindGameObjectWithTag("Player");
+        edgeCol = GetComponent<EdgeCollider2D>();
+        groundCol = player.transform.Find("GroundCheck");
     }
+
+
 
     private void Update()
     {
         timer += Time.deltaTime;
 
-        if(timer >= timeToLive)
+        if (timer >= timeToLive)
         {
             Destroy(gameObject);
         }

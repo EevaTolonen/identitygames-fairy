@@ -310,6 +310,7 @@ public class PatrollingEnemy : MonoBehaviour
     {
         if (other.gameObject.name == "Keijupoly")
         {
+            Debug.Log("enemy hit keijupoly");
             Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(), enemyCollider);
         }
     }

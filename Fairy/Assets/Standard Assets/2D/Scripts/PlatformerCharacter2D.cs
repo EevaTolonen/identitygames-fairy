@@ -17,13 +17,13 @@ namespace UnityStandardAssets._2D
         [SerializeField] private AudioClip[] footstepClips;
         [SerializeField] private bool limitSoundPlaytime = false;
         [SerializeField] private float maxSoundPlaytime = .5f;
-        [SerializeField] private int[] randomWeights; 
+        [SerializeField] private int[] randomWeights;
 
         [Header("Parallax scroll")]
         [SerializeField] private bool parallaxActive = false;
 
         [SerializeField] private GameObject bg1;
-        [Range(0,0.01f)]
+        [Range(0, 0.01f)]
         [SerializeField] private float bg1_speedmodifier;
 
         [SerializeField] private GameObject bg2;
@@ -47,7 +47,7 @@ namespace UnityStandardAssets._2D
         private Rigidbody2D m_Rigidbody2D;
         private bool m_FacingRight = true;  // For determining which way the player is currently facing.
         private AudioSource m_AudioSource;  // Reference to the player's audio source component.
-        
+
 
         public float enidHealth = 5;
         GameObject player;
@@ -66,6 +66,7 @@ namespace UnityStandardAssets._2D
         }
 
 
+
         private void FixedUpdate()
         {
             m_Grounded = false;
@@ -82,7 +83,7 @@ namespace UnityStandardAssets._2D
 
             // Set the vertical animation
             m_Anim.SetFloat("vSpeed", m_Rigidbody2D.velocity.y);
-            
+
         }
 
 
@@ -117,12 +118,12 @@ namespace UnityStandardAssets._2D
 
                 if (parallaxActive)
                 {
-                    bg1.transform.Translate(new Vector3(-moveAmount.x,0,0) * bg1_speedmodifier);
+                    bg1.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg1_speedmodifier);
                     bg2.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg2_speedmodifier);
                     bg3.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg3_speedmodifier);
                     bg4.transform.Translate(new Vector3(-moveAmount.x, 0, 0) * bg4_speedmodifier);
                 }
-                
+
                 // Move the character
                 m_Rigidbody2D.velocity = moveAmount;
 
@@ -148,28 +149,25 @@ namespace UnityStandardAssets._2D
                 m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
             }
 
-            if(move != 0 && m_Grounded && !m_AudioSource.isPlaying)
+            if (move != 0 && m_Grounded && !m_AudioSource.isPlaying)
             {
                 StartCoroutine(PlaySound());
             }
-
-            // do we need this in order to make the player hit? Or can it be done through EnidAttack?
-            //if the player should attack
-            /*if(attack)
-            {
-                m_Anim.SetTrigger("Attack");
-            }*/
         }
+
+
 
         private IEnumerator PlaySound()
         {
             m_AudioSource.PlayOneShot(GetRandomClip(footstepClips));
-            if(limitSoundPlaytime)
+            if (limitSoundPlaytime)
             {
                 yield return new WaitForSeconds(maxSoundPlaytime);
                 m_AudioSource.Stop();
             }
         }
+
+
 
         private void Flip()
         {
@@ -184,7 +182,7 @@ namespace UnityStandardAssets._2D
 
         private AudioClip GetRandomClip(AudioClip[] clips)
         {
-            if(randomWeights == null)
+            if (randomWeights == null)
             {
                 return clips[0];
             }
@@ -194,11 +192,11 @@ namespace UnityStandardAssets._2D
 
             for (int i = 0; i < clips.Length; i++)
             {
-                if(rnd <= randSum)
+                if (rnd <= randSum)
                 {
                     return clips[i];
                 }
-            } 
+            }
 
             return clips[0];
         }
@@ -207,7 +205,7 @@ namespace UnityStandardAssets._2D
         {
             int sum = 0;
 
-            for(int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 sum += arr[i];
             }
@@ -222,18 +220,30 @@ namespace UnityStandardAssets._2D
         }
 
 
-        /*finish this so that player loses f. ex. 10 health when attacked by an enemy
-        public void PlayerLosesHP()
+        private void OnCollisionStay2D(Collision2D other)
         {
-            enidHealth -= 1;
-            Debug.Log("Enid menetti hiparin");
-            m_Rigidbody2D.AddForce(new Vector2(-100, 0));
-            if(enidHealth <= 0)
+            if (other.gameObject.tag == "Keijupoly")
             {
-                m_Anim.SetTrigger("IsDead");
-                //Destroy(gameObject);
-                Debug.Log("Enid kuoli");
+                Debug.Log("Enid hit poly");
+                
+                Vector3 hit = other.GetContact(0).normal;
+
+                float angle = Vector3.Angle(hit, Vector3.up);
+                // tutkitaan, mistä suunnasta collideriin osutaan, jos ei osuta ylhäältä, ignoorataan collisioni
+
+                if (Mathf.Approximately(angle, 90))
+                {
+                    other.gameObject.GetComponent<EdgeCollider2D>().isTrigger = true;
+                    // sides
+                    Vector3 cross = Vector3.Cross(Vector3.forward, hit);
+                    if (cross.y > 0)
+                    {
+                        Debug.Log("Enid hit the poly from Right");
+                    }
+                    else Debug.Log("Enid hit the poly from Left");
+                }
             }
-        }*/
+        }
+        //Physics2D.IgnoreLayerCollision(0, 8, (m_Character.GetComponent<Rigidbody2D>().velocity.y >= 0.0f));
     }
 }

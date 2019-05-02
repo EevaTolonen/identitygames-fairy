@@ -4,17 +4,20 @@ using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets._2D
 {
-    [RequireComponent(typeof (PlatformerCharacter2D))]
+    [RequireComponent(typeof(PlatformerCharacter2D))]
     public class Platformer2DUserControl : MonoBehaviour
     {
         private PlatformerCharacter2D m_Character;
         private bool m_Jump;
         private bool m_Attack;
 
+        private Transform groundCheck;
+
 
         private void Awake()
         {
             m_Character = GetComponent<PlatformerCharacter2D>();
+            groundCheck = transform.Find("GroundCheck");
         }
 
 
@@ -30,6 +33,8 @@ namespace UnityStandardAssets._2D
                 // Read the attack input in Update so button presses aren't missed.
                 m_Attack = CrossPlatformInputManager.GetButtonDown("Attack");
             }
+             
+            //Physics2D.IgnoreLayerCollision(0, 8, (m_Character.GetComponent<Rigidbody2D>().velocity.y >= 0.0f));
         }
 
 
