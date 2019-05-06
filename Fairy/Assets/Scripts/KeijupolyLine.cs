@@ -45,7 +45,7 @@ public class KeijupolyLine : MonoBehaviour
 
 
     private float timer = 0f;
-    private float timeToLive = 20f;
+    private float timeToLive = 4f;
 
 
 
