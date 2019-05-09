@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
+    public float currentTargetZoom;
+    public float zoomSpeed = 50f;
 
-    private Vector3 offset;
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        offset = transform.position - player.transform.position;
+        currentTargetZoom = Camera.main.orthographicSize;
     }
 
-    // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {
-        transform.position = player.transform.position + offset;
+        if (Camera.main.orthographicSize != currentTargetZoom)
+        {
+            Camera.main.orthographicSize = Mathf.MoveTowards(Camera.main.orthographicSize, currentTargetZoom, zoomSpeed * Time.deltaTime);
+        }
     }
 }

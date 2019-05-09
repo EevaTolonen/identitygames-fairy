@@ -14,6 +14,10 @@ public class TriggerPostProcess : MonoBehaviour
     public Camera _camera;
     public DayState onTriggerChangeTo = DayState.Day;
 
+    [Header("Camera zoom")]
+    public bool zoomActive = false;
+    public float targetOrtographicSize;
+
     private PostProcess postProcess;
 
     private void Awake()
@@ -28,6 +32,11 @@ public class TriggerPostProcess : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            if(zoomActive)
+            {
+                _camera.gameObject.GetComponent<CameraController>().currentTargetZoom = targetOrtographicSize;
+            }
+
             switch(onTriggerChangeTo)
             {
                 case DayState.Day:
