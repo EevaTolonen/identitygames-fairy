@@ -74,3 +74,5 @@ MonoBehaviour:
   softness: 0.7
   _camera: {fileID: 0}
   onTriggerChangeTo: 1
+  zoomActive: 1
+  targetOrtographicSize: 25
