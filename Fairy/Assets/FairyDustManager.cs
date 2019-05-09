@@ -5,6 +5,7 @@ using UnityEngine;
 public class FairyDustManager : MonoBehaviour
 {
     private GameObject[] fairyDusts;
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -16,4 +17,5 @@ public class FairyDustManager : MonoBehaviour
     {
        fairyDusts = GameObject.FindGameObjectsWithTag("Keijupoly");
     }
+    */
 }
