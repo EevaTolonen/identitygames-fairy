@@ -7,16 +7,14 @@ public class WeepingWillowTears : MonoBehaviour
     public GameObject tearPrefab;
     public Transform tearSpawn;
     float tears = 10;
-    float range = 20;
+    float range = 25;
 
     float timeBetweenTears = 0.2f;
-
-    private Vector2 direction = new Vector2(20f, 20f);
 
 
     private Vector2 RandomiseDirection()
     {
-        return new Vector2(Random.Range(-40, 40), (Random.Range(140, 160)));
+        return new Vector2(Random.Range(-200, 200), (Random.Range(200, 300)));
     }
 
     private Vector3 RandomisePosition()

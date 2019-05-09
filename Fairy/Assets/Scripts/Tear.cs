@@ -12,6 +12,7 @@ public class Tear : MonoBehaviour
     public Rigidbody2D tear;
     float timer;
     float timeToLive = 3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +37,7 @@ public class Tear : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject.tag == "Projectile") Physics2D.IgnoreLayerCollision(9, 9);
         if (other.gameObject.tag != "Projectile") Destroy(gameObject);
     }
 }
