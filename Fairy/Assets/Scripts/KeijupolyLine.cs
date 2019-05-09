@@ -13,7 +13,6 @@ public class KeijupolyLine : MonoBehaviour
     private EdgeCollider2D edgeCol;
     private Transform groundCol;
 
-
     public List<Vector2> MousePoints
     {
         get
@@ -63,6 +62,7 @@ public class KeijupolyLine : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         edgeCol = GetComponent<EdgeCollider2D>();
         groundCol = player.transform.Find("GroundCheck");
+        
     }
 
 
@@ -70,7 +70,7 @@ public class KeijupolyLine : MonoBehaviour
     private void Update()
     {
         timer += Time.deltaTime;
-
+        
         if (timer >= timeToLive)
         {
             Destroy(gameObject);
