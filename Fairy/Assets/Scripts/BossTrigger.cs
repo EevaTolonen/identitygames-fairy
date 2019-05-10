@@ -10,7 +10,8 @@ public class BossTrigger : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            boss.GetComponent<WeepingWillow>().StartBossFight();
+            if(boss.GetComponent<WeepingWillow>())
+                boss.GetComponent<WeepingWillow>().StartBossFight();
         }
     }
 }

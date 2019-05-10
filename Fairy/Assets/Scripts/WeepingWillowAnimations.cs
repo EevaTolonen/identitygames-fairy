@@ -50,6 +50,12 @@ public class WeepingWillowAnimations : MonoBehaviour
         rightEyeLight.GetComponent<Light>().enabled = false;
     }
 
+    public void Deactivate()
+    {
+        leftEyeLight.GetComponent<Light>().color = Color.green;
+        rightEyeLight.GetComponent<Light>().color = Color.green;
+    }
+
     private void Move(Direction dir)
     {
         switch (dir)

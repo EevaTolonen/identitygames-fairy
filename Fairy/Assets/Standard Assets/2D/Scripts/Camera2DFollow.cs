@@ -16,6 +16,17 @@ namespace UnityStandardAssets._2D
         private Vector3 m_CurrentVelocity;
         private Vector3 m_LookAheadPos;
 
+        [Header("Screen shake settings:")]
+        public float shakeDamping = 1f;
+        public float magnitude = 1f;
+
+        private float shakeTimeLeft = 0f;
+
+        public void AddScreenShakeTime(float amount)
+        {
+            shakeTimeLeft += amount;
+        }
+
         // Use this for initialization
         private void Start()
         {
@@ -44,6 +55,13 @@ namespace UnityStandardAssets._2D
 
             Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward*m_OffsetZ;
             Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
+
+            if (shakeTimeLeft > 0)
+            {
+                Vector3 shake = UnityEngine.Random.insideUnitCircle * magnitude;
+                newPos += shake;
+                shakeTimeLeft -= Time.deltaTime * shakeDamping;
+            }
 
             transform.position = newPos;
 
