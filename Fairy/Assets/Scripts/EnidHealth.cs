@@ -150,6 +150,14 @@ public class EnidHealth : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Projectile")
+        {
+            TakeDamageFromObject();
+        }
+    }
+
     private AudioClip GetRandomClip(AudioClip[] clips)
     {
         int rnd = UnityEngine.Random.Range(0, clips.Length - 1);
