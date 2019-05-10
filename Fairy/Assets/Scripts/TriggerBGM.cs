@@ -23,9 +23,18 @@ public class TriggerBGM : MonoBehaviour
     private IEnumerator ChangeClip()
     {
         float startVolume = audioSource.volume;
-        while (audioSource.volume > 0)
+        bool oldClipPlaying = true;
+
+        while (oldClipPlaying)
         {
             audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
+
+            if (audioSource.volume < .1f)
+            {
+                audioSource.volume = 0f;
+                oldClipPlaying = false;
+            }
+
             yield return null;
         }
         audioSource.Stop();
@@ -33,7 +42,6 @@ public class TriggerBGM : MonoBehaviour
         audioSource.clip = audioClip;
 
         audioSource.Play();
-        audioSource.volume = 0f;
         while (audioSource.volume < startVolume)
         {
             audioSource.volume += Time.deltaTime / fadeTime;
