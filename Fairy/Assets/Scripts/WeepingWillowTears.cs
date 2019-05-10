@@ -6,11 +6,20 @@ public class WeepingWillowTears : MonoBehaviour
 {
     public GameObject tearPrefab;
     public Transform tearSpawn;
+    public bool debugMode = false;
+
     float tears = 10;
     float range = 25;
 
     float timeBetweenTears = 0.2f;
 
+    private void Awake()
+    {
+        if(debugMode)
+        {
+            InvokeRepeating("SpawnTears", 1, 5);
+        }
+    }
 
     private Vector2 RandomiseDirection()
     {

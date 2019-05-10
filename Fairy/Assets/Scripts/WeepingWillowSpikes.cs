@@ -24,7 +24,9 @@ public class WeepingWillowSpikes : MonoBehaviour
     private void Awake()
     {
         if (debugMode)
+        {
             InvokeRepeating("DebugSweep", 2, 13);
+        }
     }
 
     private void DebugSweep()

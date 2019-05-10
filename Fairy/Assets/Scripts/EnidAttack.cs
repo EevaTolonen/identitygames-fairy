@@ -9,10 +9,11 @@ public class EnidAttack : MonoBehaviour
 
     EnidHealth enidHealth;
     Animator animator;
-    
+
 
 
     // the current enemy player collides with
+    private GameObject boss;
     private GameObject enemy;
     public GameObject[] enemies;
 
@@ -68,12 +69,17 @@ public class EnidAttack : MonoBehaviour
             // here we take the right enemy () to a variable so that we can access it when doing damage
             enemy = other.gameObject;
         }
+        if (other.gameObject.tag == "Boss")
+        {
+            enemyInRange = true;
+            enemy = other.gameObject;
+        }
     }
     
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss")
         {
             enemyInRange = false;
         }
@@ -85,10 +91,17 @@ public class EnidAttack : MonoBehaviour
     {
         if (enemy != null)
         {
-            if (enemy.GetComponent<EnemyHealth>().currentHealth > 0)
+            animator.SetTrigger("Attack");
+
+            if (enemy.tag == "Enemy")
             {
-                animator.SetTrigger("Attack");
-                enemy.GetComponent<EnemyHealth>().TakeDamage(attackDamage, Vector3.zero);
+                if (enemy.GetComponent<EnemyHealth>().currentHealth > 0)
+                {
+                    enemy.GetComponent<EnemyHealth>().TakeDamage(attackDamage, Vector3.zero);
+                } 
+            } else if (enemy.tag == "Boss")
+            {
+                enemy.GetComponent<WeepingWillow>().TakeHit();
             }
             timer = 0f;
         }

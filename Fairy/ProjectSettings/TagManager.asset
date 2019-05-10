@@ -15,6 +15,7 @@ TagManager:
   - Boggart
   - Projectile
   - NoLine
+  - Boss
   layers:
   - Default
   - TransparentFX
