@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WeepingWillow : MonoBehaviour
 {
-    public int health = 1;
+    public int health = 3;
 
     private GameObject leftEye, rightEye;
     private UnityStandardAssets._2D.Camera2DFollow cameraScript;
