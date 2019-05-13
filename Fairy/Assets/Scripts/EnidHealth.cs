@@ -16,9 +16,12 @@ public class EnidHealth : MonoBehaviour
     bool damaged;
     public Material flashMaterial;
     public Material mattaMaterial;
-    
+    public PostProcess postProcess;
+    public AudioClip deathSound;
+
     [Header("Sounds:")]
     public AudioClip[] hurt;
+
 
 
     AudioSource audioSource;
@@ -29,6 +32,8 @@ public class EnidHealth : MonoBehaviour
     // Platformer2DUserControl won't work after taking damage for x time 
     float knockbackTimer;
     float flashTimes = 5;
+
+    bool isDead = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -107,15 +112,36 @@ public class EnidHealth : MonoBehaviour
         //onDeath.Invoke();
         animator.SetTrigger("IsDead");
         //platformer2DUserControl.enabled = false;
+        Debug.Log("Gameover");
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
+        if (!isDead)
+        {
+            StartCoroutine(FadeToBlackAndLoad());
+        }
+        
+        isDead = true;
+        
         //platformer2DUserControl.enabled = true;
 
         //Debug.Log("Enid died, health left " + currentHealth);
     }
 
+    private IEnumerator FadeToBlackAndLoad()
+    {
+        GetComponent<AudioSource>().PlayOneShot(deathSound, 6f);
 
+        float _VRadius = postProcess.material.GetFloat("_VRadius");
+
+        while (_VRadius > 0)
+        {
+            _VRadius -= Time.deltaTime * .8f;
+            postProcess.material.SetFloat("_VRadius", _VRadius);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     public IEnumerator SwitchToDamageShader()
     {

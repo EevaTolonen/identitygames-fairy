@@ -86,6 +86,7 @@ public class KeijupolyController : MonoBehaviour
                 GameObject lineParticles = Instantiate(particleSystem);
                 lineParticles.transform.position = new Vector2(mousePosition.x, mousePosition.y - particlesOffset);
                 lineParticles.transform.SetParent(newLine.transform);
+                lineParticles.GetComponent<ParticleSystemRenderer>().sortingOrder = 10;
             }
 
             lineLength = GetDistanceBetweenFromArray(mousePoints.ToArray());

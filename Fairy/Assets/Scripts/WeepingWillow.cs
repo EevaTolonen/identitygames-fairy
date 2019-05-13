@@ -6,7 +6,9 @@ using UnityEngine;
 public class WeepingWillow : MonoBehaviour
 {
     public int health = 3;
+    public AudioClip afterBossBGM;
 
+    private Camera camera;
     private GameObject leftEye, rightEye;
     private UnityStandardAssets._2D.Camera2DFollow cameraScript;
     private WeepingWillowAnimations animations;
@@ -15,9 +17,11 @@ public class WeepingWillow : MonoBehaviour
     private bool isVulnerable = false;
     private int hitsTaken = 0;
 
+
     private void Awake()
     {
-        cameraScript = Camera.main.gameObject.GetComponent<UnityStandardAssets._2D.Camera2DFollow>(); ;
+        camera = Camera.main;
+        cameraScript = camera.gameObject.GetComponent<UnityStandardAssets._2D.Camera2DFollow>(); ;
         animations = GetComponent<WeepingWillowAnimations>();
         spikes = GetComponent<WeepingWillowSpikes>();
         tears = GetComponent<WeepingWillowTears>();
@@ -25,6 +29,7 @@ public class WeepingWillow : MonoBehaviour
 
     public void StartBossFight()
     {
+        animations.BlinkEyes();
         InvokeRepeating("SpikeSweep", 2, 13);
         InvokeRepeating("TearBurst", 1, 7);
         Invoke("SetToVulnerable", 10);
@@ -61,6 +66,9 @@ public class WeepingWillow : MonoBehaviour
 
                 animations.Deactivate();
                 cameraScript.AddScreenShakeTime(5f);
+                AudioSource audioSource = GameObject.FindGameObjectWithTag("BGM").GetComponent<AudioSource>();
+                audioSource.clip = afterBossBGM;
+                audioSource.Play();
                 Destroy(this);
             } else
             {

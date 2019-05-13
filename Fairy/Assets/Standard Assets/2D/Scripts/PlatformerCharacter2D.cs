@@ -175,7 +175,7 @@ namespace UnityStandardAssets._2D
 
         private IEnumerator PlaySound()
         {
-            m_AudioSource.PlayOneShot(GetRandomClip(footstepClips));
+            m_AudioSource.PlayOneShot(GetRandomClip(footstepClips), 0.5f);
             if (limitSoundPlaytime)
             {
                 yield return new WaitForSeconds(maxSoundPlaytime);

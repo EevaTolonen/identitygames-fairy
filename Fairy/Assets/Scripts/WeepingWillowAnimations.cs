@@ -8,6 +8,7 @@ public class WeepingWillowAnimations : MonoBehaviour
     public GameObject shieldObject, leftEyeLight, rightEyeLight;
     public float riseAmount = 11f;
     public float moveSpeed = 20f;
+    public AudioClip shieldOpen;
 
     public enum State { Neutral, Up, Down }
     public State moveStatus = State.Neutral;
@@ -34,12 +35,33 @@ public class WeepingWillowAnimations : MonoBehaviour
         }
     }
 
+    public void BlinkEyes()
+    {
+        StartCoroutine("Blink");
+    }
+
+    private IEnumerator Blink()
+    {
+        leftEyeLight.GetComponent<Light>().enabled = true;
+        rightEyeLight.GetComponent<Light>().enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        leftEyeLight.GetComponent<Light>().enabled = false;
+        rightEyeLight.GetComponent<Light>().enabled = false;
+        yield return new WaitForSeconds(0.2f);
+        leftEyeLight.GetComponent<Light>().enabled = true;
+        rightEyeLight.GetComponent<Light>().enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        leftEyeLight.GetComponent<Light>().enabled = false;
+        rightEyeLight.GetComponent<Light>().enabled = false;
+    }
+
     [ContextMenu("Rise shield")]
     public void EnterHurtMode()
     {
         moveStatus = State.Up;
         leftEyeLight.GetComponent<Light>().enabled = true;
         rightEyeLight.GetComponent<Light>().enabled = true;
+        GetComponent<AudioSource>().PlayOneShot(shieldOpen);
     }
 
     [ContextMenu("Lower shield")]
@@ -48,6 +70,7 @@ public class WeepingWillowAnimations : MonoBehaviour
         moveStatus = State.Down;
         leftEyeLight.GetComponent<Light>().enabled = false;
         rightEyeLight.GetComponent<Light>().enabled = false;
+        GetComponent<AudioSource>().PlayOneShot(shieldOpen);
     }
 
     public void Deactivate()
