@@ -24,6 +24,12 @@ public class Tear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 moveDirection = tear.velocity;
+        if (moveDirection != Vector2.zero)
+        {
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
     }
 
 
