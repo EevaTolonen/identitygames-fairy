@@ -26,6 +26,14 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
 
     }
+
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.M))
+        {
+            GameObject.FindGameObjectWithTag("Player").transform.position = new Vector3(-737, -725, 0); 
+        }
+    }
 }
 
 
