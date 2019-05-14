@@ -7,6 +7,8 @@ namespace UnityStandardAssets._2D
     [RequireComponent(typeof(PlatformerCharacter2D))]
     public class Platformer2DUserControl : MonoBehaviour
     {
+        public bool stopMovement = false;
+
         private PlatformerCharacter2D m_Character;
         private bool m_Jump;
         private bool m_Attack;
@@ -45,6 +47,12 @@ namespace UnityStandardAssets._2D
             crouch = false;
 
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
+
+            if(stopMovement)
+            {
+                h = 0;
+            }
+
             // Pass all parameters to the character control script.
             m_Character.Move(h, crouch, m_Jump, m_Attack);
             m_Jump = false;
