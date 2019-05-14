@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class WeepingWillow : MonoBehaviour
 {
-    public int health = 3;
+    public int health = 5;
     public AudioClip afterBossBGM;
+    public Sprite[] damageSprites;
+    public SpriteRenderer spriteRenderer;
+    public float shieldCloseTime = 5f;
 
     private Camera camera;
     private GameObject leftEye, rightEye;
@@ -16,7 +19,7 @@ public class WeepingWillow : MonoBehaviour
     private WeepingWillowTears tears;
     private bool isVulnerable = false;
     private int hitsTaken = 0;
-
+    private float shieldTimer = 0;
 
     private void Awake()
     {
@@ -27,18 +30,37 @@ public class WeepingWillow : MonoBehaviour
         tears = GetComponent<WeepingWillowTears>();
     }
 
+    private void Update()
+    {
+        if(isVulnerable)
+        {
+            shieldTimer += Time.deltaTime;
+            if(shieldTimer > shieldCloseTime)
+            {
+                shieldTimer = 0;
+                SetToInvulnerable();
+            }
+        }
+    }
+
     public void StartBossFight()
     {
         animations.BlinkEyes();
         InvokeRepeating("SpikeSweep", 2, 13);
         InvokeRepeating("TearBurst", 1, 7);
-        Invoke("SetToVulnerable", 10);
+        //Invoke("SetToVulnerable", 10);
     }
 
     private void SetToVulnerable()
     {
         isVulnerable = true;
         animations.EnterHurtMode();
+    }
+
+    private void SetToInvulnerable()
+    {
+        isVulnerable = false;
+        animations.ExitHurtMode();
     }
 
     private void SpikeSweep()
@@ -51,6 +73,12 @@ public class WeepingWillow : MonoBehaviour
         tears.SpawnTears();
     }
 
+    public void FairyHit()
+    {
+        if(!isVulnerable)
+            SetToVulnerable();
+    }
+
     public void TakeHit()
     {
         if(isVulnerable)
@@ -59,7 +87,10 @@ public class WeepingWillow : MonoBehaviour
             hitsTaken++;
             cameraScript.AddScreenShakeTime(1f);
 
-            if(hitsTaken >= health)
+            int damageSpriteIndex = hitsTaken - 1;
+            spriteRenderer.sprite = damageSprites[damageSpriteIndex];
+
+            if (hitsTaken >= health)
             {
                 Destroy(spikes);
                 Destroy(tears);
@@ -72,8 +103,9 @@ public class WeepingWillow : MonoBehaviour
                 Destroy(this);
             } else
             {
+                shieldTimer = 0;
                 animations.ExitHurtMode();
-                Invoke("SetToVulnerable", 10);
+                //Invoke("SetToVulnerable", 10);
             }
 
         }

@@ -30,7 +30,7 @@ public class WeepingWillowTears : MonoBehaviour
     {
         float posX = tearSpawn.position.x;
         float posY = tearSpawn.position.y;
-        return new Vector3(Random.Range(posX - range, posX + range), (Random.Range(posY - range, posY + range)), tearSpawn.position.z);
+        return new Vector3(Random.Range(posX - range, posX + range), posY, tearSpawn.position.z);
     }
 
 

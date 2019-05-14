@@ -69,7 +69,7 @@ public class EnidAttack : MonoBehaviour
             // here we take the right enemy () to a variable so that we can access it when doing damage
             enemy = other.gameObject;
         }
-        if (other.gameObject.tag == "Boss")
+        if (other.gameObject.tag == "Boss" || other.gameObject.tag == "BossFairy")
         {
             enemyInRange = true;
             enemy = other.gameObject;
@@ -79,7 +79,7 @@ public class EnidAttack : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss")
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss" || other.gameObject.tag == "BossFairy" )
         {
             enemyInRange = false;
         }
@@ -102,7 +102,11 @@ public class EnidAttack : MonoBehaviour
             } else if (enemy.tag == "Boss")
             {
                 enemy.GetComponent<WeepingWillow>().TakeHit();
+            } else if (enemy.tag == "BossFairy")
+            {
+                GameObject.FindGameObjectWithTag("Boss").GetComponent<WeepingWillow>().FairyHit();
             }
+
             timer = 0f;
         }
 

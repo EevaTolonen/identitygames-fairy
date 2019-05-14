@@ -235,7 +235,7 @@ namespace UnityStandardAssets._2D
             return m_FacingRight;
         }
 
-
+        
         private void OnCollisionStay2D(Collision2D other)
         {
             if (other.gameObject.tag == "Keijupoly")
@@ -260,6 +260,7 @@ namespace UnityStandardAssets._2D
                 }
             }
         }
+
         //Physics2D.IgnoreLayerCollision(0, 8, (m_Character.GetComponent<Rigidbody2D>().velocity.y >= 0.0f));
     }
 }

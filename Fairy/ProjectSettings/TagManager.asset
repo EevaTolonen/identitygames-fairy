@@ -16,6 +16,7 @@ TagManager:
   - Projectile
   - NoLine
   - Boss
+  - BossFairy
   layers:
   - Default
   - TransparentFX
