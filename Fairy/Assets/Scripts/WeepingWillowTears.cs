@@ -8,7 +8,7 @@ public class WeepingWillowTears : MonoBehaviour
     public Transform tearSpawn;
     public bool debugMode = false;
 
-    float tears = 10;
+    float tears = 20;
     float range = 25;
 
     float timeBetweenTears = 0.2f;
