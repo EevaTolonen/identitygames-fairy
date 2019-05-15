@@ -36,7 +36,7 @@ namespace UnityStandardAssets._2D
                 m_Attack = CrossPlatformInputManager.GetButtonDown("Attack");
             }
              
-            Physics2D.IgnoreLayerCollision(0, 8, (m_Character.GetComponent<Rigidbody2D>().velocity.y >= 0.0f));
+            //Physics2D.IgnoreLayerCollision(0, 8, (m_Character.GetComponent<Rigidbody2D>().velocity.y >= 0.0f));
         }
 
 
