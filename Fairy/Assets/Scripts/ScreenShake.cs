@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿// @author Olli Paakkunainen
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ScreenShake : MonoBehaviour
 {
 
-    public float damping = 1f;
+    public float damping = 1f;    
     public float magnitude = 1f;
 
     private float shakeTimeLeft = 25f;
