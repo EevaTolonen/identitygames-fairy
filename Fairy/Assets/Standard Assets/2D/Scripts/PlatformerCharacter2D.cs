@@ -38,7 +38,8 @@ namespace UnityStandardAssets._2D
         [Range(0, 0.01f)]
         [SerializeField] private float bg4_speedmodifier;
 
-        private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
+        public Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
+        public GameObject playerBody;
         const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
         private bool m_Grounded;            // Whether or not the player is grounded.
         private Transform m_CeilingCheck;   // A position marking where to check for ceilings
@@ -56,7 +57,7 @@ namespace UnityStandardAssets._2D
         private void Awake()
         {
             // Setting up references.
-            m_GroundCheck = transform.Find("GroundCheck");
+            //m_GroundCheck = transform.Find("GroundCheck");
             m_CeilingCheck = transform.Find("CeilingCheck");
             m_Anim = GetComponent<Animator>();
             m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -78,8 +79,10 @@ namespace UnityStandardAssets._2D
 
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (colliders[i].gameObject != gameObject)
+                if (colliders[i].gameObject != playerBody)
+                {
                     m_Grounded = true;
+                }
             }
             m_Anim.SetBool("Ground", m_Grounded);
 
