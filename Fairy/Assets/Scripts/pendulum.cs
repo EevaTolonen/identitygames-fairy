@@ -19,8 +19,6 @@ public class pendulum : MonoBehaviour
             case Direction.Left:
                 if(hinge.limitState == JointLimitState2D.UpperLimit)
                 {
-
-                    Debug.Log(hinge.limitState.ToString());
                     JointMotor2D newMotor = new JointMotor2D();
                     newMotor.maxMotorTorque = hinge.motor.maxMotorTorque;
                     newMotor.motorSpeed = -hinge.motor.motorSpeed;
