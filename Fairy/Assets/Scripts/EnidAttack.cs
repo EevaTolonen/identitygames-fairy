@@ -31,9 +31,9 @@ public class EnidAttack : MonoBehaviour
         //enemy = GameObject.FindGameObjectWithTag("Enemy");
 
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        enidHealth = GetComponent<EnidHealth>();
+        enidHealth = transform.parent.gameObject.GetComponent<EnidHealth>();
         
-        animator = GetComponent<Animator>();
+        animator = transform.parent.gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -59,7 +59,7 @@ public class EnidAttack : MonoBehaviour
             //canPlayerAttack = false;
         }
     }
-
+    
 
     void OnTriggerEnter2D(Collider2D other)
     {

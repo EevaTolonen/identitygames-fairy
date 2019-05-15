@@ -22,8 +22,6 @@ public class EnidHealth : MonoBehaviour
     [Header("Sounds:")]
     public AudioClip[] hurt;
 
-
-
     AudioSource audioSource;
 
     Rigidbody2D player;
@@ -38,12 +36,13 @@ public class EnidHealth : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        platformer2DUserControl = GetComponent<Platformer2DUserControl>();
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        audioSource = playerObj.GetComponent<AudioSource>();
+        platformer2DUserControl = playerObj.GetComponent<Platformer2DUserControl>();
 
-        animator = GetComponent<Animator>();
+        animator = playerObj.GetComponent<Animator>();
         currentHealth = startingHealth;
-        player = GetComponent<Rigidbody2D>();
+        player = playerObj.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -128,7 +127,7 @@ public class EnidHealth : MonoBehaviour
 
     private IEnumerator FadeToBlackAndLoad()
     {
-        GetComponent<AudioSource>().PlayOneShot(deathSound, 6f);
+        audioSource.PlayOneShot(deathSound, 6f);
 
         float _VRadius = postProcess.material.GetFloat("_VRadius");
 
@@ -150,9 +149,9 @@ public class EnidHealth : MonoBehaviour
         player.GetComponent<Renderer>().material = flashMaterial;
         for (int i = 0; i < flashTimes; i++)
         {
-            GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
+            transform.parent.gameObject.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
             yield return new WaitForSeconds(0.05f);
-            GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0);
+            transform.parent.gameObject.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0);
             yield return new WaitForSeconds(0.1f);
         }
         player.GetComponent<Renderer>().material = mattaMaterial;
