@@ -3,47 +3,43 @@ using UnityEngine;
 
 public class pendulum : MonoBehaviour
 {
-    #region Public Variables
-    public Rigidbody2D body2d;
-    public float vasenTyontoPituus;
-    public float oikeaTyontoPituus;
-    public float velocityThreshold;
-    #endregion
+    private HingeJoint2D hinge;
+    private Direction moveDirection = Direction.Left;
+    
 
-    #region Private Variables
-    #endregion
-
-    #region Main Methods
-    void Start()
+    private void Awake()
     {
-        body2d = GetComponent<Rigidbody2D>();
-        body2d.angularVelocity = velocityThreshold;
+        hinge = GetComponent<HingeJoint2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        Tyonna();
-    }
-    #endregion
+        switch (moveDirection)
+        {
+            case Direction.Left:
+                if(hinge.limitState == JointLimitState2D.UpperLimit)
+                {
 
-    #region Utility Methods
-    public void Tyonna()
-    {
-        if (transform.rotation.z > 0 
-            && transform.rotation.z < oikeaTyontoPituus
-            && (body2d.angularVelocity > 0)
-            && body2d.angularVelocity < velocityThreshold)
-        {
-            body2d.angularVelocity = velocityThreshold;
+                    Debug.Log(hinge.limitState.ToString());
+                    JointMotor2D newMotor = new JointMotor2D();
+                    newMotor.maxMotorTorque = hinge.motor.maxMotorTorque;
+                    newMotor.motorSpeed = -hinge.motor.motorSpeed;
+                    hinge.motor = newMotor;
+                    hinge.useMotor = true;
+                    moveDirection = Direction.Right;
+                }
+                break;
+            case Direction.Right:
+                if (hinge.limitState == JointLimitState2D.LowerLimit)
+                {
+                    JointMotor2D newMotor = new JointMotor2D();
+                    newMotor.maxMotorTorque = hinge.motor.maxMotorTorque;
+                    newMotor.motorSpeed = -hinge.motor.motorSpeed;
+                    hinge.motor = newMotor;
+                    hinge.useMotor = true;
+                    moveDirection = Direction.Left;
+                }
+                break;
         }
-        else if (transform.rotation.z < 0
-        && transform.rotation.z > vasenTyontoPituus
-        && (body2d.angularVelocity < 0)
-        && body2d.angularVelocity > velocityThreshold * -1)
-        {
-            body2d.angularVelocity = velocityThreshold * -1;
-        }
-     }
-    #endregion
+    }
 }
