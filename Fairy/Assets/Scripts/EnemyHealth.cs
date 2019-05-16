@@ -117,7 +117,7 @@ public class EnemyHealth : MonoBehaviour
         patrollingEnemy.enabled = false;
         patrollingEnemy.speed = 0f;
         Debug.Log("Enemy died, health left " + currentHealth);
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 2f);
     }
 
 
