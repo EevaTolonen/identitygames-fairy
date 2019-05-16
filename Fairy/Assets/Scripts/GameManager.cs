@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
 
     public Vector2 lastCheckPointPos = Vector2.zero;
+    public Texture2D cursorTexture;
 
     private Transform startingPoint;
 
@@ -15,6 +16,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        if(cursorTexture != null)
+        {
+            Cursor.SetCursor(cursorTexture, new Vector2(cursorTexture.width / 2, cursorTexture.height / 2), CursorMode.Auto);
+        }
+
         startingPoint = GameObject.FindGameObjectWithTag("StartingPoint").transform;
         if (lastCheckPointPos == Vector2.zero) lastCheckPointPos = startingPoint.position;
 
