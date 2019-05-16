@@ -10,6 +10,7 @@ public class WeepingWillowAnimations : MonoBehaviour
     public float moveSpeed = 20f;
     public AudioClip shieldOpen;
 
+
     public enum State { Neutral, Up, Down }
     public State moveStatus = State.Neutral;
     private Vector3 startPosition;
@@ -42,17 +43,19 @@ public class WeepingWillowAnimations : MonoBehaviour
 
     private IEnumerator Blink()
     {
-        leftEyeLight.GetComponent<Light>().enabled = true;
-        rightEyeLight.GetComponent<Light>().enabled = true;
-        yield return new WaitForSeconds(0.2f);
-        leftEyeLight.GetComponent<Light>().enabled = false;
-        rightEyeLight.GetComponent<Light>().enabled = false;
-        yield return new WaitForSeconds(0.2f);
-        leftEyeLight.GetComponent<Light>().enabled = true;
-        rightEyeLight.GetComponent<Light>().enabled = true;
-        yield return new WaitForSeconds(0.2f);
-        leftEyeLight.GetComponent<Light>().enabled = false;
-        rightEyeLight.GetComponent<Light>().enabled = false;
+        int blinkCount = 4;
+
+        yield return new WaitForSeconds(1f);
+
+        for (int i = 0; i < blinkCount; i++)
+        {
+            leftEyeLight.GetComponent<Light>().enabled = true;
+            rightEyeLight.GetComponent<Light>().enabled = true;
+            yield return new WaitForSeconds(0.3f);
+            leftEyeLight.GetComponent<Light>().enabled = false;
+            rightEyeLight.GetComponent<Light>().enabled = false;
+            yield return new WaitForSeconds(0.3f); 
+        }
     }
 
     [ContextMenu("Rise shield")]

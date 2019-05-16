@@ -31,7 +31,7 @@ public class EnidAttack : MonoBehaviour
         //enemy = GameObject.FindGameObjectWithTag("Enemy");
 
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        enidHealth = transform.parent.gameObject.GetComponent<EnidHealth>();
+        enidHealth = GameObject.FindGameObjectWithTag("PlayerBody").GetComponent<EnidHealth>();
         
         animator = transform.parent.gameObject.GetComponent<Animator>();
     }
