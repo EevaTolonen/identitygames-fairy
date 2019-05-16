@@ -205,4 +205,10 @@ public class EnidHealth : MonoBehaviour
         int rnd = UnityEngine.Random.Range(0, clips.Length - 1);
         return clips[rnd];
     }
+
+
+    public void RestoreFullHealth()
+    {
+        currentHealth = startingHealth;
+    }
 }

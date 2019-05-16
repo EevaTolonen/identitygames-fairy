@@ -42,13 +42,3 @@ public class GameManager : MonoBehaviour
     }
 }
 
-
-
-
-
-    /* void InitGame()
-     {
-         throw new NotImplementedException();
-         // ensimerkkikoodissa script.setUpscene(level), mutta meillä jotain muuta
-     }*/
-
