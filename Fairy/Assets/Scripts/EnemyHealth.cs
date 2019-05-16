@@ -13,7 +13,7 @@ public class EnemyHealth : MonoBehaviour
 
     public int startingHealth = 3;
     public int currentHealth;
-    
+
     bool damaged;
     bool isDead;
 
@@ -22,6 +22,9 @@ public class EnemyHealth : MonoBehaviour
 
     public Material mattaMaterial;
     public Material flashMaterial;
+
+    Shader matta;
+    Shader flash;
 
     // Start is called before the first frame update
     void Awake()
@@ -33,6 +36,9 @@ public class EnemyHealth : MonoBehaviour
 
         //enemy = GameObject.FindGameObjectWithTag("Enemy");
         enemyBody = GetComponent<Rigidbody2D>();
+
+        flash = Shader.Find("Custom/DamageFlash");
+        matta = Shader.Find("Sprites/Diffuse");
     }
 
     // Update is called once per frame
@@ -118,14 +124,21 @@ public class EnemyHealth : MonoBehaviour
 
     public IEnumerator SwitchToDamageShader()
     {
-        enemyBody.GetComponent<Renderer>().material = flashMaterial;
         for (int i = 0; i < flashTimes; i++)
         {
-            GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
+            enemyBody.GetComponent<Renderer>().material.shader = matta;
+
+            enemyBody.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+            //player.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
             yield return new WaitForSeconds(0.05f);
-            GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0);
+
+            enemyBody.GetComponent<Renderer>().material.shader = flash;
+
+            enemyBody.GetComponent<Renderer>().material.SetColor("_FlashColor", Color.red);
+            enemyBody.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
             yield return new WaitForSeconds(0.1f);
         }
-        enemyBody.GetComponent<Renderer>().material = mattaMaterial;
+        enemyBody.GetComponent<Renderer>().material.shader = matta;
+        enemyBody.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
     }
 }

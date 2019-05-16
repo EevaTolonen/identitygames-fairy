@@ -19,6 +19,9 @@ public class EnidHealth : MonoBehaviour
     public PostProcess postProcess;
     public AudioClip deathSound;
 
+    Shader matta;
+    Shader flash;
+
     [Header("Sounds:")]
     public AudioClip[] hurt;
 
@@ -28,7 +31,7 @@ public class EnidHealth : MonoBehaviour
     int knockbackForce = 40;
 
     // Platformer2DUserControl won't work after taking damage for x time 
-    float knockbackTimer;
+    public float knockbackTimer;
     float flashTimes = 5;
 
     bool isDead = false;
@@ -43,13 +46,20 @@ public class EnidHealth : MonoBehaviour
         animator = playerObj.GetComponent<Animator>();
         currentHealth = startingHealth;
         player = playerObj.GetComponent<Rigidbody2D>();
+
+        flash = Shader.Find("Custom/DamageFlash");
+        matta = Shader.Find("Sprites/Diffuse");
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (knockbackTimer > 0.5) platformer2DUserControl.enabled = true;
+        if (knockbackTimer > 0.5)
+        {
+            platformer2DUserControl.enabled = true;
+            knockbackTimer = 0;
+        }
         if (knockbackTimer != 0) knockbackTimer += Time.deltaTime;
 
         // changes to player sprite are made here, sprite flashes when taking damage
@@ -91,7 +101,7 @@ public class EnidHealth : MonoBehaviour
             Death();
         }
     }
-    
+
     private void TakeDamageFromObject()
     {
         damaged = true;
@@ -117,9 +127,9 @@ public class EnidHealth : MonoBehaviour
         {
             StartCoroutine(FadeToBlackAndLoad());
         }
-        
+
         isDead = true;
-        
+
         //platformer2DUserControl.enabled = true;
 
         //Debug.Log("Enid died, health left " + currentHealth);
@@ -146,15 +156,22 @@ public class EnidHealth : MonoBehaviour
     {
         audioSource.PlayOneShot(GetRandomClip(hurt));
 
-        player.GetComponent<Renderer>().material = flashMaterial;
         for (int i = 0; i < flashTimes; i++)
         {
-            transform.parent.gameObject.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
+            player.GetComponent<Renderer>().material.shader = matta;
+
+            player.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+            //player.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
             yield return new WaitForSeconds(0.05f);
-            transform.parent.gameObject.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0);
+
+            player.GetComponent<Renderer>().material.shader = flash;
+
+            player.GetComponent<Renderer>().material.SetColor("_FlashColor", Color.red);
+            player.GetComponent<Renderer>().material.SetFloat("_FlashAmount", 0.4f);
             yield return new WaitForSeconds(0.1f);
         }
-        player.GetComponent<Renderer>().material = mattaMaterial;
+        player.GetComponent<Renderer>().material.shader = matta;
+        player.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
     }
 
 

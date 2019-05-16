@@ -10,14 +10,14 @@ using UnityStandardAssets._2D;
 public class PatrollingEnemy : MonoBehaviour
 {
     public float speed = 10f;
-    public float distance = 2f;
+    public float distance = 3f;
     public float wallDistance = 0.5f;
 
     public float playerDistance = 10f;
     public bool isFollowing = false;
 
     private bool movingRight = true;
-    private Vector2 enemyDirection = Vector2.right;
+    private Vector2 enemyDirection = Vector2.left;
 
     public Transform DetectGround;
     public Transform DetectPlayer;
@@ -72,8 +72,8 @@ public class PatrollingEnemy : MonoBehaviour
     public void EnemyMoves()
     {
         // we don't want enemy to patrol when it's following player
-        if (isFollowing) return;
-        enemy.transform.Translate(Vector2.right * speed * Time.deltaTime);
+        //if (isFollowing) return;
+        enemy.transform.Translate(enemyDirection * speed * Time.deltaTime);
     }
 
 
@@ -85,48 +85,33 @@ public class PatrollingEnemy : MonoBehaviour
     {
         groundInfo = Physics2D.Raycast(DetectGround.position, Vector2.down, distance);
         // if enemy is following player but doesn't detect ground, it stops and after 2 seconds, starts patrolling again
-        if (groundInfo.collider == false && isFollowing)
-        {
-            enemySearchTimer += Time.deltaTime;
-            animator.SetFloat("EnemySearchTimer", enemySearchTimer);
-            if (enemySearchTimer >= 2)
-            {
-                // remember to update BOTH timer in the code and timer in the animator
-                enemySearchTimer = 0;
-                animator.SetFloat("EnemySearchTimer", enemySearchTimer);
-                isFollowing = false;
-                animator.SetBool("isPatrolling", true);
-                /*if (enemySearchTimer >= 5)
-                {
-                    isAttacking = false;
-                    enemySearchTimer = 0;
-                    enemy.constraints = RigidbodyConstraints2D.None;
-                    enemy.constraints = RigidbodyConstraints2D.FreezeRotation;
-                    //Time.timeScale = 1;
-                    //return;*/
-            }
-            else
-            {
-                // here enemy stays in place and we return since we don't want to execute the next if statement
-                enemy.velocity = Vector2.zero;
-                enemy.constraints = RigidbodyConstraints2D.FreezeAll;
-                //Time.timeScale = 0;
-                return;
-            }
-        }
-
         // handles basic enemy turning
         if (groundInfo.collider == false)
         {
+            if (isFollowing)
+            {
+                isFollowing = false;
+                animator.SetBool("isPatrolling", true);
+            }
             if (movingRight)
             {
-                transform.eulerAngles = new Vector3(0, -180, 0);
+                //transform.eulerAngles = new Vector3(0, -180, 0);
+
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                DetectGround.transform.eulerAngles = new Vector3(0, 180, 0);
+                DetectPlayer.transform.eulerAngles = new Vector3(0, 180, 0);
+
                 movingRight = false;
                 enemyDirection = Vector2.left;
             }
             else
             {
-                transform.eulerAngles = new Vector3(0, 0, 0);
+                //transform.eulerAngles = new Vector3(0, 0, 0);
+
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                DetectGround.transform.eulerAngles = new Vector3(0, 0, 0);
+                DetectPlayer.transform.eulerAngles = new Vector3(0, 0, 0);
+
                 movingRight = true;
                 enemyDirection = Vector2.right;
             }
@@ -180,16 +165,31 @@ public class PatrollingEnemy : MonoBehaviour
                 Physics2D.IgnoreCollision(wallInfo.collider.gameObject.GetComponent<Collider2D>(), enemyCollider);
                 return;
             }
+            if (wallInfo.collider.gameObject.tag == "Enemy")
+            {
+                Physics2D.IgnoreLayerCollision(11, 11);
+                return;
+            }
 
             if (movingRight)
             {
-                transform.eulerAngles = new Vector3(0, -180, 0);
+                //transform.eulerAngles = new Vector3(0, -180, 0);
+
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                DetectGround.transform.eulerAngles = new Vector3(0, 180, 0);
+                DetectPlayer.transform.eulerAngles = new Vector3(0, 180, 0);
+
                 movingRight = false;
                 enemyDirection = Vector2.left;
             }
             else
             {
-                transform.eulerAngles = new Vector3(0, 0, 0);
+                //transform.eulerAngles = new Vector3(0, 0, 0);
+
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                DetectGround.transform.eulerAngles = new Vector3(0, 0, 0);
+                DetectPlayer.transform.eulerAngles = new Vector3(0, 0, 0);
+
                 movingRight = true;
                 enemyDirection = Vector2.right;
             }
@@ -234,6 +234,7 @@ public class PatrollingEnemy : MonoBehaviour
         if (playerInfoFront.collider == false)
         {
             animator.SetBool("isPatrolling", true);
+            speed = 10f;
         }
         if (playerInfoFront.collider == true)
         {
@@ -241,6 +242,7 @@ public class PatrollingEnemy : MonoBehaviour
             {
                 animator.SetBool("isPatrolling", false);
                 isFollowing = true;
+                speed = 15f;
                 ApproachEnid();
             }
         }
@@ -252,20 +254,21 @@ public class PatrollingEnemy : MonoBehaviour
     {
         // ts. kun pelaaja on ekaa kertaa huomattu, mennään pelaajaa kohti kunnes pelaaja on vihollisesta tietyn etäisyyden päässä
         if (Vector2.Distance(transform.position, player.transform.position) <= 5) return;
-        transform.position = Vector2.MoveTowards(transform.position, new Vector2(player.transform.position.x, transform.position.y), speed * Time.deltaTime);
+        //transform.position = Vector2.MoveTowards(transform.position, new Vector2(player.transform.position.x, transform.position.y), speed * Time.deltaTime);
 
 
+        ///*&& !movingLeft) || ((transform.position.x > player.transform.position.x) && movingLeft*/
         // we check if enemy is behind Enid and facing left OR if enemy is in front of Enid and facing right, then we flip the enemy so it's always looking at right direction
-        if (((transform.position.x < player.transform.position.x) /*&& !movingLeft) || ((transform.position.x > player.transform.position.x) && movingLeft*/))
-        {
-            // tsekataan riittääkö laittaa vain kääntymään, jos ei, koitetaan päivittää samalla muutkin arvot
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            transform.eulerAngles = new Vector3(0, -180, 0);
-        }
-
+        /* if (((transform.position.x < player.transform.position.x) )) 
+         {
+             // tsekataan riittääkö laittaa vain kääntymään, jos ei, koitetaan päivittää samalla muutkin arvot
+             transform.eulerAngles = new Vector3(0, 0, 0);
+         }
+         else
+         {
+             transform.eulerAngles = new Vector3(0, -180, 0);
+         }
+         */
         /*if (movingLeft) turn left
         {
             transform.eulerAngles = new Vector3(0, -180, 0);
@@ -308,7 +311,7 @@ public class PatrollingEnemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D other)
     {
-        if (other.gameObject.name == "Keijupoly")
+        if (other.gameObject.name == "Keijupoly" || other.gameObject.tag == "Enemy")
         {
             Debug.Log("enemy hit keijupoly");
             Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(), enemyCollider);
