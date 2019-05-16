@@ -238,7 +238,7 @@ public class PatrollingEnemy : MonoBehaviour
         }
         if (playerInfoFront.collider == true)
         {
-            if (playerInfoFront.collider.tag == "Player")
+            if (playerInfoFront.collider.tag == "PlayerBody")
             {
                 animator.SetBool("isPatrolling", false);
                 isFollowing = true;
