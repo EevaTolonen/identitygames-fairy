@@ -16,6 +16,7 @@ public class WeepingWillow : MonoBehaviour
     public Sprite[] damageSprites;
     public SpriteRenderer spriteRenderer;
     public float shieldCloseTime = 5f;
+    public GameObject[] exitSmokes;
 
     private Camera camera;
     private GameObject leftEye, rightEye;
@@ -57,6 +58,10 @@ public class WeepingWillow : MonoBehaviour
     /// </summary>
     public void StartBossFight()
     {
+        foreach(GameObject smoke in exitSmokes)
+        {
+            smoke.SetActive(true);
+        }
         animations.BlinkEyes();
         InvokeRepeating("SpikeSweep", 2, 13);
         InvokeRepeating("TearBurst", 1, 7);
@@ -132,6 +137,10 @@ public class WeepingWillow : MonoBehaviour
     /// </summary>
     private void BossDead()
     {
+        foreach (GameObject smoke in exitSmokes)
+        {
+            smoke.SetActive(false);
+        }
         Destroy(spikes);
         Destroy(tears);
 
