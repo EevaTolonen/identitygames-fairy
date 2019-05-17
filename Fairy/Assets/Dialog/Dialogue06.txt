@@ -1,14 +1,19 @@
-<id=1>
+<id = 1>
 Lady of Light: "Dame Enid. You seem distraught, is there anything I can do?"
 </id>
+[2:(Continue..)]
 
-<id=2>
+<id = 2>
 Enid: "Uh, no, I don't think so. Thank you. I'm just worried that I won't have the strenght to find my daughter. Everything is so.. unfamiliar and odd. Nothing makes sense, I'm not sure this is even real."
 </id>
-<id=3>
+[3:(Continue..)]
+
+<id = 3>
 Lady of Light: "Worry not, dear Enid. You will find the path and the strength to walk it. You are greater than you know. And you are not alone. Myself and this Changeling that follows you will both guide you on your way."
 </id>
-<id=0>
+[4:(Continue..)]
+
+<id = 4>
 Enid: "Thank you, Lady."
 </id>
-
+[0:(Continue..)]

@@ -1,13 +1,21 @@
-<id=1>
+<id = 1>
 Lady of Light: "Greeting, dame Enid. You have almost made it out of the Thicket, and will soon enter Faerie proper. Only one obstacle lies in your way.. the insidious tick on the flesh of this forest. Weeping White Willow."
 </id>
+[2:(Continue..)]
 
-<id=2>
+
+<id = 2>
 Changeling: "She's a nasty piece of work, Enid. I doubt she'll let us pass. To be honest, I expect she'll try to kill you on sight."
 </id>
-<id=3>
+[3:(Continue..)]
+
+<id = 3>
 Enid: "That's great to hear.. Lady of Light, is there anything you can do to help?"
 </id>
-<id=0>
+[4:(Continue..)]
+
+<id = 4>
 Lady of Light: "I am far, and cannot extend my influence over the Willow. It is up to you to defeat her. But I can offer some advice: she employs vast numbers of Redcaps, and no doubt will call them to her side. To defeat her, you must find her Heart, and strike true."
 </id>
+[0:(Continue..)]
+

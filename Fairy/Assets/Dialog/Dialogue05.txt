@@ -1,19 +1,30 @@
-<id=1>
+<id = 1>
 Enid: "Damn it all! This is simply too much, there's no way I can carry on, when there's giants and trolls and who knows what else, all trying to kill me. I just.. I'm so tired. I'm sorry, Lissie, my darling daughter, wherever you are, I don't know if I can carry on."
 </id>
+[2:(Continue..)]
 
-<id=2>
+<id = 2>
 Changeling: "Chin up, stupid human! You would really give up so soon? What a pitiful excuse of a mother! Come on! Up!"
 </id>
-<id=3>
+[3:(Continue..)]
+
+<id = 3>
 Enid: "Shut up! What would you know about that?!"
 </id>
-<id=4>
+[4:(Continue..)]
+
+<id = 4>
 Changeling: "I know that you're not going to leave your spawn here, you're better than that. Now shape up, human. I know it's tough for you to wrap your head around all this, but worry not. I'll help you, all along the way."
 </id>
-<id=5>
+[5:(Continue..)]
+
+<id = 5>
 Enid: ... Alright. You're right. I can't give up, I can't leave her here. Lets go."
 </id>
-<id=0>
+[6:(Continue..)]
+
+<id = 6>
 Changeling: "Now that's the spirit, Enid. The way out of these caves should be thataway.. and be careful not to disturb the waters. A neck lives here, nasty things."
 </id>
+[0:(Continue..)]
+

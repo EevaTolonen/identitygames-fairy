@@ -1,2 +1,4 @@
-<id=0>Troll: "Ah hah! Splendid work, little thing! Now this old troll can feast properly. But first, to make good on a promise made. Follow me!"
+<id = 1>
+Troll: "Ah hah! Splendid work, little thing! Now this old troll can feast properly. But first, to make good on a promise made. Follow me!"
 </id>
+[0:(Continue..)]
