@@ -1,0 +1,44 @@
+<id = 1>
+Troll: "Hey-ho, little thing. Be thee friend or foe?"
+</id>
+[2:(Continue..)]
+
+<id = 2>
+Enid: "Uh, hello. I'm just passing through and I'm in a hurry.."
+</id>
+[3:(Continue..)]
+
+<id = 3>
+Troll: "Let me not stop thee, little thing. Though I warn thee; the way is blocked and unpassable."
+</id>
+[4:(Continue..)]
+
+<id = 4>
+Enid: "Is there no other way?"
+</id>
+[5:(Continue..)]
+
+<id = 5>
+Troll: "Naught, unless thy wish is to take another route. A time-consuming task, that one. I could help thee, for a favour, of course."
+</id>
+[6:(Continue..)]
+
+<id = 6>
+Enid: "What's the catch?"
+</id>
+[7:(Continue..)]
+
+<id = 7>
+Troll: "See, little thing. A robber's roast I was making, from real robbers, no less, when Redcaps, the little nuisances, stole my spicebox! I made pursuit, as any troll would after such offense, but the infernal miscreants made their way to their den."
+</id>
+[8:(Continue..)]
+
+<id = 8>
+With a bulk such as mine, I cannot give chase futher.. but thee could, little thing. Retrive what is mine, and on a troll's troth, this one will open the way.
+</id>
+[9:"Changeling, can we trust that this creature will help us?"]
+
+<id = 9>
+Changeling: "He gave his word, didn't he? Really, how many times do I have to explain to you, promises and words have power. He can't go back on his promise, the laws of Faerie make sure of it."
+</id>
+[0:"There's no time to look for another way.. very well, I'll help."]

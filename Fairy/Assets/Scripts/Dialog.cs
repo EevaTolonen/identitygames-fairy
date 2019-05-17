@@ -13,6 +13,7 @@ using UnityEditor;
 public class Dialog : MonoBehaviour
 {
     public TextAsset dialogFile;
+    public AudioClip[] dialogAudioClips;
 
     public TextMeshProUGUI dialogTextbox;
     public TextMeshProUGUI responseTextbox1;
@@ -23,7 +24,7 @@ public class Dialog : MonoBehaviour
     public bool dialogActive = false;
     public int selectedResponse = 0;
 
-
+    private AudioSource audioSource;
     private List<DialogText> dialogTexts;
     private DialogText currentDialogText;
     public bool isActive = true;
@@ -36,6 +37,7 @@ public class Dialog : MonoBehaviour
         DialogParser parser = new DialogParser();
         parser.ReadFile(AssetDatabase.GetAssetPath(dialogFile));
         dialogTexts = parser.GetDialogTexts();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -50,10 +52,9 @@ public class Dialog : MonoBehaviour
     {
         if (isActive)
         {
-            isActive = false;
-
             if (other.gameObject.tag == "PlayerBody")
             {
+                isActive = false;
                 StopPlayerMovement(true);
                 StartCoroutine(StartDialogEvent());
             } 
@@ -97,9 +98,16 @@ public class Dialog : MonoBehaviour
             StopPlayerMovement(false);
         } else if(idToNextDialog != -1)
         {
+            ClearAll();
             currentDialogText = GetDialogTextWithId(idToNextDialog);
             ShowText(currentDialogText);
             ShowResponses(currentDialogText);
+
+            if(idToNextDialog <= dialogAudioClips.Length - 1)
+            {
+                audioSource.clip = dialogAudioClips[idToNextDialog];
+                audioSource.Play();
+            }
         }
     }
 

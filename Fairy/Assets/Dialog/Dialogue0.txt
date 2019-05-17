@@ -1,0 +1,23 @@
+<id = 1>
+Changeling: "Wake, wake, manling. No time to waste, not at all! Your kin is taken further with every passing moment!"
+</id>
+[2:(Continue..)]
+
+<id = 2>
+Enid: "What..? Where am I? Who are you?! Where is my daughter?"
+</id>
+[3:(Continue..)]
+
+<id = 3>
+Changeling: "Questions, queries, but all the wrong ones! Irrelevant and stupid, just like humans. The one who took her flees further and you still jabber, rave and rant."
+</id>
+[4:"You make no sense, and I don't even know what you are! Am I gone insane? I need answers, please!"][5:"I.. I need to find her. Please, tell me what to do, please." ]
+
+<id = 4>
+"Sense has no place in Faerie, manling. But if you wish to seek and search for your daughter, I will help! Help you help me I will! Now, up your feet and move, and we still might catch them afore they reach the Umbra."
+</id>
+[0:"I.. I need to find her. Please, tell me what to do, please."]
+<id = 5>
+"That is more like it. Stand upright and we'll be off, right that way."
+</id>
+[0:(Continue..)]

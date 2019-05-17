@@ -1,0 +1,40 @@
+<id = 1>
+Lady of Light: "Greetings again. I implore you to listen, for I cannot aid if you do not heed."
+</id>
+[2:(Continue..)]
+
+<id = 2>
+Enid: "But I must go, my daughter.."
+</id>
+[3:(Continue..)]
+
+<id = 3>
+Lady of Light: "The path you tread is wrought with peril and dark things. Shadows loom in every corner, and must be vanquished. Allow me to grant you a boon - my Lance. It will banish evil and make your journey a little less precarious."
+</id>
+[4:(Continue..)]
+
+<id = 4>
+Changeling: "What's the catch, Lady? Nothing for nothing in Faerie!"
+</id>
+[5:(Continue..)]
+
+<id = 5>
+Lady of Light: "Not all creatures of Arcadia desire ill for mortals. I grant this to you, dear Enid, but I must tell you - only knights may wield such a weapon. But I will make you one, if you wish."
+</id>
+[6:Yes]
+
+<id = 6>
+Lady of Light: "Excellent! Go with my Light, Enid, and retrieve your child!"
+</id>
+[7:(Continue..)]
+
+
+<id = 7>
+Changeling: "You shouldn't have done that, ought not to, not at all. Promises have power here, and that was just too easy."
+</id>
+[8:(Continue..)]
+
+<id = 8>
+Enid: "Whatever it takes to get back my daughter."
+</id>
+[0:(Continue..)]
