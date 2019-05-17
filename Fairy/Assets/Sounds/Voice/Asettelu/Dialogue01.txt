@@ -1,0 +1,34 @@
+<id=1>
+Lady of Light: "In many ages, have humans not trespassed in these woods. Are you a lost wanderer, or what have you come to seek, child?"
+</id>
+
+<id=2>
+Enid: "Did that statue just..?"
+</id>
+
+<id=3>
+Changeling: "You're in Faerie, manling. Don't act too perplexed by a simple talking rock."
+
+</id>
+
+<id=4>
+Lady of Light: "I am the Lady of Light, the Radiant Queen. Do not be afraid. What is it that you seek?"
+</id>
+
+[5:"Are you.. inside that statue, or?"][6:"Queen? Do you rule this place, then?"][7:"My daughter was taken! I need to find her, please, can you help me?"]
+
+<id=5>
+Lady of Light: : "These statues, erected by my servants in my likeness allow me to see and hear all in their vicinity, child, but I am not here."
+</id>
+[5:"Are you.. inside that statue, or?"][6:"Queen? Do you rule this place, then?"][7:"My daughter was taken! I need to find her, please, can you help me?"]
+<id=6>
+"How charming ignorance you humans possess! No, dear child, my domain lies far away, past forests and mountains."
+</id>
+[5:"Are you.. inside that statue, or?"][6:"Queen? Do you rule this place, then?"][7:"My daughter was taken! I need to find her, please, can you help me?"]
+<id=7>
+"What a dreadful fate has befallen you, dear thing. Of course I will help. A dark being went this way, a small human with it.. a servant of that villain, King Blackheart, no doubt."
+[5:"Are you.. inside that statue, or?"][6:"Queen? Do you rule this place, then?"][0:"Why would anyone take my daughter? I must go!"]
+</id>
+<id=0>
+"Wait, I'll--"
+</id>
