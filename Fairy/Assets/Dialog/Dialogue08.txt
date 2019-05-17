@@ -1,0 +1,10 @@
+<id=1>
+Weeping White Willow: "I've seen you sneaking through my realm, little morsel. Tiny sweet thing, small savory treat.."
+</id>
+
+<id=2>
+Enid: "I just wish to pass through. But I will fight if you make me."
+</id>
+<id=0>
+Weeping White Willow: "And I wish for you to be tasty, nourish my roots and freshen the soil beneath!"
+</id>

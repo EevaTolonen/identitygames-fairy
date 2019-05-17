@@ -1,0 +1,13 @@
+<id=1>
+Enid: "So this is Faerie?"
+</id>
+
+<id=2>
+Changeling: "Part of it. Faerie is vast, some say infinite. But these are the Realms between us and Umbra, where you daughter was taken."
+</id>
+<id=3>
+Enid: "It's a long way."
+</id>
+<id=0>
+Changeling: "And the journey has just begun."
+</id>

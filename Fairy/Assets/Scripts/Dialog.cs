@@ -36,6 +36,7 @@ public class Dialog : MonoBehaviour
         DialogParser parser = new DialogParser();
         parser.ReadFile(AssetDatabase.GetAssetPath(dialogFile));
         dialogTexts = parser.GetDialogTexts();
+        Debug.Log(dialogTexts.Count);
     }
 
     private void Start()
