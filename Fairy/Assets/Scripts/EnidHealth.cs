@@ -14,8 +14,6 @@ public class EnidHealth : MonoBehaviour
     public int currentHealth;
 
     bool damaged;
-    public Material flashMaterial;
-    public Material mattaMaterial;
     public PostProcess postProcess;
     public AudioClip deathSound;
 
@@ -192,23 +190,24 @@ public class EnidHealth : MonoBehaviour
         }
     }
 
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Projectile")
         {
             TakeDamageFromObject();
         }
+
+        if(other.gameObject.tag == "CheckPoint")
+        {
+            currentHealth = startingHealth;
+        }
     }
+
 
     private AudioClip GetRandomClip(AudioClip[] clips)
     {
         int rnd = UnityEngine.Random.Range(0, clips.Length - 1);
         return clips[rnd];
-    }
-
-
-    public void RestoreFullHealth()
-    {
-        currentHealth = startingHealth;
     }
 }

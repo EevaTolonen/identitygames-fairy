@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e4ff8e3b40e6334aa65f9b0144d9f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 3
+  startingHealth: 1
   currentHealth: 0
   mattaMaterial: {fileID: 2100000, guid: d6ffaa7779e9574419effe05c51e924b, type: 2}
   flashMaterial: {fileID: 2100000, guid: 4dff899a80ed0e14fa5a6579733531d7, type: 2}
