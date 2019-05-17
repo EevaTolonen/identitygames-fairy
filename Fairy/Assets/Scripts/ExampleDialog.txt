@@ -1,9 +1,9 @@
 <id = 1>
 Lorem ipsum sit dolor amet.
 </id>
-[2:Yes, I would like to hear more][1:Could you repeat that?]
+[2:Yes, I would like to hear more]
 
 <id = 2>
 This is a continuation dialog, because you choosed option number 1.
 </id>
-[0:See you later]
+[0:See you later][1:Could you repeat that?]

@@ -50,10 +50,9 @@ public class Dialog : MonoBehaviour
     {
         if (isActive)
         {
-            isActive = false;
-
             if (other.gameObject.tag == "PlayerBody")
             {
+                isActive = false;
                 StopPlayerMovement(true);
                 StartCoroutine(StartDialogEvent());
             } 
@@ -97,6 +96,7 @@ public class Dialog : MonoBehaviour
             StopPlayerMovement(false);
         } else if(idToNextDialog != -1)
         {
+            ClearAll();
             currentDialogText = GetDialogTextWithId(idToNextDialog);
             ShowText(currentDialogText);
             ShowResponses(currentDialogText);

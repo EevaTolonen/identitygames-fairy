@@ -18,6 +18,11 @@ TagManager:
   - Boss
   - BossFairy
   - PlayerBody
+  - Response1
+  - Response2
+  - Response3
+  - Response4
+  - Dialog
   layers:
   - Default
   - TransparentFX
