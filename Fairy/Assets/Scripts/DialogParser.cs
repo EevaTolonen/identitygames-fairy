@@ -8,40 +8,51 @@ using UnityEngine;
 
 public class DialogParser
 {
+    public string textToParse;
 
-    public struct DialogText
+    public void ReadFile(string filePath)
     {
-        public int id;
-        public string text;
-
-        public DialogText(int id, string text)
-        {
-            this.id = id;
-            this.text = text;
-        }
-    }
-
-    public List<DialogScreen> ParseDialog(string filePath)
-    {
-        List<DialogScreen> dialogScreens = new List<DialogScreen>();
-
         string text = File.ReadAllText(filePath, Encoding.UTF8);
-        dialogScreens.Add(new DialogScreen(1, text));
-
-        return dialogScreens;
+        textToParse = text;
     }
     
-    private DialogText GetNextDialogText()
+    public List<DialogText> GetDialogTexts()
     {
+        List<DialogText> dialogs = new List<DialogText>();
         string textPattern = @"(?<=<id = \d>).+?(?=<\/id>)";
         string idPattern = @"(?<=<id = )\d(?=>)";
+        string responsePattern = @"(?=\[).+?(?<=\](?!\[))";
 
+        MatchCollection textMatch = Regex.Matches(textToParse, textPattern, RegexOptions.Singleline);
+        MatchCollection idMatch = Regex.Matches(textToParse, idPattern, RegexOptions.Singleline);
+        MatchCollection responseMatch = Regex.Matches(textToParse, responsePattern, RegexOptions.Singleline);
+        
+        for (int i = 0; i < textMatch.Count; i++)
+        {
+            List<DialogText.Response> responses = SplitResponses(responseMatch[i]);
 
-        throw new NotImplementedException();
+            DialogText dialog = new DialogText(int.Parse(idMatch[i].Value), textMatch[i].Value, responses);
+            dialogs.Add(dialog);
+        }
+
+        return dialogs;
     }
 
-    private Dictionary<int, string> GetNextResponses()
+    private List<DialogText.Response> SplitResponses(Match responseMatch)
     {
-        throw new NotImplementedException();
+        List<DialogText.Response> responseList = new List<DialogText.Response>();
+        string pattern = @"(?<=\[).+?(?=])";
+        MatchCollection responseMatches = Regex.Matches(responseMatch.Value, pattern);
+        
+        for(int i = 0; i < responseMatches.Count; i++)
+        {
+            string[] idTextSplit = responseMatches[i].Value.Split(':');
+            int id = int.Parse(idTextSplit[0]);
+            string text = idTextSplit[1];
+            
+            responseList.Add(new DialogText.Response(id, text));
+        }
+
+        return responseList;
     }
 }

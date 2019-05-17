@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityStandardAssets._2D;
+using UnityEditor;
 
 /// <summary>
 /// Composing a complete dialog out of DialogScreens.
@@ -12,128 +14,162 @@ public class Dialog : MonoBehaviour
 {
     public TextAsset dialogFile;
 
-    public GameObject dialogContainer;
-    public GameObject responseContainer;
+    public TextMeshProUGUI dialogTextbox;
+    public TextMeshProUGUI responseTextbox1;
+    public TextMeshProUGUI responseTextbox2;
+    public TextMeshProUGUI responseTextbox3;
+    public TextMeshProUGUI responseTextbox4;
     
-    public enum DialogState { Idle, WaitForResponse }
+    public bool dialogActive = false;
+    public int selectedResponse = 0;
 
-    private DialogState state;
-    private List<GameObject> responseTextReferences = new List<GameObject>();
 
-    //TEST SCRIPT
+    private List<DialogText> dialogTexts;
+    private DialogText currentDialogText;
+    public bool isActive = true;
+
+    private int idToNextDialog = -1;
+
+
     public void Awake()
     {
         DialogParser parser = new DialogParser();
-
-        string test = parser.ParseDialog("Assets/Scripts/ExampleDialog.txt")[0].Text;
-        Debug.Log(test);
-    }
-    //END OF TEST
-
-    public List<GameObject> CreateResponseFields(int count)
-    {
-        if (count < 1) throw new ArgumentException("Response count must be equal or greater than 1");
-
-        List<GameObject> fieldList = new List<GameObject>();
-        
-        //TODO: Needs refactoring: Create fields 1 .. n
-        // Duplicate code...
-        if(count == 1)
-        {
-            GameObject responseFieldObject = CreateResponseField();
-
-            fieldList.Add(responseFieldObject);
-        }
-        else if (count == 2)
-        {
-            GameObject responseFieldObject = CreateResponseField();
-
-            float oldWidth = responseFieldObject.GetComponent<RectTransform>().rect.width;
-            float oldHeight = responseFieldObject.GetComponent<RectTransform>().rect.height;
-            float oldY = responseFieldObject.GetComponent<RectTransform>().anchoredPosition.y;
-
-            responseFieldObject.GetComponent<RectTransform>().sizeDelta = new Vector2(oldWidth / 2, oldHeight);
-            responseFieldObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-oldWidth / 4, oldY);
-
-            GameObject responseFieldObject1 = CreateResponseField();
-            
-            responseFieldObject1.GetComponent<RectTransform>().sizeDelta = new Vector2(oldWidth / 2, oldHeight);
-            responseFieldObject1.GetComponent<RectTransform>().anchoredPosition = new Vector2(oldWidth / 4, oldY);
-
-
-            fieldList.Add(responseFieldObject);
-            fieldList.Add(responseFieldObject1);
-        }
-        else if (count == 3)
-        {
-            GameObject responseFieldObject = CreateResponseField();
-
-            float oldWidth = responseFieldObject.GetComponent<RectTransform>().rect.width;
-            float oldHeight = responseFieldObject.GetComponent<RectTransform>().rect.height;
-            float oldY = responseFieldObject.GetComponent<RectTransform>().anchoredPosition.y;
-            
-            responseFieldObject.GetComponent<RectTransform>().sizeDelta = new Vector2(oldWidth / 3, oldHeight);
-            
-            GameObject responseFieldObject1 = CreateResponseField();
-            responseFieldObject1.GetComponent<RectTransform>().sizeDelta = new Vector2(oldWidth / 3, oldHeight);
-            responseFieldObject1.GetComponent<RectTransform>().anchoredPosition = new Vector2(-oldWidth / 3, oldY);
-
-            GameObject responseFieldObject2 = CreateResponseField();
-            responseFieldObject2.GetComponent<RectTransform>().sizeDelta = new Vector2(oldWidth / 3, oldHeight);
-            responseFieldObject2.GetComponent<RectTransform>().anchoredPosition = new Vector2(oldWidth / 3, oldY);
-
-            fieldList.Add(responseFieldObject);
-            fieldList.Add(responseFieldObject1);
-            fieldList.Add(responseFieldObject2);
-        }
-
-        return fieldList;
+        parser.ReadFile(AssetDatabase.GetAssetPath(dialogFile));
+        dialogTexts = parser.GetDialogTexts();
     }
 
-    private GameObject CreateResponseField()
+    private void Start()
     {
-        GameObject responseFieldObject = new GameObject("ResponseFieldObject");
-        TextMeshProUGUI responseFieldScriptRef = responseFieldObject.AddComponent<TextMeshProUGUI>();
-        responseFieldObject.transform.SetParent(transform, false);
-        CopyRectTransform(ref responseContainer, ref responseFieldObject);
-        return responseFieldObject;
+        responseTextbox1 = GameObject.FindGameObjectWithTag("Response1").GetComponent<TextMeshProUGUI>();
+        responseTextbox2 = GameObject.FindGameObjectWithTag("Response2").GetComponent<TextMeshProUGUI>();
+        responseTextbox3 = GameObject.FindGameObjectWithTag("Response3").GetComponent<TextMeshProUGUI>();
+        responseTextbox4 = GameObject.FindGameObjectWithTag("Response4").GetComponent<TextMeshProUGUI>();
     }
 
-    /// <summary>
-    /// Clears dialog text and response options and sets state to idle
-    /// </summary>
-    public void ReturnToIdle()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        foreach(GameObject responseTextField in responseTextReferences)
+        if (isActive)
         {
-            Destroy(responseTextField);
+            isActive = false;
+
+            if (other.gameObject.tag == "PlayerBody")
+            {
+                StopPlayerMovement(true);
+                StartCoroutine(StartDialogEvent());
+            } 
+        }
+    }
+
+    private static void StopPlayerMovement(bool status)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        Platformer2DUserControl userControl = player.GetComponent<Platformer2DUserControl>();
+        userControl.stopMovement = status;
+    }
+
+    public void ToNextDialog()
+    {
+        switch (selectedResponse)
+        {
+            case 1:
+                if (currentDialogText.responses.Count >= 1)
+                    idToNextDialog = currentDialogText.responses[0].Id;
+                break;
+            case 2:
+                if (currentDialogText.responses.Count >= 2)
+                    idToNextDialog = currentDialogText.responses[1].Id;
+                break;
+            case 3:
+                if (currentDialogText.responses.Count >= 3)
+                    idToNextDialog = currentDialogText.responses[2].Id;
+                break;
+            case 4:
+                if (currentDialogText.responses.Count >= 4)
+                    idToNextDialog = currentDialogText.responses[3].Id;
+                break;
+            default:
+                break;
+        }
+        if(idToNextDialog == 0)
+        {
+            ClearAll();
+            dialogActive = false;
+            StopPlayerMovement(false);
+        } else if(idToNextDialog != -1)
+        {
+            currentDialogText = GetDialogTextWithId(idToNextDialog);
+            ShowText(currentDialogText);
+            ShowResponses(currentDialogText);
+        }
+    }
+
+    private DialogText GetDialogTextWithId(int idToNextDialog)
+    {
+        foreach(DialogText text in dialogTexts)
+        {
+            if(text.Id == idToNextDialog)
+            {
+                return text;
+            }
         }
 
-        dialogContainer.GetComponent<TextMeshProUGUI>().text = "";
-        state = DialogState.Idle;
+        return new DialogText();
     }
 
-    /// <summary>
-    /// Shows given dialog text and response options related to it and sets state to wait
-    /// </summary>
-    public void ShowDialogScreen(DialogScreen dialogScreen)
+    private IEnumerator StartDialogEvent()
     {
+        dialogActive = true;
+        currentDialogText = dialogTexts[0];
+        ShowText(currentDialogText);
+        ShowResponses(currentDialogText);
 
-        state = DialogState.WaitForResponse;
-        throw new NotImplementedException();
+        yield return new WaitUntil(() => selectedResponse != 0);
     }
 
-    /// <summary>
-    /// Copies RectTransform values from object to another
-    /// </summary>
-    public void CopyRectTransform(ref GameObject from, ref GameObject to)
+    private void ShowResponses(DialogText dialogText)
     {
-        RectTransform rectTransform = from.GetComponent<RectTransform>();
-        RectTransform objRectTransform = to.GetComponent<RectTransform>();
+        switch(dialogText.responses.Count)
+        {
+            case 1:
+                responseTextbox1.text = dialogText.responses[0].Text;
+                break;
+            case 2:
+                responseTextbox1.text = dialogText.responses[0].Text;
+                responseTextbox2.text = dialogText.responses[1].Text;
+                break;
+            case 3:
+                responseTextbox1.text = dialogText.responses[0].Text;
+                responseTextbox2.text = dialogText.responses[1].Text;
+                responseTextbox3.text = dialogText.responses[2].Text;
+                break;
+            case 4:
+                responseTextbox1.text = dialogText.responses[0].Text;
+                responseTextbox2.text = dialogText.responses[1].Text;
+                responseTextbox3.text = dialogText.responses[2].Text;
+                responseTextbox4.text = dialogText.responses[3].Text;
+                break;
+            default:
+                break;
+        }
+    }
 
-        objRectTransform.anchorMin = rectTransform.anchorMin;
-        objRectTransform.anchorMax = rectTransform.anchorMax;
-        objRectTransform.anchoredPosition = rectTransform.anchoredPosition;
-        objRectTransform.sizeDelta = rectTransform.sizeDelta;
+    private void ShowText(DialogText dialogText)
+    {
+        dialogTextbox.text = dialogText.Text;
+    }
+
+    private void ClearAll()
+    {
+        dialogTextbox.text = "";
+        responseTextbox1.text = "";
+        responseTextbox2.text = "";
+        responseTextbox3.text = "";
+        responseTextbox4.text = "";
+    }
+
+    private IEnumerator WaitForKeyDown(KeyCode keyCode)
+    {
+        while (!Input.GetKeyDown(keyCode))
+            yield return null;
     }
 }
