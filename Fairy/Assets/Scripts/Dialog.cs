@@ -93,6 +93,7 @@ public class Dialog : MonoBehaviour
         }
         if(idToNextDialog == 0)
         {
+            audioSource.Stop();
             ClearAll();
             dialogActive = false;
             StopPlayerMovement(false);
@@ -103,9 +104,10 @@ public class Dialog : MonoBehaviour
             ShowText(currentDialogText);
             ShowResponses(currentDialogText);
 
-            if(idToNextDialog <= dialogAudioClips.Length - 1)
+            if(idToNextDialog-1 <= dialogAudioClips.Length - 1)
             {
-                audioSource.clip = dialogAudioClips[idToNextDialog];
+                audioSource.Stop();
+                audioSource.clip = dialogAudioClips[idToNextDialog-1];
                 audioSource.Play();
             }
         }
@@ -130,6 +132,12 @@ public class Dialog : MonoBehaviour
         currentDialogText = dialogTexts[0];
         ShowText(currentDialogText);
         ShowResponses(currentDialogText);
+        if (dialogAudioClips.Length >= 1)
+        {
+            audioSource.Stop();
+            audioSource.clip = dialogAudioClips[0];
+            audioSource.Play(); 
+        }
 
         yield return new WaitUntil(() => selectedResponse != 0);
     }
