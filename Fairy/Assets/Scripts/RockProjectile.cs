@@ -30,8 +30,9 @@ public class RockProjectile : MonoBehaviour
         //playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
         // Move the projectile forward towards the player's last known direction;
         transform.position = Vector3.MoveTowards(transform.position, playerPos, speed * Time.deltaTime);
+        rock.velocity = new Vector2(speed, speed);
         timer += Time.deltaTime;
-        if (timer > 3) Destroy(gameObject);
+        if (timer > 2) Destroy(gameObject);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

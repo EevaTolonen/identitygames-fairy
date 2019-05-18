@@ -32,7 +32,7 @@ public class EnidAttack : MonoBehaviour
 
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         enidHealth = GameObject.FindGameObjectWithTag("PlayerBody").GetComponent<EnidHealth>();
-        
+
         animator = transform.parent.gameObject.GetComponent<Animator>();
     }
 
@@ -59,11 +59,11 @@ public class EnidAttack : MonoBehaviour
             //canPlayerAttack = false;
         }
     }
-    
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "EvilTree")
         {
             enemyInRange = true;
             // here we take the right enemy () to a variable so that we can access it when doing damage
@@ -75,11 +75,11 @@ public class EnidAttack : MonoBehaviour
             enemy = other.gameObject;
         }
     }
-    
+
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss" || other.gameObject.tag == "BossFairy" )
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss" || other.gameObject.tag == "BossFairy" || other.gameObject.tag == "EvilTree")
         {
             enemyInRange = false;
         }
@@ -98,11 +98,20 @@ public class EnidAttack : MonoBehaviour
                 if (enemy.GetComponent<EnemyHealth>().currentHealth > 0)
                 {
                     enemy.GetComponent<EnemyHealth>().TakeDamage(attackDamage, Vector3.zero);
-                } 
-            } else if (enemy.tag == "Boss")
+                }
+            }
+            else if (enemy.tag == "EvilTree")
+            {
+                if (enemy.GetComponent<EvilTreeHealth>().currentHealth > 0)
+                {
+                    enemy.GetComponent<EvilTreeHealth>().TakeDamage(attackDamage, Vector3.zero);
+                }
+            }
+            else if (enemy.tag == "Boss")
             {
                 enemy.GetComponent<WeepingWillow>().TakeHit();
-            } else if (enemy.tag == "BossFairy")
+            }
+            else if (enemy.tag == "BossFairy")
             {
                 GameObject.FindGameObjectWithTag("Boss").GetComponent<WeepingWillow>().FairyHit();
             }
