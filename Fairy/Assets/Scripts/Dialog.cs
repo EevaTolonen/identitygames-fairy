@@ -5,14 +5,13 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityStandardAssets._2D;
-using UnityEditor;
 
 /// <summary>
 /// Composing a complete dialog out of DialogScreens.
 /// </summary>
 public class Dialog : MonoBehaviour
 {
-    public TextAsset dialogFile;
+    public string dialogFilePath;
     public AudioClip[] dialogAudioClips;
 
     public TextMeshProUGUI dialogTextbox;
@@ -35,7 +34,7 @@ public class Dialog : MonoBehaviour
     public void Awake()
     {
         DialogParser parser = new DialogParser();
-        parser.ReadFile(AssetDatabase.GetAssetPath(dialogFile));
+        parser.ReadFile(dialogFilePath);
         dialogTexts = parser.GetDialogTexts();
         audioSource = GetComponent<AudioSource>();
     }
