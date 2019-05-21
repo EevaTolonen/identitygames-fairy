@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿// @author Olli Paakkunainen
 
+using UnityEngine;
 
 [ExecuteInEditMode]
 public class PostProcess : MonoBehaviour

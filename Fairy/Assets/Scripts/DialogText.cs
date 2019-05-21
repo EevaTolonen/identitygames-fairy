@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿// @author Olli Paakkunainen
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +10,7 @@ public class DialogText
     public string Text;
     public List<Response> responses;
 
+    // Hold a single response to a one dialogue line.
     public struct Response
     {
         public int Id;

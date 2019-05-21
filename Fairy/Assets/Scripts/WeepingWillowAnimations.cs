@@ -1,4 +1,6 @@
-﻿using System;
+﻿// @author Olli Paakkunainen
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,6 +43,9 @@ public class WeepingWillowAnimations : MonoBehaviour
         StartCoroutine("Blink");
     }
 
+    /// <summary>
+    /// Blinks weeping willow heart lights X times
+    /// </summary>
     private IEnumerator Blink()
     {
         int blinkCount = 4;
@@ -58,6 +63,9 @@ public class WeepingWillowAnimations : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Lowers heart shield
+    /// </summary>
     [ContextMenu("Rise shield")]
     public void EnterHurtMode()
     {
@@ -67,6 +75,9 @@ public class WeepingWillowAnimations : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(shieldOpen);
     }
 
+    /// <summary>
+    /// Rises heart shield
+    /// </summary>
     [ContextMenu("Lower shield")]
     public void ExitHurtMode()
     {
@@ -76,6 +87,9 @@ public class WeepingWillowAnimations : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(shieldOpen);
     }
 
+    /// <summary>
+    /// Turn off heart lights
+    /// </summary>
     public void Deactivate()
     {
         leftEyeLight.GetComponent<Light>().color = Color.green;

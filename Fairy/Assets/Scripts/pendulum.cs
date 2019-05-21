@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿// @author Olli Paakkunainen
+
+using System.Collections;
 using UnityEngine;
 
 public class pendulum : MonoBehaviour
