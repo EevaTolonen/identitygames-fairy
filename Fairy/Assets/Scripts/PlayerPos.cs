@@ -1,19 +1,21 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+// Keeps track of the last checkpoint player visited
 public class PlayerPos : MonoBehaviour
 {
     private GameManager manager;
+
     // Start is called before the first frame update
     void Start()
     {
         manager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         transform.position = manager.lastCheckPointPos;
     }
-
-
 
    /* private void Update()
     {
@@ -23,4 +25,3 @@ public class PlayerPos : MonoBehaviour
         }
     }*/
 }
-// TO DO: VIELÄ PUUTTUU KOHTA, JOSSA ENIDIN KUOLLESSA RELOADATAAN KOKO SCENE UUDESTAAN, JOLLOIN PELAAJA SYNTYY PLAYERPOS:IIN

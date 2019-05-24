@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿//@author Olli Paakkunainen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Handles starting of the bossfight when player collides with the boss
 public class BossTrigger : MonoBehaviour
 {
     public GameObject boss;

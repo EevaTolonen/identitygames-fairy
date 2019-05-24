@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Handles boss movement and attack patterns, but was only used for testing boss' SpawnTears feature, and enemy ended up being stationary
 public class PatrollingBoss : MonoBehaviour
 {
     public float speed = 10f;
@@ -22,6 +25,7 @@ public class PatrollingBoss : MonoBehaviour
     float timer;
     float timeBetweenWaves = 6f;
 
+
     private void Start()
     {
         tearSpawn = transform.Find("TearSpawn");
@@ -29,8 +33,7 @@ public class PatrollingBoss : MonoBehaviour
     }
 
 
-
-    // Enemies move, we check if enemy is on the edge of the platform
+    // Enemy moves, we check if enemy is on the edge of the platform
     void Update()
     {
         timer += Time.deltaTime;
@@ -39,7 +42,6 @@ public class PatrollingBoss : MonoBehaviour
 
         if (timer > timeBetweenWaves) timer = 0f;
     }
-
 
 
     /// <summary>
@@ -59,6 +61,7 @@ public class PatrollingBoss : MonoBehaviour
     }
 
 
+    // Enemy shoots tears in waves, which damage the player
     void ShootTears()
     {
         if (timer < timeBetweenWaves) return;

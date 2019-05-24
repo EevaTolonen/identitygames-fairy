@@ -1,9 +1,11 @@
-﻿using System;
+﻿// @author Eeva Tolonen & Olli Paakkunainen
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// GameManager that manages the state of our game
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
@@ -15,23 +17,25 @@ public class GameManager : MonoBehaviour
     private List<GameObject> dialogObjects;
     private Transform startingPoint;
 
+
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnLevelFinishedLoading;
     }
+
 
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnLevelFinishedLoading;
     }
 
+
     void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         dialogObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Dialog"));
     }
 
-    // GameManager that manages the state of our game
-    // Start is called before the first frame update
+
     void Awake()
     {
         if(cursorTexture != null)
@@ -50,6 +54,8 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+
+    // Updates player position to the end of the level in order to skip straight to the bosstree part 
     private void Update()
     {
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.M))
@@ -58,6 +64,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Updates dialogs according to the chosen dialog option
+    /// </summary>
+    /// <param name="response">number of chosen dialog option</param>
     private void UpdateDialogs(int response)
     {
         foreach(GameObject obj in dialogObjects)
@@ -71,6 +82,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Response1-4Handlers handle dialog presentation and dialog transitions
+    /// </summary>
     public void Response1Handler()
     {
         Debug.Log("Button 1");
@@ -84,11 +99,13 @@ public class GameManager : MonoBehaviour
         UpdateDialogs(2);
     }
 
+
     public void Response3Handler()
     {
         Debug.Log("Button 3");
         UpdateDialogs(3);
     }
+
 
     public void Response4Handler()
     {

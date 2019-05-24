@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Handles attack of enemy type evilTree
 public class EvilTreeAttack : MonoBehaviour
 {
     public float timeBetweenAttacks = 3f;
@@ -15,16 +18,18 @@ public class EvilTreeAttack : MonoBehaviour
 
     EnidHealth enidHealth;
     EvilTreeHealth evilTreeHealth;
-    //Transform enemyPos;
+    // Transform enemyPos;
 
     float hitTimer;
-    bool isDead;
+    private bool isDead;
 
-    bool damaged;
-    float flashTimes = 5;
+    private bool damaged;
+    private float flashTimes = 5;
 
-    Shader matta;
-    Shader flash;
+    private Shader matta;
+    private Shader flash;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +40,7 @@ public class EvilTreeAttack : MonoBehaviour
         //enemyPos = GetComponent<Transform>();
         hitTimer = 0;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -57,6 +63,7 @@ public class EvilTreeAttack : MonoBehaviour
     }
 
 
+    // Checks that player has health left, and player takes no knockback from the enemy
     void Attack()
     {
         if (enidHealth.currentHealth > 0)
@@ -68,12 +75,13 @@ public class EvilTreeAttack : MonoBehaviour
         anim.SetFloat("HitTimer", hitTimer);
     }
 
+
+    // Checks that enemy collides with player (not spear) and if enemy's time between attacks is already exceeded in order to attack
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "PlayerBody" && (hitTimer >= timeBetweenAttacks))
         {
             if (!evilTreeHealth.isDead) Attack();
         }
-
     }
 }

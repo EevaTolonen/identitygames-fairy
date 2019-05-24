@@ -1,12 +1,12 @@
-﻿/*
- * Author: Eeva Tolonen
- */
+﻿// @author: Eeva Tolonen
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 
+
+// Was originally supposed to handle Boggart movement, but team decided to make this enemy type stationary
 public class PatrollingBoggart : MonoBehaviour
 {
     public float speed = 10f;
@@ -31,6 +31,7 @@ public class PatrollingBoggart : MonoBehaviour
 
     BoggartAttack attack;
 
+
     private void Start()
     {
         enemy = GetComponent<Rigidbody2D>();
@@ -39,15 +40,12 @@ public class PatrollingBoggart : MonoBehaviour
     }
 
 
-
     // Enemies move, we check if enemy is on the edge of the platform
     void Update()
     {
         EnemyMoves();
 
         IsEnemyOnTheEdge();
-
-        //IsEnemyHittingWalls();
 
         CanEnemySeePlayer();
 
@@ -59,7 +57,6 @@ public class PatrollingBoggart : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// Moves the enemy
     /// </summary>
@@ -69,7 +66,6 @@ public class PatrollingBoggart : MonoBehaviour
         if (isAttacking) return;
         enemy.transform.Translate(Vector2.right * speed * Time.deltaTime);
     }
-
 
 
     /// <summary>
@@ -98,7 +94,6 @@ public class PatrollingBoggart : MonoBehaviour
             }
         }
     }
-
 
 
     /// <summary>
@@ -132,9 +127,7 @@ public class PatrollingBoggart : MonoBehaviour
         }
     }
 
-
-
-
+    
     /// <summary>
     /// Check the distance and only shoot if enemy is both close enough of Enid and facing Enid
     /// </summary>
@@ -160,7 +153,6 @@ public class PatrollingBoggart : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// We check if enemy is able to attack on update (isAttacking is true), then we'll call method from BoggartAttack code
     /// </summary>
@@ -174,7 +166,6 @@ public class PatrollingBoggart : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// If player moves behind enemy, we flip the enemy to face the player, then projectiles also work correctly
     /// </summary>
@@ -182,9 +173,8 @@ public class PatrollingBoggart : MonoBehaviour
     {
         if (isAttacking == false) return;
         // we check if enemy is behind Enid and facing left OR if enemy is in front of Enid and facing right, then we flip the enemy so it's always looking at right direction
-        if (((transform.position.x < player.transform.position.x) /*&& !movingLeft) || ((transform.position.x > player.transform.position.x) && movingLeft*/))
+        if (((transform.position.x < player.transform.position.x)))
         {
-            // tsekataan riittääkö laittaa vain kääntymään, jos ei, koitetaan päivittää samalla muutkin arvot
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
         else
@@ -194,14 +184,14 @@ public class PatrollingBoggart : MonoBehaviour
     }
 
 
-
+    // Check when player is far enough, then enemy stops attacking player
     void DidEnemyLostPlayer()
     {
         if (Vector3.Distance(enemy.position, player.transform.position) > playerDistance * 2) isAttacking = false;
     }
 
 
-
+    // Enemy ignores collision with fairydust
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.name == "Keijupoly")
@@ -209,5 +199,4 @@ public class PatrollingBoggart : MonoBehaviour
             Physics2D.IgnoreCollision(other.gameObject.GetComponent<Collider2D>(), GetComponent<CircleCollider2D>());
         }
     }
-
 }

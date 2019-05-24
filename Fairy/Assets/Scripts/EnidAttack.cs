@@ -1,19 +1,20 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 
+// Handles player attack
 public class EnidAttack : MonoBehaviour
 {
     public float timeBetweenAttacks = 0.5f;
+    float timer;
 
     EnidHealth enidHealth;
     Animator animator;
 
-
-
-    // the current enemy player collides with
     private GameObject boss;
+    // the current enemy player collides with
     private GameObject enemy;
     public GameObject[] enemies;
 
@@ -21,8 +22,6 @@ public class EnidAttack : MonoBehaviour
     bool enemyInRange;
     bool canPlayerAttack;
     int attackDamage = 1;
-
-    float timer;
 
 
     // Start is called before the first frame update
@@ -35,6 +34,7 @@ public class EnidAttack : MonoBehaviour
 
         animator = transform.parent.gameObject.GetComponent<Animator>();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -61,12 +61,16 @@ public class EnidAttack : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Checks which enemy type player collides with
+    /// </summary>
+    /// <param name="other">collider of the enemy</param>
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "EvilTree")
         {
             enemyInRange = true;
-            // here we take the right enemy () to a variable so that we can access it when doing damage
+            // here we take the right enemy to a variable so that we can access it when doing damage
             enemy = other.gameObject;
         }
         if (other.gameObject.tag == "Boss" || other.gameObject.tag == "BossFairy")
@@ -86,7 +90,7 @@ public class EnidAttack : MonoBehaviour
     }
 
 
-
+    // Handles player attacking enemies, applying damage to different enemies and stopping attack damage if enemy is dead
     void Attack()
     {
         if (enemy != null)

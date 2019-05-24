@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen & Olli Paakkunainen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 using UnityEngine.SceneManagement;
 using System;
 
+// Handles player losing health and dying
 public class EnidHealth : MonoBehaviour
 {
     Platformer2DUserControl platformer2DUserControl;
@@ -34,6 +36,7 @@ public class EnidHealth : MonoBehaviour
 
     bool isDead = false;
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -48,6 +51,7 @@ public class EnidHealth : MonoBehaviour
         flash = Shader.Find("Custom/DamageFlash");
         matta = Shader.Find("Sprites/Diffuse");
     }
+
 
     // Update is called once per frame
     void Update()
@@ -69,7 +73,7 @@ public class EnidHealth : MonoBehaviour
     }
 
 
-
+    // Handles player knockback direction after taking damage, applying damage and death
     public void TakeDamage(int amount, Vector3 enemyPos)
     {
         damaged = true;
@@ -100,6 +104,8 @@ public class EnidHealth : MonoBehaviour
         }
     }
 
+    
+    //If player takes damage from object, they die straight away
     private void TakeDamageFromObject()
     {
         damaged = true;
@@ -113,7 +119,7 @@ public class EnidHealth : MonoBehaviour
     }
 
 
-
+    // Handles screen turning to black and reloading the scene
     void Death()
     {
         //onDeath.Invoke();
@@ -133,6 +139,8 @@ public class EnidHealth : MonoBehaviour
         //Debug.Log("Enid died, health left " + currentHealth);
     }
 
+
+    // Handles screen turning to black and reloading the scene
     private IEnumerator FadeToBlackAndLoad()
     {
         audioSource.PlayOneShot(deathSound, 6f);
@@ -150,6 +158,8 @@ public class EnidHealth : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+
+    // Switches between normal and damage shaders in order to create flashing damage effect on player
     public IEnumerator SwitchToDamageShader()
     {
         audioSource.PlayOneShot(GetRandomClip(hurt));
@@ -173,7 +183,6 @@ public class EnidHealth : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// If player hits the spikes, they return to the previous checkpoint
     /// </summary>
@@ -191,6 +200,7 @@ public class EnidHealth : MonoBehaviour
     }
 
 
+    // Check which type of an object player collided with and either player takes damage or player health is refilled
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Projectile")
@@ -205,6 +215,7 @@ public class EnidHealth : MonoBehaviour
     }
 
 
+    // Gets a "hurt sound" audio clip when player takes damage
     private AudioClip GetRandomClip(AudioClip[] clips)
     {
         int rnd = UnityEngine.Random.Range(0, clips.Length - 1);

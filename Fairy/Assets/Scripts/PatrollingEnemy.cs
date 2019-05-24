@@ -1,12 +1,12 @@
-﻿/*
- * Author: Eeva Tolonen
- */
+﻿// @author: Eeva Tolonen
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 
+
+// Handles enemy movement on a platform: enemy approaches player if seen, if walks on an edge stops for a while and continues to patrol
 public class PatrollingEnemy : MonoBehaviour
 {
     public float speed = 10f;
@@ -35,6 +35,7 @@ public class PatrollingEnemy : MonoBehaviour
 
     private GameObject keijupoly;
 
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -43,7 +44,6 @@ public class PatrollingEnemy : MonoBehaviour
 
         //Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), player.GetComponent<Collider2D>());
     }
-
 
 
     // Enemies move, we check if enemy is on the edge of the platform
@@ -65,7 +65,6 @@ public class PatrollingEnemy : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// Moves the enemy
     /// </summary>
@@ -75,7 +74,6 @@ public class PatrollingEnemy : MonoBehaviour
         //if (isFollowing) return;
         enemy.transform.Translate(enemyDirection * speed * Time.deltaTime);
     }
-
 
 
     /// <summary>
@@ -117,7 +115,6 @@ public class PatrollingEnemy : MonoBehaviour
             }
         }
     }
-
 
 
     /// <summary>
@@ -197,8 +194,6 @@ public class PatrollingEnemy : MonoBehaviour
     }
 
 
-
-
     /// <summary>
     /// Check the distance and only follow Enid if enemy is both close enough of Enid and facing Enid
     /// </summary>
@@ -249,66 +244,22 @@ public class PatrollingEnemy : MonoBehaviour
     }
 
 
-
+    // When enemy sees player for the first time, it starts approaching player
     public void ApproachEnid()
     {
-        // ts. kun pelaaja on ekaa kertaa huomattu, mennään pelaajaa kohti kunnes pelaaja on vihollisesta tietyn etäisyyden päässä
         if (Vector2.Distance(transform.position, player.transform.position) <= 5) return;
-        //transform.position = Vector2.MoveTowards(transform.position, new Vector2(player.transform.position.x, transform.position.y), speed * Time.deltaTime);
-
-
-        ///*&& !movingLeft) || ((transform.position.x > player.transform.position.x) && movingLeft*/
-        // we check if enemy is behind Enid and facing left OR if enemy is in front of Enid and facing right, then we flip the enemy so it's always looking at right direction
-        /* if (((transform.position.x < player.transform.position.x) )) 
-         {
-             // tsekataan riittääkö laittaa vain kääntymään, jos ei, koitetaan päivittää samalla muutkin arvot
-             transform.eulerAngles = new Vector3(0, 0, 0);
-         }
-         else
-         {
-             transform.eulerAngles = new Vector3(0, -180, 0);
-         }
-         */
-        /*if (movingLeft) turn left
-        {
-            transform.eulerAngles = new Vector3(0, -180, 0);
-            movingLeft = false;
-            enemyDirection = Vector2.left;
-        }
-        else turn right
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-            movingLeft = true;
-            enemyDirection = Vector2.right;
-        }*/
-
-        // no point with these, we have to check enemy turning otherwise
-        /*if (movingLeft)
-        {
-            transform.eulerAngles = new Vector3(0, -180, 0);
-            movingLeft = false;
-            enemyDirection = Vector2.left;
-        }
-        else
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-            movingLeft = true;
-            enemyDirection = Vector2.right;
-        }*/
     }
-
 
 
     void FollowPlayer()
     {
-        // joko tämä rivi toimii tai sitten tämä if (groundInfo.collider == false && isAttacking)
-        // ts. enemy doesn't follow player if isAttacking == false or enemy is following but is on edge
+        // enemy doesn't follow player if isAttacking == false or enemy is following but is on edge
         if (!isFollowing || (groundInfo.collider == false && isFollowing)) return;
         ApproachEnid();
     }
 
 
-
+    // Enemy ignores collision with fairydust
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.name == "Keijupoly" || other.gameObject.tag == "Enemy")

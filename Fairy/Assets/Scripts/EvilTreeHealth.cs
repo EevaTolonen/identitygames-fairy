@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Keeps track of enemy health and death
 public class EvilTreeHealth : MonoBehaviour
 {
     Animator animator;
-    //GameObject enemy;
     Rigidbody2D enemyBody;
 
     public int startingHealth = 3;
@@ -22,18 +24,20 @@ public class EvilTreeHealth : MonoBehaviour
 
     Shader matta;
     Shader flash;
+
+
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = startingHealth;
         animator = GetComponent<Animator>();
 
-        //enemy = GameObject.FindGameObjectWithTag("Enemy");
         enemyBody = GetComponent<Rigidbody2D>();
 
         flash = Shader.Find("Custom/DamageFlash");
         matta = Shader.Find("Sprites/Diffuse");
     }
+
 
     // Update is called once per frame
     void Update()
@@ -44,7 +48,6 @@ public class EvilTreeHealth : MonoBehaviour
             damaged = false;
         }
     }
-
 
 
     /// <summary>
@@ -67,7 +70,6 @@ public class EvilTreeHealth : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// Enemy dies, and is destroyed after one second of delay, maybe make the enemy sink/turn into particles/etc.?
     /// </summary>
@@ -80,7 +82,7 @@ public class EvilTreeHealth : MonoBehaviour
     }
 
 
-
+    // Switches between normal and damage shaders in order to create flashing damage effect on enemy
     public IEnumerator SwitchToDamageShader()
     {
         for (int i = 0; i < flashTimes; i++)
@@ -102,6 +104,7 @@ public class EvilTreeHealth : MonoBehaviour
     }
 
 
+    // Handles how much damage player's attack does to an enemy
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.name == "Spear") TakeDamage(1, Vector3.zero);

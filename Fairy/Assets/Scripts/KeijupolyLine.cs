@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿// @author Olli Paakkunainen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

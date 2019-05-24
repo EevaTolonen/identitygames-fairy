@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿// @Olli Paakkunainen & Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityStandardAssets._2D;
 using UnityEngine;
 
-
+// Little fairy Changeling follows player around and turns to follow player
 [RequireComponent(typeof(SpriteRenderer))]
 public class VaihdokkiMovement : MonoBehaviour
 {
@@ -25,9 +26,9 @@ public class VaihdokkiMovement : MonoBehaviour
         vaihdokkiRenderer = GetComponent<SpriteRenderer>();
     }
 
+
     private void Update()
     {
-
         // we see whether player is facing right or not, and position changeling accordingly behind the player
         facingRight = followTarget.GetComponent<PlatformerCharacter2D>().GetPlayerFacingRight();
         if (!facingRight && offset.x < 0)
@@ -49,6 +50,7 @@ public class VaihdokkiMovement : MonoBehaviour
         {
             moveSpeed = baseSpeed * maxDistanceSpeedModifier;
         }
+
 
         // Move our position a step closer to the target.
         float step = moveSpeed * Time.deltaTime; // calculate distance to move

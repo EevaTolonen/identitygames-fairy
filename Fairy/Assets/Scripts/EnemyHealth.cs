@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 
+// Keeps track of enemy's (vihu's) health and death
 public class EnemyHealth : MonoBehaviour
 {
     PatrollingEnemy patrollingEnemy;
@@ -26,6 +28,7 @@ public class EnemyHealth : MonoBehaviour
     Shader matta;
     Shader flash;
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -40,6 +43,7 @@ public class EnemyHealth : MonoBehaviour
         flash = Shader.Find("Custom/DamageFlash");
         matta = Shader.Find("Sprites/Diffuse");
     }
+
 
     // Update is called once per frame
     void Update()
@@ -71,7 +75,6 @@ public class EnemyHealth : MonoBehaviour
             damaged = false;
         }
     }
-
 
 
     /// <summary>
@@ -106,9 +109,8 @@ public class EnemyHealth : MonoBehaviour
     }
 
 
-
     /// <summary>
-    /// Enemy dies, and is destroyed after one second of delay, maybe make the enemy sink/turn into particles/etc.?
+    /// Enemy dies, and is destroyed after 2 seconds
     /// </summary>
     void Death()
     {
@@ -121,7 +123,7 @@ public class EnemyHealth : MonoBehaviour
     }
 
 
-
+    // Switches between normal and damage shaders to create flashing effect when enemy takes damage
     public IEnumerator SwitchToDamageShader()
     {
         for (int i = 0; i < flashTimes; i++)

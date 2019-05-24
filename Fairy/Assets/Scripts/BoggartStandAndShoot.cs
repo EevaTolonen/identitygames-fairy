@@ -1,11 +1,12 @@
-﻿using System;
+﻿// @author Olli Paakkunainen
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles enemy (Boggart) movement (nonexistent) and shooting towards player
 public class BoggartStandAndShoot : MonoBehaviour
 {
-
     public float aggrpDistance = 10f;
     public float timeBetweenAttacks = 1.5f;
     public GameObject projectile;
@@ -14,19 +15,24 @@ public class BoggartStandAndShoot : MonoBehaviour
 
     private Animator animator;
     private GameObject player;
-    private SpriteRenderer renderer;
+    private SpriteRenderer sRenderer;
     private float distanceToPlayer;
     private bool attackOnCooldown = false;
     private float attackCooldownTimeLeft = 0f;
     private bool isFacingLeft = false;
 
+
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        renderer = GetComponent<SpriteRenderer>();
+        sRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
     }
 
+
+    /// <summary>
+    /// Updates enemy-player distance and enemy turning towards player
+    /// </summary>
     private void Update()
     {
         distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
@@ -43,7 +49,7 @@ public class BoggartStandAndShoot : MonoBehaviour
         }
 
         isFacingLeft = player.transform.position.x < transform.position.x ? true : false;
-        renderer.flipX = isFacingLeft;
+        sRenderer.flipX = isFacingLeft;
 
         if(attackOnCooldown)
         {
@@ -56,6 +62,10 @@ public class BoggartStandAndShoot : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Handles shooting towards the player
+    /// </summary>
     private void Shoot()
     {
         attackCooldownTimeLeft += timeBetweenAttacks;

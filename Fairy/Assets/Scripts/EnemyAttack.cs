@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿// @author Eeva Tolonen
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets._2D;
 
+// Handles enemy (vihu) attacking
 public class EnemyAttack : MonoBehaviour
 {
     public float timeBetweenAttacks = 3;
@@ -20,6 +22,7 @@ public class EnemyAttack : MonoBehaviour
     bool playerInRange;
     float hitTimer;
 
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -36,7 +39,6 @@ public class EnemyAttack : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// Check when enemy trigger collides with player, and is then in range to attack player
     /// </summary>
@@ -48,7 +50,6 @@ public class EnemyAttack : MonoBehaviour
             playerInRange = true;
         }
     }
-
 
 
     /// <summary>
@@ -83,7 +84,9 @@ public class EnemyAttack : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Makes player take damage from attack and checks that player isn't dead
+    /// </summary>
     void Attack()
     {
         hitTimer = 0;
