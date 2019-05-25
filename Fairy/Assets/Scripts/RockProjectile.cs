@@ -7,11 +7,11 @@ using UnityEngine;
 // Projectiles that boggart enemies shoot towards player
 public class RockProjectile : MonoBehaviour
 {
-    public float speed = 20f;
-    public Rigidbody2D rock;
+    public float speed = 10f;
+    Rigidbody2D rock;
 
     GameObject player;
-    Vector3 playerPos;
+    Vector2 moveDirection;
 
     float timer;
 
@@ -20,19 +20,17 @@ public class RockProjectile : MonoBehaviour
     void Start()
     {
         timer = 0;
+        rock = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
-        playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+        moveDirection = (player.transform.position - transform.position).normalized * speed;
+        rock.velocity = new Vector2(moveDirection.x, moveDirection.y);
     }
 
 
     private void Update()
     {
-        //playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
-        // Move the projectile forward towards the player's last known direction;
-        transform.position = Vector3.MoveTowards(transform.position, playerPos, speed * Time.deltaTime);
-        rock.velocity = new Vector2(speed, speed);
         timer += Time.deltaTime;
-        if (timer > 2) Destroy(gameObject);
+        if (timer > 3) Destroy(gameObject);
     }
 
 
